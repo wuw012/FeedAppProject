@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.hvl.feedApp.FeedAppApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.343 s - in com.hvl.feedApp.FeedAppApplicationTests
