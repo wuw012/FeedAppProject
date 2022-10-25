@@ -35,30 +35,29 @@ public class PollController {
 
     @GetMapping()
     public List<Poll> getPolls(){
-        return pollService.getPolls();
+        List<Poll> allPolls = pollService.getPolls();
+        pollService.refreshPollStatuses(allPolls);
+        return allPolls;
     }
 
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@PathVariable("pollID") Long pollID){
-        return pollService.getPollById(pollID);
+        Poll poll = pollService.getPollById(pollID);
+        poll.setStatus(poll.getStartTime(),poll.getEndTime());
+        return poll;
     }
 
     @PostMapping("")
     public ResponseEntity<Poll> createNewPoll(@RequestBody Poll poll){
         try {
+            // set owner and add poll to owners ownedPolls
             long ownerID = poll.getOwner().getAgentID();
             Agent owner = agentService.getById(ownerID);
             poll.setOwner(owner);
             owner.addOwnedPoll(poll);
-            poll.refreshStatus();
-            if(poll.getEndTime().isBefore(LocalDateTime.now())){
-                // BAD_REQUEST her og
-                throw new IllegalStateException();
-            }
+
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {
-            // Burde sette: HttpStatus.BAD_REQUEST
-            // midlertidig exception for poll uten gyldig agent og om man prøva å lage en EXPIRED poll
             throw new IllegalStateException("Something went wrong");
         }
     }
