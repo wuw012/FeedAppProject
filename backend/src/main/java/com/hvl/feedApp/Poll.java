@@ -9,6 +9,27 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 public class Poll {
+    @Id
+    @SequenceGenerator(name = "poll_sequence", sequenceName = "poll_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "poll_sequence")
+    @Column(name="poll_id")
+    private long pollID;
+    // Relation
+    @ManyToOne(targetEntity = Agent.class)
+    private Agent owner;
+    // Attributes
+    private boolean isPrivate;
+    private int pin;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime startTime;
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime endTime;
+    private int yesCount;
+    private int noCount;
+    private String question;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     public Poll() {}
 
     public Poll(boolean isPrivate, int pin, LocalDateTime startTime, LocalDateTime endTime, int yesCount, int noCount, String question, Status status) {
@@ -20,54 +41,10 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
-
-        // Setting status
-        StatusHandler statusHandler = new StatusHandler();
-        this.status = statusHandler.getStatus(this.startTime, this.endTime);
     }
-
-    @Id
-    @SequenceGenerator(
-            name = "poll_sequence",
-            sequenceName = "poll_sequence")
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "poll_sequence")
-    @Column(name="poll_id")
-    private long pollID;
-
-    // Relation
-    @ManyToOne(targetEntity = Agent.class)
-    private Agent owner;
-
-    // Attributes
-    private boolean isPrivate;
-    private int pin;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime startTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime endTime;
-    private int yesCount;
-    private int noCount;
-    private String question;
-    //@Transient
-    @Enumerated(EnumType.STRING)
-    private Status status;
 
     public void setPollID(long pollID) {
         this.pollID = pollID;
-    }
-
-    public void refreshStatus() {
-        StatusHandler statusHandler = new StatusHandler();
-        this.status = statusHandler.getStatus(this.startTime, this.endTime);
-/*        if (startTime.isBefore(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
-            this.status = Status.ACTIVE;
-        } else if (startTime.isAfter(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
-            this.status = Status.FUTURE;
-        } else {
-            this.status = Status.EXPIRED;
-        }*/
     }
 
     public Agent getOwner() {
@@ -138,21 +115,17 @@ public class Poll {
         this.question = question;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-}
-
-class StatusHandler {
-    public static Status getStatus(LocalDateTime startTime, LocalDateTime endTime) {
+    public void setStatus(LocalDateTime startTime, LocalDateTime endTime) {
         if (startTime.isBefore(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
-            return Status.ACTIVE;
+            this.status = Status.ACTIVE;
         } else if (startTime.isAfter(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
-            return Status.FUTURE;
+            this.status = Status.FUTURE;
         } else {
-            return Status.EXPIRED;
+            this.status = Status.EXPIRED;
         }
     }
-
+    public Status getStatus() {
+        return status;
+    }
 }
 
