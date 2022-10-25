@@ -47,6 +47,11 @@ public class PollController {
         return poll;
     }
 
+    @GetMapping(path = "{agentID}/userPolls")
+    public List<Poll> getOwnedPolls(@PathVariable("agentID") Long agentID){
+        return agentService.getOwnedPolls(agentID);
+    }
+
     @PostMapping("")
     public ResponseEntity<Poll> createNewPoll(@RequestBody Poll poll){
         try {
