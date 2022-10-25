@@ -82,7 +82,7 @@ public class PollController {
         int pin = poll.getPin();
         String question = poll.getQuestion();
         pollService.updatePoll(pollID, noCount, yesCount, startTime, endTime, isPrivate, pin, question);
-        return pollService.getPollById(poll.getPollID());
+        return pollService.getPollById(pollID);
     }
 
     // Vote handling
