@@ -7,7 +7,7 @@
     Port 5434 Username: Password:
     I postgres shell commandoer:
 
-* psql (postgres versjon)
+psql (postgres versjon)
     \l (liste opp alle databaser)
     CREATE DATABASE feedappdb; (lager database som heter feedappdb)
     \du (lister opp roller, her skal du finne din bruker)
