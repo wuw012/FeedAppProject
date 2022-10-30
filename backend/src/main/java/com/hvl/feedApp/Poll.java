@@ -2,6 +2,9 @@ package com.hvl.feedApp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hvl.feedApp.Enums.Status;
+import com.hvl.feedApp.config.RabbitMQConfig;
+import com.hvl.feedApp.controller.MessageSendController;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -29,6 +32,9 @@ public class Poll {
     private String question;
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    private static RabbitTemplate rabbitTemplate;
+
 
     public Poll() {}
 
@@ -113,6 +119,12 @@ public class Poll {
 
     public void setQuestion(String question) {
         this.question = question;
+    }
+
+    public void sendMessage(String message) {
+        MessageSendController sendController = new MessageSendController(rabbitTemplate);
+        sendController.sendEventMessage(message);
+
     }
 
     public void setStatus(LocalDateTime startTime, LocalDateTime endTime) {
