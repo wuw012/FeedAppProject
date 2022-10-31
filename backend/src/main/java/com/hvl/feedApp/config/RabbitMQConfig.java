@@ -26,7 +26,7 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue exampleQueue() {
+    public Queue defaultQueue() {
         return new Queue(DEFAULT_QUEUE);
     }
 }
