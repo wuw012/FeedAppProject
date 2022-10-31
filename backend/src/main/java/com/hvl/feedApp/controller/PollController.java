@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
@@ -16,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
-
-import javax.naming.AuthenticationNotSupportedException;
 
 @RestController
 @RequestMapping(path = "/polls")
@@ -35,30 +34,34 @@ public class PollController {
 
     @GetMapping()
     public List<Poll> getPolls(){
-        return pollService.getPolls();
+        List<Poll> allPolls = pollService.getPolls();
+        pollService.refreshPollStatuses(allPolls);
+        return allPolls;
     }
 
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@PathVariable("pollID") Long pollID){
-        return pollService.getPollById(pollID);
+        Poll poll = pollService.getPollById(pollID);
+        poll.setStatus(poll.getStartTime(),poll.getEndTime());
+        return poll;
+    }
+
+    @GetMapping(path = "{agentID}/userPolls")
+    public List<Poll> getOwnedPolls(@PathVariable("agentID") Long agentID){
+        return agentService.getOwnedPolls(agentID);
     }
 
     @PostMapping("")
     public ResponseEntity<Poll> createNewPoll(@RequestBody Poll poll){
         try {
+            // set owner and add poll to owners ownedPolls
             long ownerID = poll.getOwner().getAgentID();
             Agent owner = agentService.getById(ownerID);
             poll.setOwner(owner);
             owner.addOwnedPoll(poll);
-            poll.refreshStatus();
-            if(poll.getEndTime().isBefore(LocalDateTime.now())){
-                // BAD_REQUEST her og
-                throw new IllegalStateException();
-            }
+
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {
-            // Burde sette: HttpStatus.BAD_REQUEST
-            // midlertidig exception for poll uten gyldig agent og om man prøva å lage en EXPIRED poll
             throw new IllegalStateException("Something went wrong");
         }
     }
@@ -78,10 +81,15 @@ public class PollController {
         int pin = poll.getPin();
         String question = poll.getQuestion();
         pollService.updatePoll(pollID, noCount, yesCount, startTime, endTime, isPrivate, pin, question);
-        return pollService.getPollById(poll.getPollID());
+        return pollService.getPollById(pollID);
     }
 
     // Vote handling
+    @PostMapping(path="{pollID}/batchVote")
+    public List<Vote> createBatchVote(@PathVariable Long pollID, @RequestBody String batchVoteString){
+        return voteService.createBatchVote(pollID, batchVoteString);
+    }
+
     @PostMapping(path="{pollID}/votes")
     public Vote createVote(
             @PathVariable Long pollID,
