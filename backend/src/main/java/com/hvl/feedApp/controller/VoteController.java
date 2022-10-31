@@ -30,11 +30,6 @@ public class VoteController {
         return voteService.getVoteById(voteID);
     }
 
-    @PutMapping(path = "{voteID}")
-    public void updateVoteById(@PathVariable("voteID") Long voteID ,@RequestBody String bodyString){
-        voteService.updateVoteById(voteID, bodyString);
-    }
-
     @DeleteMapping(path = "{voteID}")
     public void deleteVote(@PathVariable("voteID") Long voteID){
         voteService.deleteVote(voteID);

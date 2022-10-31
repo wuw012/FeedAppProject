@@ -1,6 +1,7 @@
 package com.hvl.feedApp.service;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
@@ -94,7 +95,37 @@ public class VoteService {
         return vote;
     }
 
+    public List<Vote> createBatchVote(Long pollID, String batchVoteString){
+        JsonObject batchVoteJson = new Gson().fromJson(batchVoteString, JsonObject.class);
 
+        List<Boolean> voteList = new ArrayList<>();
+        Long deviceID = batchVoteJson.get("voter_id").getAsLong();
+        JsonArray votes = batchVoteJson.get("votes").getAsJsonArray();
+
+        Agent device = agentService.getById(deviceID);
+        Poll poll = pollService.getPollById(pollID);
+
+        if (votes != null){
+            for (int i = 0; i < votes.size(); i++) {
+                voteList.add(votes.get(i).getAsBoolean());
+            }
+        }
+        List<Vote> voteCollect = new ArrayList<>();
+        for (boolean answerYes : voteList){
+            if (answerYes){
+                poll.setYesCount(poll.getYesCount()+1);
+                Vote yesVote =  new Vote(answerYes, device, poll);
+                voteCollect.add(yesVote);
+                voteRepository.save(yesVote);
+            } else {
+                poll.setNoCount(poll.getNoCount()+1);
+                Vote noVote =  new Vote(answerYes, device, poll);
+                voteCollect.add(noVote);
+                voteRepository.save(noVote);
+            }
+
+        } return voteCollect;
+    }
 
     public void deleteVote(Long voteID){
         boolean exists = voteRepository.existsById(voteID);
@@ -103,40 +134,4 @@ public class VoteService {
         }
         voteRepository.deleteById(voteID);
     }
-    @Transactional
-    public Vote updateVoteById(Long voteID, String bodyString){
-        Vote vote = voteRepository.findById(voteID).orElseThrow(() -> new IllegalStateException("Vote with id: "+ voteID + " does not exist"));
-
-        Poll poll = vote.getPoll();
-        boolean wasYes = vote.getAnswer();
-
-        JsonObject voteJson = new Gson().fromJson(bodyString, JsonObject.class);
-
-        //TODO: Error handling, field validation!
-        Long voterID = voteJson.get("voter_id").getAsLong(); // "voter_id":2,
-        boolean answerYes = voteJson.get("answer_yes").getAsBoolean();
-
-        Agent voter = agentService.getById(voterID);
-        //Poll poll = pollService.getPollById(pollID);
-
-        // increment or decrement poll answer count
-        if (answerYes) {
-            poll.setYesCount(poll.getYesCount()+1);
-        }else if (!answerYes) {
-            poll.setNoCount(poll.getNoCount()+1);
-        }
-        if (wasYes) {
-            poll.setYesCount(poll.getYesCount()-1);
-        }else if (!wasYes) {
-            poll.setNoCount(poll.getNoCount()-1);
-        }
-
-        Vote updatedVote =  new Vote(answerYes, voter, poll);
-        return voteRepository.save(updatedVote);
-        //return updatedVote;
-        //do changes to vote here.. vote.setAnswer etc
-
-
-    }
-
 }
