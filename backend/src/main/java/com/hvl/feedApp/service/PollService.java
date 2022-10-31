@@ -1,7 +1,9 @@
 package com.hvl.feedApp.service;
 
 import com.hvl.feedApp.Poll;
+import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.repository.PollRepository;
+import com.hvl.feedApp.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,12 @@ import java.util.List;
 public class PollService {
 
     private final PollRepository pollRepository;
+    private final VoteRepository voteRepository;
 
     @Autowired
-    public PollService(PollRepository pollRepository) {
+    public PollService(PollRepository pollRepository, VoteRepository voteRepository) {
         this.pollRepository = pollRepository;
+        this.voteRepository = voteRepository;
     }
 
     public List<Poll> getPolls(){
@@ -53,6 +57,16 @@ public class PollService {
         if (!exists){
             throw new IllegalStateException("Poll with id: "+ pollID + " does not exist");
         }
+        Poll poll = this.getPollById(pollID);
+
+        // Find related votes
+        List<Vote> pollVotes = voteRepository.findAll();
+        for (Vote vote : pollVotes) {
+            if (vote.getPoll().getPollID() == poll.getPollID()) {
+                voteRepository.delete(vote);
+            }
+        }
+
         pollRepository.deleteById(pollID);
     }
     @Transactional

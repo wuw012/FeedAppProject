@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
@@ -16,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
-
-import javax.naming.AuthenticationNotSupportedException;
 
 @RestController
 @RequestMapping(path = "/polls")
@@ -86,6 +85,11 @@ public class PollController {
     }
 
     // Vote handling
+    @PostMapping(path="{pollID}/batchVote")
+    public List<Vote> createBatchVote(@PathVariable Long pollID, @RequestBody String batchVoteString){
+        return voteService.createBatchVote(pollID, batchVoteString);
+    }
+
     @PostMapping(path="{pollID}/votes")
     public Vote createVote(
             @PathVariable Long pollID,
