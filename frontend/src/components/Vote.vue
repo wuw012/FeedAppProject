@@ -24,8 +24,6 @@ function increaseNo(n) {
   noCount.valueOf += n
 }
 
-
-
 </script>
 
 <style>
