@@ -121,9 +121,9 @@ public class Poll {
         this.question = question;
     }
 
-    public void sendMessage(String message) {
+    public void expirationNotify() {
         MessageSendController sendController = new MessageSendController(rabbitTemplate);
-        sendController.sendEventMessage(message);
+        sendController.sendEventMessage(Long.toString(this.pollID));
 
     }
 

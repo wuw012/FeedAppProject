@@ -16,6 +16,7 @@ public class MessagingConsumer {
     public void onMessageReceived(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
         //System.out.println("Message received!: " + message);
         //TODO: Code for sending message string to appropriate front end system
+        //expiredPolls.add(message);
 
         try{
             channel.basicAck(tag, false);
