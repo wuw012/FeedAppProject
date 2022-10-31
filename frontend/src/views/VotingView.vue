@@ -1,11 +1,9 @@
 <template>
-  <Question />
-  <Vote />
+  <Poll />
 </template>
 
 <script setup lang="ts">
-import Question from "@/components/Question.vue";
-import Vote from "@/components/Vote.vue";
+import Poll from "@/components/Poll.vue";
 </script>
 
 <style scoped>
