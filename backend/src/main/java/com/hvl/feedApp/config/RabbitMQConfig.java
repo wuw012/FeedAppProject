@@ -11,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RabbitMQConfig {
 
-    public static final String DEFAULT_QUEUE = "defaultQueue";
+    public static final String POLL_CREATE = "q.poll-creation";
+    public static final String POLL_FINISH = "q.poll-finish";
 
     @Bean
     public RabbitTemplate jsonRabbitTemplate(ConnectionFactory connectionFactory) {
@@ -26,7 +27,12 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue defaultQueue() {
-        return new Queue(DEFAULT_QUEUE);
+    public Queue createPollQueue() {
+        return new Queue(POLL_CREATE);
+    }
+
+    @Bean
+    public Queue finishPollQueue() {
+        return new Queue(POLL_FINISH);
     }
 }

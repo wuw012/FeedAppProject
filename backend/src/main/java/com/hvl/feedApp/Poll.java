@@ -125,7 +125,12 @@ public class Poll {
 
     public void expirationNotify() {
         //MessageSendController sendController = new MessageSendController(rabbitTemplate);
-        sendController.sendEventMessage(Long.toString(this.pollID));
+        //send as json object as string?
+        int yesCount = this.getYesCount();
+        int noCount = this.getNoCount();
+        String question = this.getQuestion();
+        String message = question + " " + yesCount + " " + noCount;
+        sendController.sendEventMessage(message);
 
     }
 

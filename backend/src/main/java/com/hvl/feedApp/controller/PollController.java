@@ -26,6 +26,8 @@ public class PollController {
     private final PollService pollService;
     private final VoteService voteService;
 
+    //Add RabbitTemplate for Messaging upon creating Poll
+
     @Autowired
     public PollController(AgentService agentService, PollService pollService, VoteService voteService) {
         this.agentService = agentService;
