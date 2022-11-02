@@ -16,11 +16,7 @@ public class MessagingConsumer {
     public void pollCreationListener(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
         //System.out.println("Message received!: " + message);
         //expiredPolls.add(message);
-        //TODO: code for storing result in NoSQL/MongoDB
-        //TODO: code for posting to dweet.io (for closing poll)
-
-        //Two different topics/queues, one for when a poll is created (and posting to dweet.io),
-        //and one for when a poll is closed (and both storing in NoSQL and posting to dweet.io)
+        //TODO: code for posting to dweet.io (for creating poll)
 
         try{
             channel.basicAck(tag, false);
