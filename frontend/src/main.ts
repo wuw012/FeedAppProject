@@ -6,6 +6,8 @@ import router from "./router";
 
 import "./assets/main.css";
 import { createAuth0 } from '@auth0/auth0-vue';
+import 'bootstrap/dist/css/bootstrap.css';
+
 //import VueCookies from 'vue-cookies'
 
 const app = createApp(App);
@@ -26,3 +28,6 @@ app.use(router);
 
 
 app.mount("#app");
+
+
+import 'bootstrap/dist/js/bootstrap.js';
