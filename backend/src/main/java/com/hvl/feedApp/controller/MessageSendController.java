@@ -18,9 +18,14 @@ public class MessageSendController {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendEventMessage(String message) {
+    public void sendPollCreationMessage(String message) {
         String pollMessage = message;
-        rabbitTemplate.convertAndSend(RabbitMQConfig.DEFAULT_QUEUE, pollMessage);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.POLL_CREATE, pollMessage);
+    }
+
+    public void sendPollFinishMessage(String message) {
+        String pollMessage = message;
+        rabbitTemplate.convertAndSend(RabbitMQConfig.POLL_FINISH, pollMessage);
     }
     /*
     @PostMapping("/event")

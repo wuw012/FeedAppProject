@@ -11,6 +11,7 @@ import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.service.AgentService;
 import com.hvl.feedApp.service.PollService;
 import com.hvl.feedApp.service.VoteService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,9 @@ public class PollController {
     private final PollService pollService;
     private final VoteService voteService;
 
-    //Add RabbitTemplate for Messaging upon creating Poll
+    //RabbitTemplate for Messaging upon creating Poll
+    private static RabbitTemplate rabbitTemplate;
+    private static MessageSendController sendController;
 
     @Autowired
     public PollController(AgentService agentService, PollService pollService, VoteService voteService) {
@@ -62,6 +65,13 @@ public class PollController {
             Agent owner = agentService.getById(ownerID);
             poll.setOwner(owner);
             owner.addOwnedPoll(poll);
+
+            sendController = new MessageSendController(rabbitTemplate);
+            int yesCount = poll.getYesCount();
+            int noCount = poll.getNoCount();
+            String question = poll.getQuestion();
+            String message = question + " " + yesCount + " " + noCount;
+            sendController.sendPollCreationMessage(message);
 
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {

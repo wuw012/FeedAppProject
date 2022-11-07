@@ -32,7 +32,5 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue finishPollQueue() {
-        return new Queue(POLL_FINISH);
-    }
+    public Queue finishPollQueue() { return new Queue(POLL_FINISH); }
 }

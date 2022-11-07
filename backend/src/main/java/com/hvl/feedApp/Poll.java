@@ -130,7 +130,7 @@ public class Poll {
         int noCount = this.getNoCount();
         String question = this.getQuestion();
         String message = question + " " + yesCount + " " + noCount;
-        sendController.sendEventMessage(message);
+        sendController.sendPollFinishMessage(message);
 
     }
 
