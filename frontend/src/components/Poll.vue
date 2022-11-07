@@ -1,13 +1,13 @@
 <template>
    <div class="poll">
-
+   <h3> ID: {{ pincode }} </h3>
     <div class="question">
-      <h1> Question: {{ questionText }} </h1>
+      <h1> Q: {{ questionText }} </h1>
     </div>
 
     <div class="buttongroup">
-      <button >YES</button>
-      <button>NO</button>
+      <button class="btn btn-primary btn-lg" type="submit">YES</button>
+      <button class="btn btn-primary btn-lg" type="submit">NO</button>
     </div>
 
    </div>
@@ -15,9 +15,16 @@
   
 
 <script lang="ts">
+export default {
+  name: 'Poll',
+  props: {
+    questionText: String
+  }
+}
 
-const questionText = "Do you like cats?"
+const pincode = "12345";
 
+//<button @click="count++">You clicked me --  {{ count }} -- times.</button>
 </script>
 
 <style scoped>
@@ -29,6 +36,6 @@ const questionText = "Do you like cats?"
     }
 .button{
       text-align: center;
-      margin: 2%;
+      margin: 20em;
     }
 </style>

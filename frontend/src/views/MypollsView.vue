@@ -5,6 +5,10 @@
       <h1>My polls </h1>
     </div>
 
+    <div class="table">
+      <h1>My polls </h1>
+    </div>
+
     <div class="buttongroup">
       <button>CREATE NEW POLL</button>
     </div>

@@ -4,6 +4,8 @@ import VotingView from "@/views/VotingView.vue";
 import AboutView from  "@/views/AboutView.vue";
 import ThankyouView from "@/views/ThankyouView.vue";
 import MypollsView from "@/views/MypollsView.vue";
+import LoginView from "@/views/LoginView.vue";
+import CreatepollsView from "@/views/CreatepollsView.vue";
 
 
 const router = createRouter({
@@ -38,6 +40,16 @@ const router = createRouter({
       path: "/mypolls",
       name: "mypolls",
       component: MypollsView,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: LoginView,
+    },
+    {
+      path: "/createpolls",
+      name: "createpolls",
+      component: CreatepollsView,
     }
   ],
 });
