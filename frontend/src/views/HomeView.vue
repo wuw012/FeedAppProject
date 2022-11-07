@@ -23,6 +23,7 @@ export default {
     return {
       login() {
         auth0.loginWithRedirect();
+        
       },
       logout() {
           auth0.logout({ returnTo: window.location.origin });

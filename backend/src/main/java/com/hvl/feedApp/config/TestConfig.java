@@ -24,6 +24,12 @@ public class TestConfig {
     @Bean
     CommandLineRunner userCommandLineRunner(AgentRepository aRepository, PollRepository pRepository, VoteRepository vRepository) {
         return args -> {
+            Agent agent007 = new Agent(
+                    "agent_007",
+                    "agent_007@mail.com",
+                    "12345678",
+                    Role.ADMIN);
+
             Agent Geir = new Agent(
                     "69geir420",
                     "geir420@mail.com",
@@ -85,7 +91,7 @@ public class TestConfig {
             bobsPolls.add(testExpiredPoll);
             Bob.setOwnedPolls(bobsPolls);
 
-            aRepository.saveAll(List.of(Geir,Bob));
+            aRepository.saveAll(List.of(Geir,Bob,agent007));
             pRepository.saveAll(List.of(testPoll, testFuturePoll, testExpiredPoll));
             vRepository.saveAll(List.of(bobsVote, bobsVote1, geirsVote));
 
