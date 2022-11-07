@@ -1,13 +1,12 @@
 <template>
-   <div class="poll">
+   <div class="mypolls">
 
-    <div class="question">
-      <h1> Question: {{ questionText }} </h1>
+    <div class="header">
+      <h1>My polls </h1>
     </div>
 
     <div class="buttongroup">
-      <button >YES</button>
-      <button>NO</button>
+      <button>CREATE NEW POLL</button>
     </div>
 
    </div>

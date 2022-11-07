@@ -1,31 +1,18 @@
 <template>
+  <h3> ID: {{ pincode }} </h3>
   <Poll />
 </template>
 
 <script setup lang="ts">
 import Poll from "@/components/Poll.vue";
+
+const pincode = "12345";
+
 </script>
 
 <style scoped>
-h1 {
-  font-weight: 500;
-  font-size: 2.6rem;
-  top: -10px;
-}
-
-h3 {
-  font-size: 1.2rem;
-}
-
-.greetings h1,
-.greetings h3 {
-  text-align: center;
-}
-
-@media (min-width: 1024px) {
-  .greetings h1,
-  .greetings h3 {
-    text-align: left;
-  }
+.h3 {
+  display:block !important;
+  align: right;
 }
 </style>
