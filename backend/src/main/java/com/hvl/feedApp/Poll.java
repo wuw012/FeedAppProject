@@ -143,6 +143,7 @@ public class Poll {
             this.status = Status.FUTURE;
         } else {
             this.status = Status.EXPIRED;
+            //if (!sentExpirationNotification)
             expirationNotify();
             //sentExpirationNotification = true;
         }
