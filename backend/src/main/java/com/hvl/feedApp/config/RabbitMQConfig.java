@@ -14,6 +14,19 @@ public class RabbitMQConfig {
     public static final String POLL_CREATE = "q.poll-creation";
     public static final String POLL_FINISH = "q.poll-finish";
 
+
+    /*
+    @Bean
+    public CachingConnectionFactory connectionFactory() {
+        return new CachingConnectionFactory("localhost");
+    }
+
+    @Bean
+    public RabbitAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory());
+    }
+
+     */
     @Bean
     public RabbitTemplate jsonRabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);

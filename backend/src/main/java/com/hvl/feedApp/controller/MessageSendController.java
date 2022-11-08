@@ -1,6 +1,8 @@
 package com.hvl.feedApp.controller;
 
 import com.hvl.feedApp.config.RabbitMQConfig;
+import org.springframework.amqp.rabbit.connection.AbstractConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +17,7 @@ public class MessageSendController {
     private final RabbitTemplate rabbitTemplate;
 
     public MessageSendController(RabbitTemplate rabbitTemplate) {
-        this.rabbitTemplate = rabbitTemplate;
+        this.rabbitTemplate = new RabbitTemplate();
     }
 
     public void sendPollCreationMessage(String message) {
