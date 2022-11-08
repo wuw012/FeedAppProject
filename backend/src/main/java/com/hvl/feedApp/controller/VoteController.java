@@ -1,8 +1,5 @@
 package com.hvl.feedApp.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;

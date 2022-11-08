@@ -80,7 +80,15 @@ public class PollController {
         boolean isPrivate = poll.isPrivate();
         int pin = poll.getPin();
         String question = poll.getQuestion();
-        pollService.updatePoll(pollID, noCount, yesCount, startTime, endTime, isPrivate, pin, question);
+        pollService.updatePoll(
+                pollID,
+                noCount,
+                yesCount,
+                startTime,
+                endTime,
+                isPrivate,
+                pin,
+                question);
         return pollService.getPollById(pollID);
     }
 
