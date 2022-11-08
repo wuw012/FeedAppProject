@@ -35,6 +35,7 @@ public class Poll {
 
     private static RabbitTemplate rabbitTemplate;
     private static MessageSendController sendController;
+    //private boolean sentExpirationNotify;
 
 
     public Poll() {}
@@ -48,7 +49,8 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
-        sendController = new MessageSendController(rabbitTemplate);
+        //sendController = new MessageSendController(rabbitTemplate);
+        //sentExpirationNotify = false;
     }
 
     public void setPollID(long pollID) {
@@ -142,6 +144,7 @@ public class Poll {
         } else {
             this.status = Status.EXPIRED;
             expirationNotify();
+            //sentExpirationNotification = true;
         }
     }
     public Status getStatus() {
