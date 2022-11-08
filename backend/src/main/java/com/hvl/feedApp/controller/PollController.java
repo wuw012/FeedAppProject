@@ -8,6 +8,7 @@ import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
+import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.service.AgentService;
 import com.hvl.feedApp.service.PollService;
 import com.hvl.feedApp.service.VoteService;
