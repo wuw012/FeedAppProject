@@ -17,14 +17,14 @@ public class RabbitMQConfig {
     @Bean
     public RabbitTemplate jsonRabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(jsonConverter());
+        //template.setMessageConverter(jsonConverter());
         return template;
     }
 
-    @Bean
-    public MessageConverter jsonConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
+    //@Bean
+    //public MessageConverter jsonConverter() {
+        //return new Jackson2JsonMessageConverter();
+    //}
 
     @Bean
     public Queue createPollQueue() {

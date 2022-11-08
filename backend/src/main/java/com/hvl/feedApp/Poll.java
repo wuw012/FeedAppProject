@@ -35,10 +35,26 @@ public class Poll {
 
     private static RabbitTemplate rabbitTemplate;
     private static MessageSendController sendController;
-    //private boolean sentExpirationNotify;
+    private boolean sentExpirationNotify;
 
 
     public Poll() {}
+
+    @Override
+    public String toString() {
+        return "Poll{" +
+                "pollID=" + pollID +
+                ", owner=" + owner +
+                ", isPrivate=" + isPrivate +
+                ", pin=" + pin +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", yesCount=" + yesCount +
+                ", noCount=" + noCount +
+                ", question='" + question + '\'' +
+                ", status=" + status +
+                '}';
+    }
 
     public Poll(boolean isPrivate, int pin, LocalDateTime startTime, LocalDateTime endTime, int yesCount, int noCount, String question, Status status) {
         this.isPrivate = isPrivate;
@@ -49,8 +65,8 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
-        //sendController = new MessageSendController(rabbitTemplate);
-        //sentExpirationNotify = false;
+        sendController = new MessageSendController(rabbitTemplate);
+        sentExpirationNotify = false;
     }
 
     public void setPollID(long pollID) {

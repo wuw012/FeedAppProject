@@ -25,6 +25,7 @@ public class MessageSendController {
 
     public void sendPollFinishMessage(String message) {
         String pollMessage = message;
+        //rabbitTemplate.convertAndSend("", "POLL_FINISH", poll.toString);
         rabbitTemplate.convertAndSend(RabbitMQConfig.POLL_FINISH, pollMessage);
     }
     /*
