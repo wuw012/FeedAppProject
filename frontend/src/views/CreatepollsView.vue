@@ -1,30 +1,31 @@
 <template>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <div class="input-group-text">
-                <input type="radio" aria-label="Radio button for following text input">
-            </div>
-        </div>
-        <input type="text" class="form-control" aria-label="Text input with radio button">
-</div>
+  <div class="header">
+    <h1>Create poll</h1>
+  </div>
+
+  <div class="createpollform"> 
+    <CreatepollForm />
+  </div>
+
+  <div class="createpollform"> 
+  </div>
 </template>
   
 
 <script lang="ts">
-import count from "@/stores/counter.ts"
-const questionText = "Do you like cats?"
+import CreatepollForm from "@/components/CreatepollForm.vue";
+import CreatepollFormVeeValidate from "@/components/CreatepollFormVeeValidate.vue";
 
+export default {
+  name: 'CreatePollsView',
+  components: {
+    CreatepollForm,
+    CreatepollFormVeeValidate
+  }
+}
 </script>
 
+
 <style scoped>
-.question{
-  display: block;
-}
-.poll{
-      text-align: center;
-    }
-.button{
-      text-align: center;
-      margin: 2%;
-    }
+
 </style>

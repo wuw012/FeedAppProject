@@ -6,28 +6,61 @@
     </div>
 
     <div class="buttongroup">
-      <button class="btn btn-primary btn-lg" type="submit">YES</button>
-      <button class="btn btn-primary btn-lg" type="submit">NO</button>
+      <button class="btn btn-primary btn-lg mr-2" type="submit" v-on:click="yesCounter += 1"> <RouterLink to="/thankyou">YES</RouterLink> </button>
+      
+      <button class="btn btn-primary btn-lg" @click="incrementCounter">NO</button>
     </div>
-
+    <p> no count:{{ counter }} </p>
    </div>
 </template>
   
 
 <script lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+
 export default {
   name: 'Poll',
   props: {
-    questionText: String
+    questionText: {
+      type: String,
+    },
+    pincode: {
+      type: Number,
+    },
+    counter: {
+      type: Number,
+    },
+  data() {
+    return {
+      title: "Counter",
+      counter: 0
+    };
+  },
+  methods: {
+    incrementCounter() {
+      this.counter++;
+      },
+    decrementCounter() {
+      this.counter--;
+      }
+    }
   }
 }
-
-const pincode = "12345";
-
 //<button @click="count++">You clicked me --  {{ count }} -- times.</button>
 </script>
 
 <style scoped>
+a{
+  color: #fff;
+}
+a:hover{
+  background-color: #007bff;
+}
+
+h3{
+  text-align:right;
+}
+
 .question{
   display: block;
 }
@@ -36,6 +69,6 @@ const pincode = "12345";
     }
 .button{
       text-align: center;
-      margin: 20em;
+      margin: 200em;
     }
 </style>

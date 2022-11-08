@@ -1,20 +1,33 @@
 <template>
     <div class="wrapper">
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/mypolls">My Polls</RouterLink>
+        <RouterLink to="/createpolls">Create Poll</RouterLink>
         <RouterLink to="/voting">Voting</RouterLink>
       </nav>
     </div>
   <RouterView />
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import VotingView from "./views/VotingView.vue";
+import VotingView from "@/views/VotingView.vue";
+export default{
+  name: "App"
+}
 </script>
 
-<style scoped>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;

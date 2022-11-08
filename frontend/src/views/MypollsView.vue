@@ -5,12 +5,14 @@
       <h1>My polls </h1>
     </div>
 
-    <div class="table">
-      <h1>My polls </h1>
-    </div>
+    
 
     <div class="buttongroup">
-      <button>CREATE NEW POLL</button>
+      <button class="btn btn-secondary btn-lg">  <RouterLink to="/createpolls">CREATE NEW POLL</RouterLink> </button>
+    </div>
+
+    <div class="posts">
+      <Posts/>
     </div>
 
    </div>
@@ -18,12 +20,27 @@
   
 
 <script lang="ts">
+import Posts from '@/components/Posts.vue';
+import { RouterLink, RouterView } from "vue-router";
 
-const questionText = "Do you like cats?"
+export default {
+  name: 'MyPollsView',
+  components: {
+    Posts
+  }
+}
 
 </script>
 
 <style scoped>
+#posts {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
 .question{
   display: block;
 }
