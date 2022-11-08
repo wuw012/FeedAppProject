@@ -18,6 +18,8 @@ public class MessagingConsumer {
         //expiredPolls.add(message);
         //TODO: code for posting to dweet.io (for creating poll)
 
+        System.out.println("Message received upon poll creation!");
+
         try{
             channel.basicAck(tag, false);
         }catch (Exception e) {
@@ -31,6 +33,7 @@ public class MessagingConsumer {
         //expiredPolls.add(message);
         //TODO: code for storing result in NoSQL/MongoDB
         //TODO: code for posting to dweet.io (for closing poll)
+        System.out.println("Message received upon poll closure!");
 
         //Two different topics/queues, one for when a poll is created (and posting to dweet.io),
         //and one for when a poll is closed (and both storing in NoSQL and posting to dweet.io)

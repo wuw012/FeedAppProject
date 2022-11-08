@@ -67,8 +67,8 @@ public class PollController {
             owner.addOwnedPoll(poll);
 
             sendController = new MessageSendController(rabbitTemplate);
-            int yesCount = poll.getYesCount();
-            int noCount = poll.getNoCount();
+            int yesCount = 0;
+            int noCount = 0;
             String question = poll.getQuestion();
             String message = question + " " + yesCount + " " + noCount;
             sendController.sendPollCreationMessage(message);
