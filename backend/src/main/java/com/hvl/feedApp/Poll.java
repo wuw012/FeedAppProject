@@ -30,6 +30,7 @@ public class Poll {
     private int yesCount;
     private int noCount;
     private String question;
+    @Transient
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -152,10 +153,10 @@ public class Poll {
 
     }
 
-    public void setStatus(LocalDateTime startTime, LocalDateTime endTime) {
-        if (startTime.isBefore(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
+    public void setStatus() {
+        if (this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.ACTIVE;
-        } else if (startTime.isAfter(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
+        } else if (this.startTime.isAfter(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.FUTURE;
         } else {
             this.status = Status.EXPIRED;
@@ -165,7 +166,8 @@ public class Poll {
         }
     }
     public Status getStatus() {
-        return status;
+        this.setStatus();
+        return this.status;
     }
 }
 

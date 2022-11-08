@@ -48,7 +48,7 @@ public class PollController {
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@PathVariable("pollID") Long pollID){
         Poll poll = pollService.getPollById(pollID);
-        poll.setStatus(poll.getStartTime(),poll.getEndTime());
+        poll.setStatus();
         return poll;
     }
 
@@ -75,7 +75,7 @@ public class PollController {
 
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {
-            throw new IllegalStateException("Something went wrong");
+            throw e;//IllegalStateException("Something went wrong");
         }
     }
 

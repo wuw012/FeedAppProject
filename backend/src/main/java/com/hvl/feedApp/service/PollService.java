@@ -37,13 +37,13 @@ public class PollService {
         if (poll.getEndTime().isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("Cannot create expired Poll with datetime "+poll.getEndTime());
         }
-        poll.setStatus(poll.getStartTime(), poll.getEndTime());
+        poll.setStatus();
         return pollRepository.save(poll);
     }
 
     public void refreshPollStatuses(List<Poll> allPolls){
         for (Poll poll : allPolls){
-            poll.setStatus(poll.getStartTime(),poll.getEndTime());
+            poll.setStatus();
         }
 
     }

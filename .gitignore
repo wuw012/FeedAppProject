@@ -1,2 +1,4 @@
 node_modules
-C:\Users\thezi\IdeaProjects\FeedAppProject\backend\src\main\resources\application.properties
+backend\src\main\resources\application.properties
+backend\package-lock.json
+backend/main/resources
