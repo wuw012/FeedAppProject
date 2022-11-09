@@ -13,6 +13,9 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import VotingView from "./views/VotingView.vue";
+import FeedAppDataService from "./services/FeedAppDataService";
+
+FeedAppDataService.exists("69geir420")
 </script>
 
 <style scoped>

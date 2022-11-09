@@ -41,9 +41,17 @@ public class AgentService {
         return agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("Vote with id: "+ agentID + " does not exist"));
     }
 
+    public Boolean exists(String username) {
+        if (agentRepository.getByUsername(username) != null) {
+            return true;
+        }
+        return false;
+    }
     public Agent createNewAgent(Agent agent) {
-
-
+        String username = agent.getUsername();
+        if (this.exists(username)) {
+            throw new IllegalStateException("User with username "+username+" already exists.");
+        }
         agentRepository.save(agent);
         return this.getById(agent.getAgentID());
     }
@@ -71,6 +79,10 @@ public class AgentService {
         }
 
         agentRepository.deleteById(agentID);
+    }
+
+    public Agent getByUsername(String username) {
+        return agentRepository.getByUsername(username);
     }
 
     // TODO: Abstract to field validation function and reuse on create

@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="*", allowedHeaders = "*")//origins = "http://localhost:5173")
 @RequestMapping(path = "/agents")
 public class AgentController {
     private final AgentService agentService;
@@ -38,7 +39,22 @@ public class AgentController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 
-    @GetMapping(path = "{id}")
+    @GetMapping("/exists/{username}")
+    public Boolean exists(@PathVariable("username") String username) {
+        return agentService.exists(username);
+    }
+    
+    @GetMapping("/byUsername/{username}")
+    public Agent getByUsername(@PathVariable("username") String username, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
+        if(authenticator.isAuthenticated(bAuth)) {
+            if (authorizer.isAuthorized(authenticator.getUser(), "/agents/byUsername/{username}", "GET")) {
+                return agentService.getByUsername(username);
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
+    }
+
+    @GetMapping(path = "/{id}")
     public Agent getById(@PathVariable("id") Long agentID, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if(authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/agents/{id}", "GET")) {
@@ -47,6 +63,7 @@ public class AgentController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
+
 
     @GetMapping("test")
     public List<Poll> getOwnedPolls(@RequestParam String ownedPolls, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth) {
