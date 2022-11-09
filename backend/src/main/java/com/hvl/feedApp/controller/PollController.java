@@ -47,7 +47,12 @@ public class PollController {
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls", "GET")) {
                 List<Poll> allPolls = pollService.getPolls();
-                pollService.refreshPollStatuses(allPolls);
+                // Too time consuming, find another strategy for updating dweets
+/*                try {
+                    pollService.refreshPollStatuses(allPolls);
+                }catch (InterruptedException e){
+                    System.out.println("Thread sleep interrupted, not all statuses refreshed.");
+                }*/
                 return allPolls;
             }
         }
@@ -59,7 +64,7 @@ public class PollController {
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "GET")) {
                 Poll poll = pollService.getPollById(pollID);
-                poll.setStatus(poll.getStartTime(),poll.getEndTime());
+                poll.setStatus();
                 return poll;
             }
         }
@@ -90,7 +95,7 @@ public class PollController {
 
                     return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
                 } catch (Exception e) {
-                    throw new IllegalStateException("Something went wrong");
+                    throw new IllegalStateException(e);
                 }
             }
         }
