@@ -67,6 +67,7 @@ public class PollController {
             poll.setOwner(owner);
             owner.addOwnedPoll(poll);
 
+            this.rabbitTemplate = new RabbitTemplate();
             sendController = new MessageSendController(rabbitTemplate);
             int yesCount = 0;
             int noCount = 0;
