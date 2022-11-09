@@ -6,6 +6,8 @@ import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.security.Authorizer;
 import com.hvl.feedApp.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +27,7 @@ public class AgentController {
         this.authenticator = new Authenticator(agentService);
         this.authorizer = new Authorizer();
     }
+
     @GetMapping()
     public List<Agent> getAgents(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if (authenticator.isAuthenticated(bAuth)) {
@@ -34,6 +37,7 @@ public class AgentController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
+
     @GetMapping(path = "{id}")
     public Agent getById(@PathVariable("id") Long agentID, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if(authenticator.isAuthenticated(bAuth)) {
@@ -43,6 +47,7 @@ public class AgentController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
+
     @GetMapping("test")
     public List<Poll> getOwnedPolls(@RequestParam String ownedPolls, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth) {
         if (authenticator.isAuthenticated(bAuth)) {

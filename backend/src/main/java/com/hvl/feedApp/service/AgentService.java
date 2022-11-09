@@ -32,9 +32,11 @@ public class AgentService {
         this.agentRepository = agentRepository;
         this.voteRepository = voteRepository;
     }
+
     public List<Agent> getAgents() {
         return agentRepository.findAll();
     }
+
     public Agent getById(Long agentID){
         return agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("Vote with id: "+ agentID + " does not exist"));
     }

@@ -69,6 +69,7 @@ public class PollService {
 
         pollRepository.deleteById(pollID);
     }
+
     @Transactional
     public void updatePoll(Long pollID, int noCount, int yesCount, LocalDateTime startTime, LocalDateTime endTime, boolean isPrivate, int pin, String question) {
         Poll poll = pollRepository.findById(pollID).orElseThrow(() -> new IllegalStateException("Poll with id: "+ pollID + " does not exist"));

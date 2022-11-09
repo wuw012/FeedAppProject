@@ -11,10 +11,12 @@ import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.service.AgentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import com.hvl.feedApp.controller.PollController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,6 @@ public class VoteService {
                 votesByAgentID.add(vote);
             }
         }
-
         return votesByAgentID;
     }
 
@@ -77,22 +78,26 @@ public class VoteService {
         JsonObject voteJson = new Gson().fromJson(voteString, JsonObject.class);
 
         //TODO: Error handling, field validation!
-        Long voterID = voteJson.get("voter_id").getAsLong(); // "voter_id":2,
-        boolean answerYes = voteJson.get("answer_yes").getAsBoolean();
+        try {
+            Long voterID = voteJson.get("voter_id").getAsLong(); // "voter_id":2,
+            boolean answerYes = voteJson.get("answer_yes").getAsBoolean();
 
-        Agent voter = agentService.getById(voterID);
-        Poll poll = pollService.getPollById(pollID);
+            Agent voter = agentService.getById(voterID);
+            Poll poll = pollService.getPollById(pollID);
 
-        // increment or decrement poll answer count
-        if (answerYes) {
-            poll.setYesCount(poll.getYesCount()+1);
-        }else {
-            poll.setNoCount(poll.getNoCount()+1);
+            // increment or decrement poll answer count
+            if (answerYes) {
+                poll.setYesCount(poll.getYesCount() + 1);
+            } else {
+                poll.setNoCount(poll.getNoCount() + 1);
+            }
+
+            Vote vote = new Vote(answerYes, voter, poll);
+            voteRepository.save(vote);
+            return vote;
+        } catch (Exception e){
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
         }
-
-        Vote vote =  new Vote(answerYes, voter, poll);
-        voteRepository.save(vote);
-        return vote;
     }
 
     public List<Vote> createBatchVote(Long pollID, String batchVoteString){
@@ -110,16 +115,17 @@ public class VoteService {
                 voteList.add(votes.get(i).getAsBoolean());
             }
         }
+        // a list of vote objects to be returned
         List<Vote> voteCollect = new ArrayList<>();
         for (boolean answerYes : voteList){
             if (answerYes){
                 poll.setYesCount(poll.getYesCount()+1);
-                Vote yesVote =  new Vote(answerYes, device, poll);
+                Vote yesVote =  new Vote(true, device, poll);
                 voteCollect.add(yesVote);
                 voteRepository.save(yesVote);
-            } else {
+            } else if (!answerYes){
                 poll.setNoCount(poll.getNoCount()+1);
-                Vote noVote =  new Vote(answerYes, device, poll);
+                Vote noVote =  new Vote(false, device, poll);
                 voteCollect.add(noVote);
                 voteRepository.save(noVote);
             }
