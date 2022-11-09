@@ -1,5 +1,6 @@
 package com.hvl.feedApp.controller;
 
+import com.hvl.feedApp.Enums.Role;
 import com.hvl.feedApp.security.Authenticator;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
@@ -43,7 +44,17 @@ public class AgentController {
     public Boolean exists(@PathVariable("username") String username) {
         return agentService.exists(username);
     }
-    
+
+    @GetMapping("/isAuthenticated")
+    public Boolean isAuthenticated(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth) {
+        return authenticator.isAuthenticated(bAuth);
+    }
+
+    @GetMapping("/isAdmin/{username}")
+    public Boolean isAdmin(@PathVariable("username") String username) {
+        return agentService.getByUsername(username).getRole() == Role.ADMIN;
+    }
+
     @GetMapping("/byUsername/{username}")
     public Agent getByUsername(@PathVariable("username") String username, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if(authenticator.isAuthenticated(bAuth)) {
