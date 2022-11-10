@@ -1,5 +1,6 @@
 package com.hvl.feedApp.config;
 
+import org.hibernate.boot.model.Caching;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -11,11 +12,18 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+    //private final CachingConnectionFactory cachingConnectionFactory;
 
-    public static final String POLL_CREATE = "q.poll-creation";
-    public static final String POLL_FINISH = "q.poll-finish";
+    //public static final String POLL_CREATE = "q.poll-creation";
+    //public static final String POLL_FINISH = "q.poll-finish";
 
+    //public RabbitMQConfig(CachingConnectionFactory cachingConnectionFactory)
+    /*
+    public RabbitMQConfig(CachingConnectionFactory cachingConnectionFactory) {
+        this.cachingConnectionFactory = cachingConnectionFactory;
+    }
 
+    /*
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory("localhost");
@@ -24,7 +32,7 @@ public class RabbitMQConfig {
         return connectionFactory;
     }
 
-    /*
+
     @Bean
     public CachingConnectionFactory connectionFactory() {
         return new CachingConnectionFactory("localhost");
@@ -36,18 +44,28 @@ public class RabbitMQConfig {
         return new RabbitAdmin(connectionFactory());
     }
 
-     */
+
     @Bean
     public RabbitTemplate jsonRabbitTemplate(ConnectionFactory connectionFactory) {
-        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+        RabbitTemplate template = new RabbitTemplate(cachingConnectionFactory);
         template.setMessageConverter(jsonConverter());
         return template;
     }
+
+
+    @Bean
+    public RabbitTemplate jsonRabbitTemplate() {
+        RabbitTemplate template = new RabbitTemplate(cachingConnectionFactory);
+        template.setMessageConverter(jsonConverter());
+        return template;
+    }
+
 
     @Bean
     public MessageConverter jsonConverter() {
         return new Jackson2JsonMessageConverter();
     }
+
 
     @Bean
     public Queue createPollQueue() {
@@ -56,4 +74,8 @@ public class RabbitMQConfig {
 
     @Bean
     public Queue finishPollQueue() { return new Queue(POLL_FINISH); }
+}
+
+
+     */
 }

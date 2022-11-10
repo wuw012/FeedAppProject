@@ -8,6 +8,10 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table
