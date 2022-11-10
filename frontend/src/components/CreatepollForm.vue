@@ -34,7 +34,7 @@
 </template>
 
 <script>
-const apiUrl = 'https://vuecookbook.netlify.app/.netlify/functions/product-name?name='
+const apiUrl = '@/mockdata/postpoll.json'
 
 export default {
     name: "CreatepollForm",
@@ -45,30 +45,10 @@ export default {
                 startTime: "",
                 endTime: "",
                 private: false,
-                errors: [],
             }
         }
-    },
-    methods:{
-        checkForm:function(e) {
-            e.preventDefault();
-            this.errors = [];
-            if(this.question === '') {
-                this.errors.push("Question is required.");
-            } else {
-                fetch(apiUrl+encodeURIComponent(this.question))
-                    .then(async res => {
-                    if(res.status === 204) {
-                        alert('Ok!')
-                    } else if(res.status === 400) {
-                        let errorResponse = await res.json();
-                        this.errors.push(errorResponse.error);
-                        }
-                    });
-                }
-            }   
-        }
     }
+}
 
 </script>
 
