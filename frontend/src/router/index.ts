@@ -4,6 +4,9 @@ import VotingView from "@/views/VotingView.vue";
 import AboutView from  "@/views/AboutView.vue";
 import ThankyouView from "@/views/ThankyouView.vue";
 import MypollsView from "@/views/MypollsView.vue";
+import AltLoginView from "@/views/AltLoginView.vue";
+import CreatepollsView from "@/views/CreatepollsView.vue";
+import SignupView from "@/views/SignupView.vue";
 
 
 const router = createRouter({
@@ -38,6 +41,21 @@ const router = createRouter({
       path: "/mypolls",
       name: "mypolls",
       component: MypollsView,
+    },
+    {
+      path: "/login",
+      name: "login",
+      component: AltLoginView,
+    },
+    {
+      path: "/createpolls",
+      name: "createpolls",
+      component: CreatepollsView,
+    },
+    {
+      path: "/signup",
+      name: "signup",
+      component: SignupView,
     }
   ],
 });

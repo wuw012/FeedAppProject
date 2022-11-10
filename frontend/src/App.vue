@@ -1,21 +1,18 @@
 <template>
     <div class="wrapper">
-
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/mypolls">My Polls</RouterLink>
+        <RouterLink to="/createpolls">Create Poll</RouterLink>
         <RouterLink to="/voting">Voting</RouterLink>
       </nav>
     </div>
   <RouterView />
 </template>
 
-<script setup lang="ts">
+<script lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import VotingView from "./views/VotingView.vue";
 import FeedAppDataService from "./services/FeedAppDataService";
-
-
 
 // Sånn her løser man "pending" i vanlig js-stil:         
 //                                  Resultat fra "exists" lagret i variabel
@@ -34,9 +31,20 @@ FeedAppDataService.isAdmin("bobleif").then((cookiesTantaDi) => console.log("Sa d
 FeedAppDataService.isAdmin("agent_007").then((NOTstirredFFS) => console.log("agent_007 is admin",NOTstirredFFS));
 
 FeedAppDataService.getPoll("1234").then((dummyPoll) => console.log("Result of dummy promise: ",dummyPoll));
+
 </script>
 
-<style scoped>
+
+<style>
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
