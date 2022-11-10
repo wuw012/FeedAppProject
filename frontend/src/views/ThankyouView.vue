@@ -5,8 +5,8 @@
 </template>
 
 <style>
-.thankyou{
-    display: block;
-    align: center;
+h1{
+    text-align: center;
+    margin-top: 50px;
 }
 </style>

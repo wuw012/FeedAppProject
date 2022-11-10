@@ -13,7 +13,6 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@auth0/auth0-vue": "^1.0.2",
     "bootstrap-vue": "^2.23.1",
     "pinia": "^2.0.21",
     "vue": "^3.2.38",
