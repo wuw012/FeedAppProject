@@ -9,6 +9,7 @@ import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.config.RabbitMQConfig;
+import com.hvl.feedApp.messaging.MessageProducer;
 import com.hvl.feedApp.service.AgentService;
 import com.hvl.feedApp.service.PollService;
 import com.hvl.feedApp.service.VoteService;
@@ -68,12 +69,16 @@ public class PollController {
             owner.addOwnedPoll(poll);
 
             this.rabbitTemplate = new RabbitTemplate();
+            MessageProducer producer = new MessageProducer();
+            producer.sendMessage(rabbitTemplate, producer.BINDING_PATTERN_POLL_CREATION, poll);
+            /*
             sendController = new MessageSendController(rabbitTemplate);
             int yesCount = 0;
             int noCount = 0;
             String question = poll.getQuestion();
             String message = question + " " + yesCount + " " + noCount;
             sendController.sendPollCreationMessage(message);
+            */
 
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {

@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 @Controller
 public class MessageSendController {
 
+    /*
     private final RabbitTemplate rabbitTemplate;
 
     public MessageSendController(RabbitTemplate rabbitTemplate) {
@@ -30,7 +31,7 @@ public class MessageSendController {
         //rabbitTemplate.convertAndSend("", "POLL_FINISH", poll.toString);
         rabbitTemplate.convertAndSend(RabbitMQConfig.POLL_FINISH, pollMessage);
     }
-    /*
+
     @PostMapping("/event")
     ResponseEntity<Void> postEventMessage() {
         final String timeNowMessage = String.format("%s - %s", "ExampleMessage", getTimeNowRepresentation());

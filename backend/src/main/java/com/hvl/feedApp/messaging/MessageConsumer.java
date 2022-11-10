@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageConsumer {
 
+
     public static final String TOPIC_EXCHANGE_NAME = "topic.exchange";
 
     public static final String TOPIC_QUEUE_1_NAME = "topic.queue1";
@@ -14,8 +15,6 @@ public class MessageConsumer {
 
     public static final String BINDING_PATTERN_POLL_CREATION = "poll.creation";
     public static final String BINDING_PATTERN_POLL_FINISH = "poll.finish";
-
-
 
     @RabbitListener(queues = MessagingConfig.TOPIC_QUEUE_1_NAME)
     public void consumeMessageFromTopicQueue1(String message) {

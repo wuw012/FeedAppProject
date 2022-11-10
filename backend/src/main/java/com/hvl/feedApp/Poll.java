@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hvl.feedApp.Enums.Status;
 import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.controller.MessageSendController;
+import com.hvl.feedApp.messaging.MessageProducer;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
@@ -39,7 +40,8 @@ public class Poll {
     private Status status;
 
     private static RabbitTemplate rabbitTemplate;
-    private static MessageSendController sendController;
+    private static MessageProducer producer;
+    //private static MessageSendController sendController;
     private boolean sentExpirationNotification;
 
 
@@ -70,7 +72,6 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
-        sendController = new MessageSendController(rabbitTemplate);
         sentExpirationNotification = false;
     }
 
@@ -149,11 +150,9 @@ public class Poll {
     public void expirationNotify() {
         //MessageSendController sendController = new MessageSendController(rabbitTemplate);
         //send as json object as string?
-        int yesCount = this.getYesCount();
-        int noCount = this.getNoCount();
-        String question = this.getQuestion();
-        String message = question + " " + yesCount + " " + noCount;
-        sendController.sendPollFinishMessage(message);
+        this.rabbitTemplate = new RabbitTemplate();
+        MessageProducer producer = new MessageProducer();
+        producer.sendMessage(rabbitTemplate, producer.BINDING_PATTERN_POLL_FINISH, this);
 
     }
 
