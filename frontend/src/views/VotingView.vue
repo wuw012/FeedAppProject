@@ -1,5 +1,4 @@
 <template>
- 
   <Poll :questionText="questionText" :pincode="pincode" :counter="counter"/>
 </template>
 
