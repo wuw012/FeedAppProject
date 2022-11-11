@@ -52,7 +52,7 @@ FeedAppDataService.isAdmin("bobleif").then((cookiesTantaDi) => console.log("Sa d
 // isAdmin test (Should be true)
 FeedAppDataService.isAdmin("agent_007").then((NOTstirredFFS) => console.log("agent_007 is admin",NOTstirredFFS));
 
-FeedAppDataService.getPoll("1234").then((dummyPoll) => console.log("Result of dummy promise: ",dummyPoll));
+FeedAppDataService.getPolls("bobleif", "totallyhashedandencryptedpassword").then((dummyPoll) => console.log(dummyPoll));
 
 </script>
 
