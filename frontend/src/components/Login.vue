@@ -7,15 +7,11 @@
             <label for="password"> Password: </label>
             <input type="password" id="password" name="password" v-model="password"><br><br>
 
-            <p v-if="error">
-                Error!
-                {{ error }}
-            </p>
+            <p> {{ error }} </p>
 
             <button class="btn btn-primary" v-on:click="login()" type="submit"> Log in </button> <br/><br/>
             <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
         </form>
-        <p>{{error}}</p>
     </div>
 </template>
 
@@ -53,11 +49,11 @@ export default {
                     }else{
                         this.$router.push({path:"/mypolls"})
                     }
+                } else {
+                    this.error = "Could not authenticate user"
                 }
-            }).catch(
-                console.warn("Could not authenticate user, sign up")
-                )
-            } 
+            })
+        } 
     },  
 }
 </script>
