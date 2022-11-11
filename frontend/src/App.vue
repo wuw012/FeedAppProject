@@ -39,20 +39,20 @@ export default {
 // Sånn her løser man "pending" i vanlig js-stil:         
 //                                  Resultat fra "exists" lagret i variabel
 // |-------async funksjon-----------|----------v       
-FeedAppDataService.exists("bobleif").then((bobExists) => console.log("Bob exists:",bobExists));
+//FeedAppDataService.exists("bobleif").then((bobExists) => console.log("Bob exists:",bobExists));
 //                                    |----| 
 //                    "Wait until Promise is done Pending 'then' do something"
 
 // Auth test (sjekk browser log)
-FeedAppDataService.isAuthenticated("bobleif", "totallyhashedandencryptedpassword").then((bobAuthenticated) => console.log("Bob is strapped in and ready to go",bobAuthenticated));
+//FeedAppDataService.isAuthenticated("bobleif", "totallyhashedandencryptedpassword").then((bobAuthenticated) => console.log("Bob is strapped in and ready to go",bobAuthenticated));
 
 // isAdmin test (Should be false)
-FeedAppDataService.isAdmin("bobleif").then((cookiesTantaDi) => console.log("Sa du?",cookiesTantaDi));
+//FeedAppDataService.isAdmin("bobleif").then((cookiesTantaDi) => console.log("Sa du?",cookiesTantaDi));
 
 // isAdmin test (Should be true)
-FeedAppDataService.isAdmin("agent_007").then((NOTstirredFFS) => console.log("agent_007 is admin",NOTstirredFFS));
+//FeedAppDataService.isAdmin("agent_007").then((NOTstirredFFS) => console.log("agent_007 is admin",NOTstirredFFS));
 
-FeedAppDataService.getPolls("bobleif", "totallyhashedandencryptedpassword").then((dummyPoll) => console.log(dummyPoll));
+//FeedAppDataService.getPolls("bobleif", "totallyhashedandencryptedpassword").then((dummyPoll) => console.log(dummyPoll));
 
 </script>
 
