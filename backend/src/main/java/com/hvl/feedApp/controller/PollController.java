@@ -62,14 +62,18 @@ public class PollController {
 
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
-        if (authenticator.isAuthenticated(bAuth)) {
-            if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "GET")) {
-                Poll poll = pollService.getPollById(pollID);
-                poll.setStatus();
-                return poll;
+        Poll poll = pollService.getPollById(pollID);
+        poll.setStatus();
+        if (poll.isPrivate()){
+            if (authenticator.isAuthenticated(bAuth)) {
+                if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "GET")) {
+                    return poll;
+                }
             }
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
+
+        return poll;
     }
 
     @GetMapping(path = "{username}/userPolls")

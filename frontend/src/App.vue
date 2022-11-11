@@ -20,6 +20,7 @@ import MypollsView from "@/views/MypollsView.vue";
 import AltLoginView from "@/views/AltLoginView.vue";
 import CreatepollsView from "@/views/CreatepollsView.vue";
 import SignupView from "@/views/SignupView.vue";
+import { conditionalExpression } from "@babel/types";
 
 export default {
   name: "App",
@@ -51,6 +52,10 @@ export default {
 //FeedAppDataService.isAdmin("agent_007").then((NOTstirredFFS) => console.log("agent_007 is admin",NOTstirredFFS));
 
 //FeedAppDataService.getPolls("bobleif", "totallyhashedandencryptedpassword").then((dummyPoll) => console.log(dummyPoll));
+
+
+//FeedAppDataService.getPoll(4,"agent_007", "12345678").then((poll) => console.log(poll))
+//FeedAppDataService.getPoll(4).then((poll) => console.log(poll)) 
 
 </script>
 

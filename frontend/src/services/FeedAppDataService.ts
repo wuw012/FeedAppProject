@@ -28,7 +28,8 @@ export default {
   });
         return response.data;
   },
-  async getPublicPoll(id : string, username = "", password = "") {
+  // Get poll with id, provice auth username and password if poll is private
+  async getPoll(id : Number, username = "", password = "") {
     const response = await axios.get(BASE_URL+'polls/'+id, {
       auth: {
         username: username,
