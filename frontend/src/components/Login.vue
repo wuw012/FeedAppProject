@@ -8,9 +8,11 @@
             <label for="password"> Password: </label>
             <input type="password" id="password" name="password" v-model="password"><br><br>
     
+            
             <button class="btn btn-primary" v-on:click="login()" type="submit"> Log in </button> <br/><br/>
             <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
         </form>
+        <p>{{error}}</p>
     </div>
 </template>
 
@@ -61,10 +63,13 @@ export default {
         },
         login() {
             this.updateAuthStatus().then(() => {
-                if(this.isAdmin) {
-                    this.$router.push({ path: '/admin' })
-                }else{
-                    this.$router.push({path:"/mypolls"})
+                if(this.isAuthenticated){
+                    if(this.isAdmin) {
+                        this.$router.push({ path: '/admin' })
+                    }else{
+                        this.$router.push({path:"/mypolls"})
+                    }
+
                 }
             })
             } 
