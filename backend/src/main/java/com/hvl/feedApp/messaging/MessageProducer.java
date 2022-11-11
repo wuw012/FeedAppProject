@@ -11,6 +11,7 @@ import org.springframework.amqp.core.*;
 
 @Component
 public class MessageProducer {
+    /*
 
     //private RabbitTemplate rabbitTemplate;
     public static final String BINDING_PATTERN_POLL_CREATION = "poll.creation";
@@ -26,4 +27,6 @@ public class MessageProducer {
                     message
             );
         };
+
+     */
 }
