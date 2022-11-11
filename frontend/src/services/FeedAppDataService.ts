@@ -50,6 +50,17 @@ export default {
       }
     });
           return response.data;
+  },
+  // INGVILD SOM TULLER :) setter ikke role i signupform
+  // fikk statuskode 400 så denne funker ikke hehehehe lykke til
+  async postUser(username="", email="", password="", role="USER") {
+    const response = await axios.post(BASE_URL+'agents/', 
+    {
+      "username": username,
+      "email": email,
+      "password": password,
+      "role": role
+    });
+          return response.status; //returner 200 hvis ikke endre i components/signupform.vue
   }
-
 };
