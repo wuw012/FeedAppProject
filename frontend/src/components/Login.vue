@@ -1,14 +1,14 @@
 <template>
     <div class="loginform">
         <p>User authenticated: {{isAuthenticated}}</p>
-        <form class="form-horizontal">
+        <form v-on:submit.prevent="onSubmit" class="form-horizontal">
             <label for="username"> Username: </label> 
             <input type="text" id="username" name="username" v-model="username"><br><br>
             
             <label for="password"> Password: </label>
             <input type="password" id="password" name="password" v-model="password"><br><br>
     
-            <button class="btn btn-primary" v-on:click.native="login()"> Log in </button> <br/><br/>
+            <button class="btn btn-primary" v-on:click="login()" type="submit"> Log in </button> <br/><br/>
             <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
         </form>
     </div>
@@ -35,7 +35,8 @@ export default {
             username: '',
             password: '',
             isAuthenticated: false,
-            isAdmin: false
+            isAdmin: false,
+            error: ""
         } 
     },
     methods: {
@@ -54,31 +55,20 @@ export default {
             }
             
         },
+        async updateAuthStatus() {
+            await FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => this.isAuthenticated=userAuthenticated);
+            await FeedAppDataService.isAdmin(this.username).then((adminUser) => this.isAdmin = adminUser);
+        },
         login() {
-            //FeedAppDataService.exists(this.username).then((userExists) => console.log("User exists", userExists));
-            // does username and password match?
-            // is user admin?
-            const store = useStore()
-           FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => store.isAuthenticated=userAuthenticated);
-
-            FeedAppDataService.isAdmin(this.username).then((adminUser) => this.isAdmin = adminUser);
-
- 
-            store.$patch({
-                username:this.username,
-                password:this.password,
-                })
-
+            this.updateAuthStatus().then(() => {
+                if(this.isAdmin) {
+                    this.$router.push({ path: '/admin' })
+                }else{
+                    this.$router.push({path:"/mypolls"})
+                }
+            })
             } 
     },  
-    mounted() {
-        const store = useStore();
-        alert(store.isAuthenticated)
-        if(this.isAdmin) {
-                this.$router.push({ path: '/admin' })
-            }
-        
-    }
 }
 </script>
 
