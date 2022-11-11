@@ -5,8 +5,9 @@ import java.util.concurrent.CountDownLatch;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class Receiver {
+	/*
 
 	private CountDownLatch latch = new CountDownLatch(1);
 
@@ -18,5 +19,5 @@ public class Receiver {
 	public CountDownLatch getLatch() {
 		return latch;
 	}
-
+*/
 }

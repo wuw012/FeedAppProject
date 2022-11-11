@@ -11,6 +11,7 @@ import java.io.IOException;
 
 @Component
 public class MessagingConsumer {
+    /*
 
     @RabbitListener(queues = RabbitMQConfig.POLL_CREATE)
     public void pollCreationListener(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws IOException {
@@ -44,4 +45,6 @@ public class MessagingConsumer {
             channel.basicNack(tag, false, true);
         }
     }
+
+     */
 }
