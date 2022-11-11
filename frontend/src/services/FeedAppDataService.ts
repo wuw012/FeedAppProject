@@ -138,40 +138,4 @@ export default {
       console.error("Error config:",error.config);
     }
   },
-  // INGVILD SOM TULLER :) setter ikke role i signupform
-  // fikk statuskode 400 så denne funker ikke hehehehe lykke til
-  async postUser(username="", email="", password="", role="USER") {
-    const response = await axios.post(BASE_URL+'agents/', 
-    {
-      "username": username,
-      "email": email,
-      "password": password,
-      "role": role
-    });
-          return response.status; //returner 200 hvis ikke endre i components/signupform.vue
-  },
-  async postPoll(question="", startTime="", endTime="", isPrivate : boolean,  username="", password="") {
-    // const owner = getIDfromUsername(username): return { "agentID": agentID } 
-    const agentID = 10;
-    const owner = { "agentID": agentID}
-    //generate new ID? get last poll -> pollID + 1
-    const pollId = 10;
-
-    const response = await axios.post(BASE_URL+'polls/'+pollId, 
-    {
-      "yesCount":0,
-      "noCount":0,
-      "owner": owner,
-      "question":question,
-      "startTime":startTime,
-      "endTime":endTime,
-      "private":isPrivate,
-    }, {
-      auth: {
-        username: username,
-        password: password
-      }
-    });
-        return response.status; //returner 200 hvis ikke endre i components/createpollform.vue
-  }
 };
