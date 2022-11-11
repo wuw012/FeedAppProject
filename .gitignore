@@ -1,4 +1,7 @@
 node_modules
-backend\src\main\resources\application.properties
-backend\package-lock.json
-backend/main/resources
+frontend/package-lock.json
+package-lock.json
+.DS_Store
+backend/.idea
+.idea
+backend/target

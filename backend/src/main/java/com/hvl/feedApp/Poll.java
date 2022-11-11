@@ -28,9 +28,9 @@ public class Poll {
     // Attributes
     private boolean isPrivate;
     private int pin;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
     private int yesCount;
     private int noCount;
@@ -169,7 +169,7 @@ public class Poll {
     }
     public Status getStatus() {
         this.setStatus();
-        return this.status;
+        return status;
     }
 }
 

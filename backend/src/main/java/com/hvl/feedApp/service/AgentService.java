@@ -11,6 +11,7 @@ import com.hvl.feedApp.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ public class AgentService {
     private final AgentRepository agentRepository;
     private final VoteRepository voteRepository;
 
+
     private static final Set<String> allowedRoles = new HashSet<String>(Arrays.asList("USER", "ADMIN", "DEVICE"));
 
     @Autowired
@@ -30,14 +32,18 @@ public class AgentService {
         this.agentRepository = agentRepository;
         this.voteRepository = voteRepository;
     }
+
     public List<Agent> getAgents() {
         return agentRepository.findAll();
     }
+
     public Agent getById(Long agentID){
         return agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("Vote with id: "+ agentID + " does not exist"));
     }
 
     public Agent createNewAgent(Agent agent) {
+
+
         agentRepository.save(agent);
         return this.getById(agent.getAgentID());
     }
