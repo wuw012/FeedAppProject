@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 //import HomeView from "@/views/HomeView.vue";
 import VotingView from "@/views/VotingView.vue";
-import AboutView from  "@/views/AboutView.vue";
+import AdminView from  "@/views/AdminView.vue";
 import ThankyouView from "@/views/ThankyouView.vue";
 import MypollsView from "@/views/MypollsView.vue";
 import AltLoginView from "@/views/AltLoginView.vue";
@@ -24,9 +24,9 @@ const router = createRouter({
       component: Login,
     }, */
     {
-      path: "/about",
-      name: "about",
-      component: AboutView,
+      path: "/admin",
+      name: "admin",
+      component: AdminView,
     },
     {
       path: "/voting",

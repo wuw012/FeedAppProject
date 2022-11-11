@@ -1,23 +1,23 @@
 <template>
     <div class="loginform">
+        <p>User authenticated: {{isAuthenticated}}</p>
+        <form class="form-horizontal">
             <label for="username"> Username: </label> 
             <input type="text" id="username" name="username" v-model="username"><br><br>
-
-            <label for="email"> Email: </label>
-            <input type="text" id="email" name="email" v-model="email"><br><br>
             
             <label for="password"> Password: </label>
             <input type="password" id="password" name="password" v-model="password"><br><br>
-
-            
-            <button class="btn btn-primary" v-on:click.native="asynclogin()"> Log in </button> <br/><br/>
+    
+            <button class="btn btn-primary" v-on:click.native="login()"> Log in </button> <br/><br/>
             <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
+        </form>
     </div>
 </template>
 
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
 import axios from 'axios';
+import {useStore} from "@/stores/store.js";
 
 /*  
 FeedAppDataService.exists("bobleif").then((bobExists) => console.log("Bob exists:",bobExists));
@@ -33,8 +33,9 @@ export default {
     data(){
         return {
             username: '',
-            email: '',
-            password: ''
+            password: '',
+            isAuthenticated: false,
+            isAdmin: false
         } 
     },
     methods: {
@@ -56,33 +57,27 @@ export default {
         login() {
             //FeedAppDataService.exists(this.username).then((userExists) => console.log("User exists", userExists));
             // does username and password match?
-            FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => console.log("User Authenticated", userAuthenticated));
             // is user admin?
-            FeedAppDataService.isAdmin("agent_007").then((adminUser) => console.log("Admin user",adminUser));
-            
-            if(userExists) {
-                if(!isAuthenticated) {
-                    // If not authenticated, add a path where to redirect after login.
-                    this.$router.push({ name: 'login', query: { redirect: '/' } });
-                    return "nah, youre just a woman";
-                }
+            const store = useStore()
+           FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => store.isAuthenticated=userAuthenticated);
 
-                // if admin redirect to Admin-page
-                if(adminUser) {
-                    this.$router.push({ name: 'login', query: { redirect: '/admin' } });
-                    return "u da man";
-                    }
+            FeedAppDataService.isAdmin(this.username).then((adminUser) => this.isAdmin = adminUser);
 
-                // if normal user redirect to My Polls
-                if(userAuthenticated) {
-                    this.$router.push({ name: 'login', query: { redirect: '/mypolls' } });
-                    return "ure also a man";
-                }     
+ 
+            store.$patch({
+                username:this.username,
+                password:this.password,
+                })
+
             } 
-        }
-    },
+    },  
     mounted() {
-
+        const store = useStore();
+        alert(store.isAuthenticated)
+        if(this.isAdmin) {
+                this.$router.push({ path: '/admin' })
+            }
+        
     }
 }
 </script>
