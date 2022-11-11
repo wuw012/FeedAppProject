@@ -30,14 +30,15 @@ public class PollController {
     private final VoteService voteService;
 
     //RabbitTemplate for Messaging upon creating Poll
-    private static RabbitTemplate rabbitTemplate;
+    private final RabbitTemplate rabbitTemplate;
     private static MessageSendController sendController;
 
     @Autowired
-    public PollController(AgentService agentService, PollService pollService, VoteService voteService) {
+    public PollController(AgentService agentService, PollService pollService, VoteService voteService, RabbitTemplate rabbitTemplate) {
         this.agentService = agentService;
         this.pollService = pollService;
         this.voteService = voteService;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     @GetMapping()
@@ -68,17 +69,8 @@ public class PollController {
             poll.setOwner(owner);
             owner.addOwnedPoll(poll);
 
-            this.rabbitTemplate = new RabbitTemplate();
             MessageProducer producer = new MessageProducer();
             producer.sendMessage(rabbitTemplate, producer.BINDING_PATTERN_POLL_CREATION, poll);
-            /*
-            sendController = new MessageSendController(rabbitTemplate);
-            int yesCount = 0;
-            int noCount = 0;
-            String question = poll.getQuestion();
-            String message = question + " " + yesCount + " " + noCount;
-            sendController.sendPollCreationMessage(message);
-            */
 
             return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
         } catch (Exception e) {
