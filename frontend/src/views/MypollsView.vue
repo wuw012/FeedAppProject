@@ -8,13 +8,11 @@
   
 
 <script lang="ts">
-import Posts from '@/components/Posts.vue';
 import { RouterLink, RouterView } from "vue-router";
 
 export default {
   name: 'MyPollsView',
   components: {
-    Posts
   },
   methods: {
     redirectToCreatePolls() {
