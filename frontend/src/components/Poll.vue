@@ -6,11 +6,10 @@
     </div>
 
     <div class="buttongroup">
-      <button class="btn btn-primary btn-lg mr-2" type="submit" v-on:click="yesCounter += 1"> <RouterLink to="/thankyou">YES</RouterLink> </button>
+      <button class="btn btn-primary btn-lg mr-2" type="submit" v-on:click="redirectToThankyou()"> YES </button>
       
-      <button class="btn btn-primary btn-lg" @click="incrementCounter">NO</button>
+      <button class="btn btn-primary btn-lg" type="submit" v-on:click="redirectToThankyou()">NO</button>
     </div>
-    <p> no count:{{ counter }} </p>
    </div>
 </template>
   
@@ -30,17 +29,14 @@ export default {
     counter: {
       type: Number,
     },
-  data() {
-    return {
-      title: "Counter",
-      counter: 0
-    };
   },
   methods: {
-    }
+    redirectToThankyou() {
+      this.$router.push({path: "/thankyou"})
+      }
   }
 }
-//<button @click="count++">You clicked me --  {{ count }} -- times.</button>
+
 </script>
 
 <style scoped>

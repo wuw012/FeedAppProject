@@ -1,15 +1,23 @@
 <template>
-  <Poll :questionText="questionText" :pincode="pincode" :counter="counter"/>
+  <Poll :questionText="questionText" :pincode="pincode"/>
 </template>
 
-<script setup lang="ts">
-//:pincode="pincode" 
+<script lang="ts">
 import Poll from "@/components/Poll.vue";
-
-const pincode = 12345;
-const questionText = "Do you like cats?";
-const counter = 1;
-
+export default {
+  name: "VotingView",
+  components: {
+    Poll
+  },
+  data() {
+    return {
+      pincode: 0,
+      questionText: "",
+    }
+  },
+  methods: {
+  }
+}
 </script>
 
 <style scoped>
