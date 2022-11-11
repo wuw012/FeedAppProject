@@ -40,6 +40,12 @@ public class AgentController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 
+    @GetMapping("/getID/{username}")
+    public Long getID(@PathVariable("username") String username) {
+        Agent agent = agentService.getByUsername(username);
+        return agent.getAgentID();
+    }
+
     @GetMapping("/exists/{username}")
     public Boolean exists(@PathVariable("username") String username) {
         return agentService.exists(username);

@@ -48,6 +48,7 @@ public class TestConfig {
             testPoll.setOwner(Bob);
             testPoll.setStartTime(LocalDateTime.now());
             testPoll.setEndTime(LocalDateTime.now().plusDays(1));
+            testPoll.setPrivate(true);
 
 
             Poll testExpiredPoll = new Poll();

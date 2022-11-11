@@ -14,7 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins="*", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path = "/vote")
 public class VoteController {
 

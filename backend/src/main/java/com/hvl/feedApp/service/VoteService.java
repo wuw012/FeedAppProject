@@ -83,7 +83,13 @@ public class VoteService {
             String voterUsername = voteJson.get("voter_username").getAsString(); // "voter_id":2,
             boolean answerYes = voteJson.get("answer_yes").getAsBoolean();
 
-            Agent voter = agentService.getByUsername(voterUsername);
+            Agent voter;
+            try {
+                voter = agentService.getByUsername(voterUsername);
+            }catch (ResponseStatusException e) {
+                System.out.println("Anonymous user just voted.");
+                voter = null;
+            }
             Poll poll = pollService.getPollById(pollID);
 
             // increment or decrement poll answer count
@@ -98,10 +104,11 @@ public class VoteService {
                 voteRepository.save(vote);
                 return vote;
             }
-            throw new ResponseStatusException(HttpStatus.OK, "Anonymous vote added to poll");
+            return new Vote(answerYes, null, poll);
+            //throw new ResponseStatusException(HttpStatus.OK, "Anonymous vote added to poll");
 
         } catch (Exception e){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Failed with exception: "+e);
         }
     }
 
