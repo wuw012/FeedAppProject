@@ -9,7 +9,9 @@
         <label for="password"> Password: </label>
         <input type="password" id="password" name="password" v-model="password"><br><br>
 
-        <button v-on:click="asyncsignup()" class="btn btn-primary"> Sign up </button> <br/><br/>
+        <p> {{ error }} </p>
+
+        <button v-on:click="signup()" class="btn btn-primary"> Sign up </button> <br/><br/>
         <button v-on:click="redirectToLogin()" class="btn btn-secondary">Log in instead</button>
     </div>
 </template>
@@ -30,46 +32,40 @@ export default {
         return {
             username: '',
             email: '',
-            password: ''
+            password: '',
+            userExists: false,
+            createdUser: false,
         } 
     },
     methods: {
         redirectToLogin() {
             this.$router.push({path:"/login"})
         },
-        async asyncsignup() {
-            const url = 'http://localhost:8080/agents/byUsername';
-            //const token = Buffer.from(`${username}:${password}`, 'utf8').toString('base64');
-            const data = {
-                username:this.username,
-                email:this.email,
-                password:this.password
-                };
-            //const authHeader = { headers: {'Authorization': `Basic ${token}`} };
-
-            let response = await axios.post(url, data);
-            
-            console.warn(response)
-            if (response.code == 200) {
-                alert("sign up successful")
-                store.setItem("userinfo", JSON.stringify(response.data))
-                this.$router.push("/login")
-            }
+        async checkAvailableUsername() {
+            await FeedAppDataService.exists(this.username).then((userExists) => this.userExists=userExists);
         },
-        testStore() {
-            const store = useStore();
-            store.$patch({
-                username:this.username,
-                email:this.email,
-                password:this.password
-                })
-
-            console.log("Registered user with these credentials:", {
-                username:this.username,
-                email:this.email,
-                password:this.password
-                })
-        }
+        async postUser() {
+            await FeedAppDataService.postUser(this.username, this.email, this.password).then((status) => {
+                if (status == 200) {
+                    this.createdUser = true;
+                }
+            })
+        },
+        signup() {
+            this.checkAvailableUsername().then(() => {
+                if(!this.userExists && this.email && this.password) {
+                    this.postUser(this.username, this.email, this.password);
+                    if (this.createdUser) {
+                        alert("User created")
+                        this.$router.push({path:"/login"})
+                    } else {
+                        alert("Something went wrong")
+                    }
+                } else {
+                    this.error = "Username exists and/or fill in all fields"
+                }
+            })
+        } 
     },
     mounted() {
     }
