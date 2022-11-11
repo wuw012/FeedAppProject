@@ -157,11 +157,21 @@ public class PollController {
             @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth,
             @PathVariable Long pollID,
             @RequestBody String voteString){
-        if (authenticator.isAuthenticated(bAuth)) {
-            if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}/votes", "POST")) {
-                return voteService.createVote(pollID, voteString);
-            }
+        Poll poll = pollService.getPollById(pollID);
+        if (poll == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't find Poll with id "+pollID);
         }
+
+        if (poll.isPrivate()) {
+            if (authenticator.isAuthenticated(bAuth)) {
+                if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}/votes", "POST")) {
+                    return voteService.createVote(pollID, voteString);
+                }
+            }
+        }else {
+            return voteService.createVote(pollID, voteString);
+        }
+
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 

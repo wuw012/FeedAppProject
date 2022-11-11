@@ -37,5 +37,19 @@ export default {
       }
     });
           return response.data;
+  },
+  async postVote(bool : boolean, pollId : Number, username="", password="") {
+    const response = await axios.post(BASE_URL+'polls/'+pollId, 
+    {
+      "voter_username":username,
+      "answer_yes":bool
+    }, {
+      auth: {
+        username: username,
+        password: password
+      }
+    });
+          return response.data;
   }
+
 };
