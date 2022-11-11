@@ -15,7 +15,6 @@
 import { RouterLink, RouterView } from "vue-router";
 import FeedAppDataService from "./services/FeedAppDataService";
 import VotingView from "@/views/VotingView.vue";
-import AboutView from  "@/views/AboutView.vue";
 import ThankyouView from "@/views/ThankyouView.vue";
 import MypollsView from "@/views/MypollsView.vue";
 import AltLoginView from "@/views/AltLoginView.vue";
@@ -27,7 +26,6 @@ export default {
   components:
     {
       VotingView,
-      AboutView,
       ThankyouView,
       MypollsView,
       AltLoginView,
