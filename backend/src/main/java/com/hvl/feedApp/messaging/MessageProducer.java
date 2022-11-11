@@ -1,5 +1,6 @@
 package com.hvl.feedApp.messaging;
 
+import com.google.gson.Gson;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.config.MessagingConfig;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -17,7 +18,8 @@ public class MessageProducer {
 
     @Bean
     public static void sendMessage(RabbitTemplate rabbitTemplate, String binding_pattern, Poll poll) {
-        String message = poll.toString();
+        Gson gson = new Gson();
+        String message = gson.toJson(poll);
         rabbitTemplate.convertAndSend(
                     MessagingConfig.TOPIC_EXCHANGE_NAME,
                     binding_pattern,
