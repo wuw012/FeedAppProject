@@ -148,8 +148,6 @@ public class Poll {
     }
 
     public void expirationNotify() {
-        //MessageSendController sendController = new MessageSendController(rabbitTemplate);
-        //send as json object as string?
         this.rabbitTemplate = new RabbitTemplate();
         MessageProducer producer = new MessageProducer();
         producer.sendMessage(rabbitTemplate, producer.BINDING_PATTERN_POLL_FINISH, this);

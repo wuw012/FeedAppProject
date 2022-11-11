@@ -19,11 +19,13 @@ public class MessageConsumer {
     @RabbitListener(queues = MessagingConfig.TOPIC_QUEUE_1_NAME)
     public void consumeMessageFromTopicQueue1(String message) {
         //poll creation, code for posting to dweet.io goes here
+        System.out.println("Message received about poll creation");
     }
 
     @RabbitListener(queues = MessagingConfig.TOPIC_QUEUE_2_NAME)
     public void consumeMessageFromTopicQueue2(String message) {
         //poll finish, code for posting to dweet.io and storing to mongodb goes here
+        System.out.println("Message received about poll finished");
     }
 
 }
