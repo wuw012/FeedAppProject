@@ -57,8 +57,11 @@ public class AgentService {
         return this.getById(agent.getAgentID());
     }
 
-    public List<Poll> getOwnedPolls(Long agentID){
-        Agent user =  agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("User with id: "+ agentID + " does not exist"));
+    public List<Poll> getOwnedPolls(String username){
+        Agent user =  agentRepository.getByUsername(username);
+        if (user == null) {
+            throw new IllegalStateException("User with username: "+ username + " does not exist");
+        }
         return user.getOwnedPolls();
     }
 

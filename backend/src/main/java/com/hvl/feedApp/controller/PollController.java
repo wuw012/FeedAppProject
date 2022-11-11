@@ -72,11 +72,11 @@ public class PollController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 
-    @GetMapping(path = "{agentID}/userPolls")
-    public List<Poll> getOwnedPolls(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("agentID") Long agentID){
+    @GetMapping(path = "{username}/userPolls")
+    public List<Poll> getOwnedPolls(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("username") String username){
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{agentID]/userPolls", "GET")) {
-                return agentService.getOwnedPolls(agentID);
+                return agentService.getOwnedPolls(username);
             }
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
