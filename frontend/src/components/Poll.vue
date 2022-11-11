@@ -37,12 +37,6 @@ export default {
     };
   },
   methods: {
-    incrementCounter() {
-      this.counter++;
-      },
-    decrementCounter() {
-      this.counter--;
-      }
     }
   }
 }

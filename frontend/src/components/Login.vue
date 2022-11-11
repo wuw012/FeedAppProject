@@ -1,7 +1,5 @@
 <template>
     <div class="loginform">
-        <p></p>
-        <form class="form-horizontal">
             <label for="username"> Username: </label> 
             <input type="text" id="username" name="username" v-model="username"><br><br>
 
@@ -11,14 +9,16 @@
             <label for="password"> Password: </label>
             <input type="password" id="password" name="password" v-model="password"><br><br>
 
-            <button v-on:click="login"> Log in </button>
-        </form>
-
+            
+            <button class="btn btn-primary" v-on:click.native="asynclogin()"> Log in </button> <br/><br/>
+            <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
     </div>
 </template>
 
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
+import axios from 'axios';
+
 /*  
 FeedAppDataService.exists("bobleif").then((bobExists) => console.log("Bob exists:",bobExists));
 
@@ -38,10 +38,23 @@ export default {
         } 
     },
     methods: {
+        redirectToSignup() {
+            this.$router.push({ path: '/signup' });
+        },
+        async asynclogin() {
+            let response = await axios.get('http://localhost:8080/agents/exists/' + this.username);
+            console.log(response.data)
+            if (response.data === true){
+                FeedAppDataService.isAuthenticated(this.username, this.password)
+                .then((bobAuthenticated) => console.log("Bob is strapped in and ready to go",bobAuthenticated));
+                alert("making progress???")
+                //this.$router.push({ path: '/mypolls' });
+                return true;
+            }
+            
+        },
         login() {
-            console.log("LOGGING IN")
-            // is user real?
-            FeedAppDataService.exists(this.username).then((userExists) => console.log("User exists", userExists));
+            //FeedAppDataService.exists(this.username).then((userExists) => console.log("User exists", userExists));
             // does username and password match?
             FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => console.log("User Authenticated", userAuthenticated));
             // is user admin?
@@ -50,7 +63,7 @@ export default {
             if(userExists) {
                 if(!isAuthenticated) {
                     // If not authenticated, add a path where to redirect after login.
-                    this.$router.push({ name: 'login', query: { redirect: '/login' } });
+                    this.$router.push({ name: 'login', query: { redirect: '/' } });
                     return "nah, youre just a woman";
                 }
 
@@ -64,13 +77,12 @@ export default {
                 if(userAuthenticated) {
                     this.$router.push({ name: 'login', query: { redirect: '/mypolls' } });
                     return "ure also a man";
-                }
-
-                
-            }
-
-            
+                }     
+            } 
         }
+    },
+    mounted() {
+
     }
 }
 </script>

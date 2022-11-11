@@ -4,6 +4,8 @@
         <RouterLink to="/mypolls">My Polls</RouterLink>
         <RouterLink to="/createpolls">Create Poll</RouterLink>
         <RouterLink to="/voting">Voting</RouterLink>
+        <RouterLink to="/login">Login</RouterLink>
+        <RouterLink to="/signup">Signup</RouterLink>
       </nav>
     </div>
   <RouterView />
@@ -11,8 +13,28 @@
 
 <script lang="ts">
 import { RouterLink, RouterView } from "vue-router";
-import VotingView from "./views/VotingView.vue";
 import FeedAppDataService from "./services/FeedAppDataService";
+import VotingView from "@/views/VotingView.vue";
+import AboutView from  "@/views/AboutView.vue";
+import ThankyouView from "@/views/ThankyouView.vue";
+import MypollsView from "@/views/MypollsView.vue";
+import AltLoginView from "@/views/AltLoginView.vue";
+import CreatepollsView from "@/views/CreatepollsView.vue";
+import SignupView from "@/views/SignupView.vue";
+
+export default {
+  name: "App",
+  components:
+    {
+      VotingView,
+      AboutView,
+      ThankyouView,
+      MypollsView,
+      AltLoginView,
+      CreatepollsView,
+      SignupView
+    }
+}
 
 // Sånn her løser man "pending" i vanlig js-stil:         
 //                                  Resultat fra "exists" lagret i variabel
@@ -43,35 +65,5 @@ FeedAppDataService.getPoll("1234").then((dummyPoll) => console.log("Result of du
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}
-
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-
-@media (min-width: 1024px) {
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
 }
 </style>

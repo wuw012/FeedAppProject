@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 export default {
   async exists(username: string) {
     const response = await axios.get('http://localhost:8080/agents/exists/' + username);
