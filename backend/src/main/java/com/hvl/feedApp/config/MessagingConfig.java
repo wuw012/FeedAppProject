@@ -30,7 +30,7 @@ public class MessagingConfig {
                 BindingBuilder
                         .bind(topicQueue2)
                         .to(topicExchange)
-                        .with("#.pollfinish")
+                        .with("*.pollfinish.*")
         );
     }
 

@@ -36,7 +36,7 @@ public class PollController {
 
     //RabbitTemplate for Messaging upon creating Poll
     private final RabbitTemplate rabbitTemplate;
-    private static MessageSendController sendController;
+    //private static MessageSendController sendController;
     public static final String BINDING_PATTERN_POLL_CREATION = "poll.creation";
 
     private final Authenticator authenticator;

@@ -6,6 +6,7 @@ import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.controller.MessageSendController;
 import com.hvl.feedApp.messaging.MessageProducer;
+import com.hvl.feedApp.service.PollService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
@@ -42,7 +43,7 @@ public class Poll {
 
     private static RabbitTemplate rabbitTemplate;
     //private static MessageProducer producer;
-    public static final String BINDING_PATTERN_POLL_FINISH = "poll.finish";
+
     //private static MessageSendController sendController;
     private boolean sentExpirationNotification;
 
@@ -150,13 +151,13 @@ public class Poll {
     }
 
     public void expirationNotify() {
-        this.rabbitTemplate = new RabbitTemplate();
-        rabbitTemplate.convertAndSend(
-                MessagingConfig.TOPIC_EXCHANGE_NAME,
-                BINDING_PATTERN_POLL_FINISH,
-                this.toString()
-        );
+        //this.rabbitTemplate = new RabbitTemplate();
+        //ADD THIS TO POLLSERVICE!!!
 
+    }
+
+    public boolean getExpirationSent() {
+        return this.sentExpirationNotification;
     }
 
     public void setStatus() {
