@@ -9,6 +9,7 @@ import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
+import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.messaging.MessageProducer;
 import com.hvl.feedApp.security.Authenticator;
@@ -36,6 +37,7 @@ public class PollController {
     //RabbitTemplate for Messaging upon creating Poll
     private final RabbitTemplate rabbitTemplate;
     private static MessageSendController sendController;
+    public static final String BINDING_PATTERN_POLL_CREATION = "poll.creation";
 
     private final Authenticator authenticator;
     private final Authorizer authorizer;
@@ -100,6 +102,12 @@ public class PollController {
                     Agent owner = agentService.getById(ownerID);
                     poll.setOwner(owner);
                     owner.addOwnedPoll(poll);
+
+                    rabbitTemplate.convertAndSend(
+                            MessagingConfig.TOPIC_EXCHANGE_NAME,
+                            BINDING_PATTERN_POLL_CREATION,
+                            this.toString()
+                    );
 
                     return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
                 } catch (Exception e) {

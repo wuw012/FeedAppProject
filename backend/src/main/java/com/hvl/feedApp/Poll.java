@@ -2,6 +2,7 @@ package com.hvl.feedApp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hvl.feedApp.Enums.Status;
+import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.controller.MessageSendController;
 import com.hvl.feedApp.messaging.MessageProducer;
@@ -40,7 +41,8 @@ public class Poll {
     private Status status;
 
     private static RabbitTemplate rabbitTemplate;
-    private static MessageProducer producer;
+    //private static MessageProducer producer;
+    public static final String BINDING_PATTERN_POLL_FINISH = "poll.finish";
     //private static MessageSendController sendController;
     private boolean sentExpirationNotification;
 
@@ -149,8 +151,11 @@ public class Poll {
 
     public void expirationNotify() {
         this.rabbitTemplate = new RabbitTemplate();
-        MessageProducer producer = new MessageProducer();
-        producer.sendMessage(rabbitTemplate, producer.BINDING_PATTERN_POLL_FINISH, this);
+        rabbitTemplate.convertAndSend(
+                MessagingConfig.TOPIC_EXCHANGE_NAME,
+                BINDING_PATTERN_POLL_FINISH,
+                this.toString()
+        );
 
     }
 
