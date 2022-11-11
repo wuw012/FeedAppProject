@@ -14,9 +14,9 @@
             <label for="isPrivatepoll"> Private? </label>
             <input type="checkbox" id="isPrivatepoll" name="isPrivatepoll" v-model="isPrivate"> Yes <br><br>
 
-            <button class="btn btn-primary" type="submit" v-on:click="createPoll()"> Create poll </button>
-
             <p> {{ error }} </p>
+
+            <button class="btn btn-primary" type="submit" v-on:click="createPoll()"> Create poll </button>
         </form>
 
     </div>
@@ -59,7 +59,7 @@ export default {
             // check endTime is after startTime
 
             // check question is filled in
-            return true;
+            return false;
         },
         createPoll() {
             const formOK = this.checkForm();
