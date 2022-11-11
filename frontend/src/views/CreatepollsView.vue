@@ -14,13 +14,11 @@
 
 <script lang="ts">
 import CreatepollForm from "@/components/CreatepollForm.vue";
-import CreatepollFormVeeValidate from "@/components/CreatepollFormVeeValidate.vue";
 
 export default {
   name: 'CreatePollsView',
   components: {
     CreatepollForm,
-    CreatepollFormVeeValidate
   }
 }
 </script>
