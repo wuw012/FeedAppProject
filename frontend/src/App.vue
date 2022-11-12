@@ -64,10 +64,12 @@ export default {
 //FeedAppDataService.postVote(true, 1).then((vote) => console.log("Rejected anonymous vote:", vote))
 //FeedAppDataService.getUserID("bobleif").then((id) => console.log(id));
  
-FeedAppDataService.postPoll("Kan Vue poste polls?", 
-"2022-10-10 10:00:00", "2023-10-12 10:00:00", 
-false, "bobleif", "totallyhashedandencryptedpassword").then((poll) => console.log("Bobleifs new poll:", poll))
+//FeedAppDataService.postPoll("Kan Vue poste polls?", 
+//"2022-10-10 10:00:00", "2023-10-12 10:00:00", 
+//false, "bobleif", "totallyhashedandencryptedpassword").then((poll) => console.log("Bobleifs new poll:", poll))
  
+
+//FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
 </script>
 
 

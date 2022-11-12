@@ -102,8 +102,19 @@ export default {
       this.handleError(err);
     }
   },
-  postUser(username : string, email : string, password : string, ) {
-    return;
+  async postUser(username : string, email : string, password : string, ) {
+    try {
+      const response = await axios.post(BASE_URL+"agents/createUser", {
+        "username":username,
+        "email":email,
+        "password":password,
+        "role":"USER"
+      })
+      return response.data;
+    }catch(error){
+      const err = error as AxiosError;
+      this.handleError(err);
+    }
   },
   makeAdmin(username : string, adminUsername : string, password : string) {
     return;

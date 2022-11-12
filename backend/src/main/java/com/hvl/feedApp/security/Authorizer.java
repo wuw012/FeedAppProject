@@ -27,7 +27,7 @@ public class Authorizer {
         GET.put("/agents", Role.ADMIN);
         GET.put("/agents/{id}", Role.USER);
         GET.put("/agents/test", Role.USER);
-        POST.put("/agents", Role.USER);
+        POST.put("/agents", Role.ADMIN);
         POST.put("/agents/{id}", Role.ADMIN);
         DELETE.put("/agents/{id}", Role.ADMIN);
         PUT.put("/agents/{id}", Role.ADMIN);

@@ -48,6 +48,10 @@ public class AgentService {
             return false;
         }
     }
+    public Agent createNewUser(Agent agent) {
+        agent.setRole(Role.USER);
+        return createNewAgent(agent);
+    }
     public Agent createNewAgent(Agent agent) {
         String username = agent.getUsername();
         if (this.exists(username)) {
