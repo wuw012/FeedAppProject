@@ -12,9 +12,9 @@
         <li class="list-group-item"> Owner: {{ poll.owner.username }}</li>
         <li class="list-group-item"> Pin: {{ poll.pin }}</li>
         <li class="list-group-item"> Status: {{ poll.status }}</li>
-        <li class="list-group-item"> Started: {{ poll.startTime }}</li>
-        <li class="list-group-item"> Ended: {{ poll.endTime }}</li>
-        <li class="list-group-item"> Private? {{ poll.private }}</li>
+        <li class="list-group-item"> Start time: {{ poll.startTime }}</li>
+        <li class="list-group-item"> End time: {{ poll.endTime }}</li>
+        <li class="list-group-item"> Private? {{ poll.private ? 'Yes' : 'No' }}</li>
       </ul>
       <br/>
     </ul>
