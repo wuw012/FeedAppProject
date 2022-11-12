@@ -64,10 +64,18 @@ export default {
   deleteUser(username : string, adminUsername : string, password : string){
     return;
   },
-  async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string, owner : string) {
+  async getUserID(username : string) {
+    try {
+      const userIDResponse = await axios.get(BASE_URL+"agents/getID/"+username);
+      return userIDResponse.data;
+    }catch (error) {
+      let err = error as AxiosError;
+      this.handleError(err);
+    }
+  },
+  async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string) {
     try{
-      const userIDResponse = await axios.get(BASE_URL+"agents/getID/"+owner);
-      let userID = userIDResponse.data
+      const userID = this.getUserID(username);
       const response = await axios.post(BASE_URL+'polls', 
       {
         "yesCount":0,
