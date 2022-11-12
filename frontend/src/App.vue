@@ -7,6 +7,10 @@
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/signup">Signup</RouterLink>
       </nav>
+      <div class="buttongroup">
+        <button class="btn btn-light btn-sm mr-2" @click="redirectToLogin()"> Log in </button>
+        <button class="btn btn-light btn-sm" @click="logout()"> Log out </button>
+      </div>
     </div>
   <RouterView />
 </template>
@@ -24,15 +28,24 @@ import { conditionalExpression } from "@babel/types";
 
 export default {
   name: "App",
-  components:
-    {
-      VotingView,
-      ThankyouView,
-      MypollsView,
-      AltLoginView,
-      CreatepollsView,
-      SignupView
+  components: {
+    VotingView,
+    ThankyouView,
+    MypollsView,
+    AltLoginView,
+    CreatepollsView,
+    SignupView
+  },
+  methods: {
+    redirectToLogin() {
+      this.$router.push({path:"/login"})
+    },
+    logout() {
+      localStorage.clear();
+      alert("Sucessfully logged you out! Welcome back :)")
+      this.$router.push({path:"/login"})
     }
+  }
 }
 
 
