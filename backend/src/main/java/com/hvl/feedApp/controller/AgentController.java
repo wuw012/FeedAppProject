@@ -41,7 +41,7 @@ public class AgentController {
     }
 
     @GetMapping("/getID/{username}")
-    public Long getID(@PathVariable("username") String username) {
+    public long getID(@PathVariable("username") String username) {
         Agent agent = agentService.getByUsername(username);
         return agent.getAgentID();
     }
@@ -98,6 +98,10 @@ public class AgentController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 
+    @PostMapping("/createUser")
+    public Agent createNewUser(@RequestBody Agent agent) {
+        return agentService.createNewUser(agent);
+    }
     @PostMapping
     public Agent createNewAgent(@RequestBody Agent agent, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if (authenticator.isAuthenticated(bAuth)) {

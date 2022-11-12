@@ -107,9 +107,27 @@ public class PollController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
-
+    @DeleteMapping(path = "/deleteMyPoll/{pollID}")
+    public String deleteMyPoll(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
+        if (authenticator.isAuthenticated(bAuth)) {
+            if (authorizer.isAuthorized(authenticator.getUser(), "/deleteMyPoll/{pollID}", "DELETE")) {
+                try{
+                    Poll poll = pollService.getPollById(pollID);
+                    if ( (poll.getOwner()) != (authenticator.getUser())){
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can't delete another users Poll");
+                    }
+                    pollService.deletePoll(pollID);
+                    pollService.getPollById(pollID);
+                    throw new ResponseStatusException(HttpStatus.CONFLICT, "Poll with ID "+pollID+" was not successfully deleted.");
+                } catch (IllegalStateException e) {
+                    return "Successfully deleted Poll with ID "+pollID;
+                }
+            }
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
+    }
     @DeleteMapping(path = "{pollID}")
-    public void deletePoll(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
+    public String deletePoll(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "DELETE")) {
                 try{
@@ -117,7 +135,7 @@ public class PollController {
                     pollService.getPollById(pollID);
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "Poll with ID "+pollID+" was not successfully deleted.");
                 } catch (IllegalStateException e) {
-                    throw new ResponseStatusException(HttpStatus.OK, "Successfully deleted Poll with ID "+pollID);
+                    return "Successfully deleted Poll with ID "+pollID;
                 }
             }
         }
@@ -196,5 +214,12 @@ public class PollController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
 
     }
-
+    public boolean userValidated(String bAuth, String path, String httpMethod) {
+        if (authenticator.isAuthenticated(bAuth)) {
+            if (authorizer.isAuthorized(authenticator.getUser(), path, httpMethod)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

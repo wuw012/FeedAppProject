@@ -60,7 +60,19 @@ export default {
     });
           return response.data;
   },
-  deletePoll(pollId : Number, username : string, password : string) {
+  async deletePoll(pollId : Number, username : string, password : string) {
+    try {
+      const response = await axios.delete(BASE_URL+"polls/deleteMyPoll/"+pollId, {
+        auth:{
+          "username":username,
+          "password":password
+        }
+      })
+      return response.data;
+    }catch(error) {
+      let err = error as AxiosError;
+      this.handleError(err);
+    }
     return;
   },
   deleteUser(username : string, adminUsername : string, password : string){
@@ -77,7 +89,7 @@ export default {
   },
   async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string) {
     try{
-      const userID = this.getUserID(username);
+      const userID = await this.getUserID(username);
       const response = await axios.post(BASE_URL+'polls', 
       {
         "yesCount":0,
@@ -102,8 +114,19 @@ export default {
       this.handleError(err);
     }
   },
-  postUser(username : string, email : string, password : string, ) {
-    return;
+  async postUser(username : string, email : string, password : string, ) {
+    try {
+      const response = await axios.post(BASE_URL+"agents/createUser", {
+        "username":username,
+        "email":email,
+        "password":password,
+        "role":"USER"
+      })
+      return response.data;
+    }catch(error){
+      const err = error as AxiosError;
+      this.handleError(err);
+    }
   },
   makeAdmin(username : string, adminUsername : string, password : string) {
     return;
