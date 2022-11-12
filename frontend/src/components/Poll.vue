@@ -1,6 +1,7 @@
 <template>
-   <div class="poll">
-   <h3> ID: {{ $route.params.pollID }} </h3>
+  <div class="poll" v-if="this.poll.status == 'ACTIVE'">
+  <h3> ID: {{ $route.params.pollID }} </h3>
+   
     <div class="question">
       <h1> Q: {{ this.poll.question }} </h1>
     </div>
@@ -9,8 +10,15 @@
       <button class="btn btn-primary btn-lg mr-2" type="submit" v-on:click="voteYes()"> YES </button>
       <button class="btn btn-primary btn-lg" type="submit" v-on:click="voteNo()">NO</button>
     </div>
-
    </div>
+
+  <div class="poll" v-if="this.poll.status == 'FUTURE'">
+    <h1>This poll hasn't been launched yet!! come back soon ;*</h1>
+  </div>
+
+  <div class="poll" v-if="this.poll.status == 'EXPIRED'">
+    <h1>if youre reading this its too late :(</h1>
+  </div>
 </template>
   
 
