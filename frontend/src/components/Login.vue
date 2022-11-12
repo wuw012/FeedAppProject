@@ -18,8 +18,6 @@
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
 import axios from 'axios';
-import {useStore} from "@/stores/store.js";
-
 export default {
     name: "LogInForm",
     data(){

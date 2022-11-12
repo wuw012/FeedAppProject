@@ -8,7 +8,6 @@ import AltLoginView from "@/views/AltLoginView.vue";
 import CreatepollsView from "@/views/CreatepollsView.vue";
 import SignupView from "@/views/SignupView.vue";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
