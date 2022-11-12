@@ -1,18 +1,21 @@
 <template>
    <div class="mypolls">
-      <h1>My polls </h1>
-      <AllPolls />
-      <button class="btn btn-secondary" @click="redirectToCreatePolls()"> Create new poll</button>
+    <h1>My Polls</h1>
+    <button class="btn btn-secondary" @click="redirectToCreatePolls()"> Create new poll</button>
+    <br/><br/>
+    <MyPolls />
    </div>
 </template>
   
 
 <script lang="ts">
 import { RouterLink, RouterView } from "vue-router";
+import MyPolls from "@/components/MyPolls.vue"
 
 export default {
   name: 'MyPollsView',
   components: {
+    MyPolls
   },
   methods: {
     redirectToCreatePolls() {

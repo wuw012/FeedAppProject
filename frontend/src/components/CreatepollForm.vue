@@ -59,7 +59,7 @@ export default {
             // check endTime is after startTime
 
             // check question is filled in
-            return false;
+            return true;
         },
         createPoll() {
             const formOK = this.checkForm();

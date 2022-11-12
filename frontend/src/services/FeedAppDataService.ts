@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {AxiosError} from 'axios';
+import type {AxiosError} from 'axios';
 const BASE_URL = "http://localhost:8080/"
 export default {
   async exists(username: string) {
@@ -19,8 +19,8 @@ export default {
   ,async isAdmin(username : string) {
     const response = await axios.get(BASE_URL+'agents/isAdmin/'+username);
         return response.data;
-  }// Get specific users polls
-  ,async getPolls(username : string, password : string){
+  },// Get specific users polls
+  async getPolls(username : string, password : string){
     const response = await axios.get(BASE_URL+'polls/'+username+'/userPolls', {
     auth: {
       username: username,
@@ -64,7 +64,7 @@ export default {
   deleteUser(username : string, adminUsername : string, password : string){
     return;
   },
-  async postPoll(owner : string, question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string) {
+  async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string, owner : string) {
     try{
       const userIDResponse = await axios.get(BASE_URL+"agents/getID/"+owner);
       let userID = userIDResponse.data
