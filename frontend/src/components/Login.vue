@@ -9,7 +9,7 @@
 
             <p> {{ error }} </p>
 
-            <button class="btn btn-primary" v-on:click="login()" type="submit"> Log in </button> <br/><br/>
+            <button class="btn btn-primary mr-2" v-on:click="login()" type="submit"> Log in </button>
             <button class="btn btn-secondary" v-on:click="redirectToSignup()"> Sign up instead</button>
         </form>
     </div>

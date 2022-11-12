@@ -1,25 +1,25 @@
 <template>
     <div class="signupform">
-        <label for="username"> Username: </label> 
-        <input type="text" id="username" name="username" v-model="username"><br><br>
+        <form v-on:submit.prevent="onSubmit">
+            <label for="username"> Username: </label> 
+            <input type="text" id="username" name="username" v-model="username"><br><br>
 
-        <label for="email"> Email: </label>
-        <input type="text" id="email" name="email" v-model="email"><br><br>
-        
-        <label for="password"> Password: </label>
-        <input type="password" id="password" name="password" v-model="password"><br><br>
+            <label for="email"> Email: </label>
+            <input type="text" id="email" name="email" v-model="email"><br><br>
+            
+            <label for="password"> Password: </label>
+            <input type="password" id="password" name="password" v-model="password"><br><br>
 
-        <p> {{ error }} </p>
+            <p> {{ error }} </p>
+        </form>
 
-        <button v-on:click="signup()" class="btn btn-primary"> Sign up </button> <br/><br/>
+        <button v-on:click="signup()" class="btn btn-primary mr-2" type="submit"> Sign up </button> 
         <button v-on:click="redirectToLogin()" class="btn btn-secondary">Log in instead</button>
     </div>
 </template>
 
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
- 
-//import { Buffer } from 'node:buffer';
 import axios from 'axios';
 
 export default {
@@ -29,6 +29,7 @@ export default {
             username: '',
             email: '',
             password: '',
+            error: '',
             userExists: false,
             createdUser: false,
         } 

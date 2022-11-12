@@ -1,6 +1,6 @@
 <template>
    <div class="poll">
-   <h3> ID: {{ pincode }} </h3>
+   <h3> ID: {{ $route.params.pollID }} </h3>
     <div class="question">
       <h1> Q: {{ questionText }} </h1>
     </div>

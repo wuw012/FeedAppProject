@@ -46,6 +46,7 @@ export default {
         },
         async postPoll() {
             this.retrieveUserCredentialsFromLocalStorage();
+            console.log(this.username, this.password)
             await FeedAppDataService.postPoll(this.question, this.startTime, this.endTime, this.isPrivate, this.username, this.password)
             .then((status) => {
                 if (status == 200) {
