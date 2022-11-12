@@ -77,7 +77,7 @@ export default {
   },
   async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string) {
     try{
-      const userID = this.getUserID(username);
+      const userID = await this.getUserID(username);
       const response = await axios.post(BASE_URL+'polls', 
       {
         "yesCount":0,

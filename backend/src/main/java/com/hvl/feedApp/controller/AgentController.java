@@ -41,7 +41,7 @@ public class AgentController {
     }
 
     @GetMapping("/getID/{username}")
-    public Long getID(@PathVariable("username") String username) {
+    public long getID(@PathVariable("username") String username) {
         Agent agent = agentService.getByUsername(username);
         return agent.getAgentID();
     }
