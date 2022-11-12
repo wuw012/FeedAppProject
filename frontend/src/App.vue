@@ -70,6 +70,7 @@ export default {
  
 
 //FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
+FeedAppDataService.deletePoll(1, "bobleif", "totallyhashedandencryptedpassword")
 </script>
 
 

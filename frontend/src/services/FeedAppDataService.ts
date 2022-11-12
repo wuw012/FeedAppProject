@@ -60,7 +60,19 @@ export default {
     });
           return response.data;
   },
-  deletePoll(pollId : Number, username : string, password : string) {
+  async deletePoll(pollId : Number, username : string, password : string) {
+    try {
+      const response = await axios.delete(BASE_URL+"polls/deleteMyPoll/"+pollId, {
+        auth:{
+          "username":username,
+          "password":password
+        }
+      })
+      return response.data;
+    }catch(error) {
+      let err = error as AxiosError;
+      this.handleError(err);
+    }
     return;
   },
   deleteUser(username : string, adminUsername : string, password : string){

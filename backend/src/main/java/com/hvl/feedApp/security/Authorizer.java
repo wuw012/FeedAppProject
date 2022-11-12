@@ -38,6 +38,7 @@ public class Authorizer {
         GET.put("/polls/{username}/userPolls", Role.USER);
         POST.put("/polls", Role.USER);
         DELETE.put("/polls/{pollID}", Role.ADMIN);
+        DELETE.put("/polls/deleteMyPoll/{pollID}", Role.USER);
         PUT.put("/polls/{pollID}", Role.ADMIN);
         POST.put("/polls/{pollID}/batchVote", Role.ADMIN);
         POST.put("/polls/{pollID}/votes", Role.USER);
