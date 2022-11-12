@@ -82,8 +82,9 @@ export default {
 //false, "bobleif", "totallyhashedandencryptedpassword").then((poll) => console.log("Bobleifs new poll:", poll))
  
 
-//FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
-FeedAppDataService.deletePoll(1, "bobleif", "totallyhashedandencryptedpassword")
+FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
+//FeedAppDataService.postVote(true, 1, "Donald_Dump", "thesecurestofpasswordsinhistory").then((vote) => console.log("Bobs vote:", vote))
+//FeedAppDataService.deletePoll(1, "bobleif", "totallyhashedandencryptedpassword")
 </script>
 
 

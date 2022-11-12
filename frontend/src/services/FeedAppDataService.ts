@@ -4,18 +4,25 @@ import type {AxiosError} from 'axios';
 const BASE_URL = "http://localhost:8080/"
 
 export default {
+  hashPwd(password : string) {
+    //const salt = bcrypt.genSaltSync(10);
+    //const pwd = bcrypt.hashSync(password);//, salt);
+    
+    return password;
+  },
+  addAuthHeader(username : string, password : string){
+    const hashedPwd = this.hashPwd(password);
+    return {auth: {
+      "username":username,
+      "password":hashedPwd
+    }}
+  },
   async exists(username: string) {
     const response = await axios.get(BASE_URL+'agents/exists/' + username);
         return response.data;
-  }
-
-  ,async isAuthenticated(username : string, password : string) {
-    const response = await axios.get(BASE_URL+'agents/isAuthenticated', {
-        auth: {
-            username: username,
-            password: password
-        }
-    });
+  },
+  async isAuthenticated(username : string, password : string) {
+    const response = await axios.get(BASE_URL+'agents/isAuthenticated', this.addAuthHeader(username, password));
         return response.data;
   }
   ,async isAdmin(username : string) {
@@ -23,51 +30,26 @@ export default {
         return response.data;
   },// Get specific users polls
   async getPolls(username : string, password : string){
-    const response = await axios.get(BASE_URL+'polls/'+username+'/userPolls', {
-    auth: {
-      username: username,
-      password: password
-    }
-  });
+    const response = await axios.get(BASE_URL+'polls/'+username+'/userPolls', this.addAuthHeader(username, password));
         return response.data;
   },
   // Get poll with id, provice auth username and password if poll is private
   async getPoll(id : Number, username = "", password = "") {
-    const response = await axios.get(BASE_URL+'polls/'+id, {
-      auth: {
-        username: username,
-        password: password
-      }
-    });
+    const response = await axios.get(BASE_URL+'polls/'+id, this.addAuthHeader(username, password));
           return response.data;
   },
   //Get all polls (For admins)
   async getAllPolls(username : string, password : string) {
-    const response = await axios.get(BASE_URL+'polls/', {
-      auth: {
-        username: username,
-        password: password
-      }
-    });
+    const response = await axios.get(BASE_URL+'polls/', this.addAuthHeader(username, password));
           return response.data;
   },
   async getAllUsers(username : string, password : string){
-    const response = await axios.get(BASE_URL+'agents/', {
-      auth: {
-        username: username,
-        password: password
-      }
-    });
+    const response = await axios.get(BASE_URL+'agents/', this.addAuthHeader(username, password));
           return response.data;
   },
   async deletePoll(pollId : Number, username : string, password : string) {
     try {
-      const response = await axios.delete(BASE_URL+"polls/deleteMyPoll/"+pollId, {
-        auth:{
-          "username":username,
-          "password":password
-        }
-      })
+      const response = await axios.delete(BASE_URL+"polls/deleteMyPoll/"+pollId, this.addAuthHeader(username, password))
       return response.data;
     }catch(error) {
       let err = error as AxiosError;
@@ -102,12 +84,8 @@ export default {
         "endTime":endTime,
         "private":isPrivate,
         "pin":0
-      }, {
-        auth: {
-          username: username,
-          password: password
-        }
-      });
+      }, this.addAuthHeader(username, password)
+      );
       return response.data;
     }catch(error){
       const err = error as AxiosError;
@@ -119,7 +97,7 @@ export default {
       const response = await axios.post(BASE_URL+"agents/createUser", {
         "username":username,
         "email":email,
-        "password":password,
+        "password":this.hashPwd(password),
         "role":"USER"
       })
       return response.data;
@@ -138,12 +116,7 @@ export default {
       {
         "voter_username":username,
         "answer_yes":bool
-      }, {
-        auth: {
-          username: username,
-          password: password
-        }
-      });
+      }, this.addAuthHeader(username, password));
       response.status
             return response.data;
     }catch(error){
