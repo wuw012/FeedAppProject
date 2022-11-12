@@ -18,16 +18,12 @@
 
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
-import { useStore } from "@/stores/store.js";
+ 
 //import { Buffer } from 'node:buffer';
 import axios from 'axios';
 
 export default {
     name: "SingupForm",
-    setup() {
-        const store = useStore();
-        console.log(store)
-    },
     data(){
         return {
             username: '',

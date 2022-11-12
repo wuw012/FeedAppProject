@@ -11,11 +11,10 @@ state: () => ({
     question: '',
     startTime: '',
     endTime: '',
-  }),
-  actions: {
-    increment() {
-      this.count++
-    },
-  },
+    accessToken: null,
+    loggingIn: false,
+    loginError: null
+  })
 })
+
 

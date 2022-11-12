@@ -1,6 +1,8 @@
 import axios from 'axios';
 import type {AxiosError} from 'axios';
+
 const BASE_URL = "http://localhost:8080/"
+
 export default {
   async exists(username: string) {
     const response = await axios.get(BASE_URL+'agents/exists/' + username);
