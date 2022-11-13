@@ -27,19 +27,19 @@ public class TestConfig {
             Agent agent007 = new Agent(
                     "agent_007",
                     "agent_007@mail.com",
-                    "12345678",
+                    "fa585d89c851dd338a70dcf535aa2a92fee7836dd6aff1226583e88e0996293f16bc009c652826e0fc5c706695a03cddce372f139eff4d13959da6f1f5d3eabe",//"12345678",
                     Role.ADMIN);
 
             Agent Geir = new Agent(
                     "69geir420",
                     "geir420@mail.com",
-                    "totallyhashedandencryptedpassword",
+                    "de8f60746ada0483c88cb6578b66f194b406390209a42c51c4ae3c21b030b4daff434bd8e00bda79d3588201263e36ccf73eb32138b37cfacffcff1efe7d163d",//"totallyhashedandencryptedpassword",
                     Role.USER);
 
             Agent Bob = new Agent(
                     "bobleif",
                     "bobleif@gmail.com",
-                    "totallyhashedandencryptedpassword",
+                    "de8f60746ada0483c88cb6578b66f194b406390209a42c51c4ae3c21b030b4daff434bd8e00bda79d3588201263e36ccf73eb32138b37cfacffcff1efe7d163d",//totallyhashedandencryptedpassword",
                     Role.USER);
 
 

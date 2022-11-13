@@ -1,15 +1,18 @@
 import axios from 'axios';
 import type {AxiosError} from 'axios';
+import jsSHA from "jssha";
 
 const BASE_URL = "http://localhost:8080/"
 
 export default {
+  // Simple hash function without Salting, only for demo purposes
   hashPwd(password : string) {
-    //const salt = bcrypt.genSaltSync(10);
-    //const pwd = bcrypt.hashSync(password);//, salt);
-    
-    return password;
-  },
+    let hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
+    hashObj.update(password);
+    let hash = hashObj.getHash("HEX");
+    console.log(hash);
+    return hash;
+    },
 
 
   addAuthHeader(username : string, password : string){
