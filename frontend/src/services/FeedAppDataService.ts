@@ -68,7 +68,7 @@ export default {
     try {
 
       const response = await axios.delete(BASE_URL+"polls/"+pollId, this.addAuthHeader(username, password))
-      return response;
+      return response.status;
     }catch(error) {
       let err = error as AxiosError;
       this.handleError(err);
@@ -77,7 +77,7 @@ export default {
   async deleteUser(userId : Number, username : string, password : string) {
     try {
       const response = await axios.delete(BASE_URL+"agents/"+userId, this.addAuthHeader(username, password))
-      return response;
+      return response.status;
     }catch(error) {
       let err = error as AxiosError;
       this.handleError(err);
