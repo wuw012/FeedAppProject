@@ -3,7 +3,7 @@
       <nav>
         <RouterLink to="/mypolls">My Polls</RouterLink>
         <RouterLink to="/createpolls">Create Poll</RouterLink>
-        <RouterLink to="/voting/1">Voting on poll 1</RouterLink>
+        <RouterLink to="/voting/5">Voting on poll 5</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/signup">Signup</RouterLink>
         <RouterLink to="/admin">Admin</RouterLink>

@@ -24,6 +24,7 @@
 
 <script>
 import FeedAppDataService from "@/services/FeedAppDataService";
+import moment from "moment";
 
 export default {
     name: "CreatepollForm",
@@ -44,12 +45,20 @@ export default {
             this.username = localStorage.getItem("username")
             this.password = localStorage.getItem("password")
         },
+        convertTimeToString(){
+            if (this.startTime && this.endTime) {
+                this.startTime = moment(String(this.startTime)).format('yyyy-MM-DD HH:mm:ss')
+                this.endTime = moment(String(this.endTime)).format('yyyy-MM-DD hh:mm:ss')
+                console.log(this.startTime, this.endTime)
+          }
+        },
         async postPoll() {
             this.retrieveUserCredentialsFromLocalStorage();
+            this.convertTimeToString();
             console.log(this.username, this.password)
             await FeedAppDataService.postPoll(this.question, this.startTime, this.endTime, this.isPrivate, this.username, this.password)
             .then((status) => {
-                if (status == 200) {
+                if (status == 201) {
                     this.createdPoll = true;
                 }
             });

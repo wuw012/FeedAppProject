@@ -55,18 +55,31 @@ export default {
     // POST VOTE LOGIC
     async postVote( answer_yes : bool ) {
       this.retrieveUserCredentialsFromLocalStorage();
-      await FeedAppDataService.postVote(answer_yes, this.$route.params.pollID, this.username, this.password)
-      .then((status) => {
+      if (this.username && this.password) {
+        await FeedAppDataService.postVote(answer_yes, this.$route.params.pollID, this.username, this.password)
+        .then((status) => {
         if (status == 200) {
           this.hasVoted = true;
         }
       })
+      } else {
+        await FeedAppDataService.postVote(answer_yes, this.$route.params.pollID)
+        .then((status) => {
+        if (status == 200) {
+          this.hasVoted = true;
+        }
+      })
+      }
     },
     voteNo() {
       if (!this.hasVoted) {
         this.postVote(false).then(() => {
           if (this.hasVoted) {
             this.redirectToThankyou()
+          } else if (this.poll.private){
+            alert("You have to log in to vote on this poll")
+          } else {
+            alert("Something went wrong, log in and/or try again")
           }
         })
       }
@@ -75,6 +88,10 @@ export default {
       this.postVote(true).then(() => {
         if (this.hasVoted) {
             this.redirectToThankyou()
+          } else if (this.poll.private){
+            alert("You have to log in to vote on this poll")
+          } else {
+            alert("Something went wrong, log in and/or try again")
           }
         })
     },
