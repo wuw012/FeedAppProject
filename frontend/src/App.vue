@@ -85,7 +85,15 @@ export default {
 
 //FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
 //FeedAppDataService.postVote(true, 1, "Donald_Dump", "thesecurestofpasswordsinhistory").then((vote) => console.log("Bobs vote:", vote))
-//FeedAppDataService.deletePoll(1, "bobleif", "totallyhashedandencryptedpassword")
+
+
+// DELETES
+// Admin can delete anyones poll
+//FeedAppDataService.deletePoll(2, "agent_007", "12345678").then((response) => console.log(response));
+// Another user can't delete bobleifs poll
+//FeedAppDataService.deletePoll(1, "69geir420", "totallyhashedandencryptedpassword").then((response) => console.log(response));
+// Bobleif can delete his own poll
+//FeedAppDataService.deletePoll(2, "bobleif", "totallyhashedandencryptedpassword")
 </script>
 
 

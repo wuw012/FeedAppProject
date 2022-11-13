@@ -34,7 +34,7 @@ public class TestConfig {
                     "69geir420",
                     "geir420@mail.com",
                     "totallyhashedandencryptedpassword",
-                    Role.ADMIN);
+                    Role.USER);
 
             Agent Bob = new Agent(
                     "bobleif",

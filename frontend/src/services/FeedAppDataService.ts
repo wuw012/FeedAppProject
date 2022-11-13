@@ -49,16 +49,13 @@ export default {
   },
   async deletePoll(pollId : Number, username : string, password : string) {
     try {
-      const response = await axios.delete(BASE_URL+"polls/deleteMyPoll/"+pollId, this.addAuthHeader(username, password))
-      return response.data;
+
+      const response = await axios.delete(BASE_URL+"polls/"+pollId, this.addAuthHeader(username, password))
+      return response;
     }catch(error) {
       let err = error as AxiosError;
       this.handleError(err);
     }
-    return;
-  },
-  deleteUser(username : string, adminUsername : string, password : string){
-    return;
   },
   async getUserID(username : string) {
     try {
