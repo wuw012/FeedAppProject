@@ -10,8 +10,6 @@ import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.config.MessagingConfig;
-import com.hvl.feedApp.config.RabbitMQConfig;
-import com.hvl.feedApp.messaging.MessageProducer;
 import com.hvl.feedApp.security.Authenticator;
 import com.hvl.feedApp.security.Authorizer;
 import com.hvl.feedApp.service.AgentService;

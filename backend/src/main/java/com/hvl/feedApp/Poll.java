@@ -5,7 +5,6 @@ import com.hvl.feedApp.Enums.Status;
 import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.config.RabbitMQConfig;
 import com.hvl.feedApp.controller.MessageSendController;
-import com.hvl.feedApp.messaging.MessageProducer;
 import com.hvl.feedApp.service.PollService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
