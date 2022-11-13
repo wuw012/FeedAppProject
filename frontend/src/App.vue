@@ -6,6 +6,7 @@
         <RouterLink to="/voting">Voting</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/signup">Signup</RouterLink>
+        <RouterLink to="/admin">Admin</RouterLink>
       </nav>
       <div class="buttongroup">
         <button class="btn btn-light btn-sm mr-2" @click="redirectToLogin()"> Log in </button>
@@ -96,5 +97,9 @@ FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpas
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+a {
+  margin-left: 10px;
 }
 </style>

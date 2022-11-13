@@ -1,6 +1,5 @@
 <template>
   <div class="allusers">
-    <button class="btn btn-primary" @click="retrieveAllUsers()"> Retrieve all users </button>
     <br/>
     <br/>
     <ul v-for="user in allUsers">
@@ -43,6 +42,9 @@ export default {
     retrieveAllUsers() {
       this.getAllUsers().then()
     }
+  },
+  mounted() {
+    this.retrieveAllUsers()
   }
 }
 </script>

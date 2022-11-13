@@ -1,8 +1,5 @@
 <template>
   <div class="mypolls">
-    <button class="btn btn-primary" @click="retrieveMyPolls()"> Retrieve my polls </button>
-    <br/>
-    <br/>
     <ul v-for="poll in myPolls">
       <h5> Question: {{ poll.question }} </h5>
       <ul class="list-group">
@@ -49,6 +46,9 @@ export default {
     retrieveMyPolls() {
       this.getMyPolls().then()
     }
+  },
+  mounted() {
+    this.retrieveMyPolls()
   }
 }
 </script>

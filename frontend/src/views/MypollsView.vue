@@ -1,7 +1,7 @@
 <template>
    <div class="mypolls">
     <h1>My Polls</h1>
-    <button class="btn btn-secondary" @click="redirectToCreatePolls()"> Create new poll</button>
+    <button class="btn btn-secondary btn-sm" @click="redirectToCreatePolls()"> Create new poll</button>
     <br/><br/>
     <MyPolls />
    </div>

@@ -1,6 +1,5 @@
 <template>
   <div class="allpolls">
-    <button class="btn btn-primary" @click="retrieveAllPolls()"> Retrieve all polls </button>
     <br/>
     <br/>
     <ul v-for="poll in allPolls">
@@ -49,6 +48,9 @@ export default {
     retrieveAllPolls() {
       this.getAllPolls().then()
     }
+  },
+  mounted() {
+    this.retrieveAllPolls()
   }
 }
 </script>
