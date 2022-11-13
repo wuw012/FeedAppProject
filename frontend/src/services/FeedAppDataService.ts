@@ -10,6 +10,8 @@ export default {
     
     return password;
   },
+
+  
   addAuthHeader(username : string, password : string){
     const hashedPwd = this.hashPwd(password);
     return {auth: {
@@ -17,36 +19,51 @@ export default {
       "password":hashedPwd
     }}
   },
+
+
   async exists(username: string) {
     const response = await axios.get(BASE_URL+'agents/exists/' + username);
         return response.data;
   },
+
+
   async isAuthenticated(username : string, password : string) {
     const response = await axios.get(BASE_URL+'agents/isAuthenticated', this.addAuthHeader(username, password));
         return response.data;
-  }
-  ,async isAdmin(username : string) {
+  },
+  
+  async isAdmin(username : string) {
     const response = await axios.get(BASE_URL+'agents/isAdmin/'+username);
         return response.data;
-  },// Get specific users polls
+  },
+  
+  // Get specific users polls
   async getPolls(username : string, password : string){
     const response = await axios.get(BASE_URL+'polls/'+username+'/userPolls', this.addAuthHeader(username, password));
         return response.data;
   },
+
+
   // Get poll with id, provice auth username and password if poll is private
   async getPoll(id : Number, username = "", password = "") {
     const response = await axios.get(BASE_URL+'polls/'+id, this.addAuthHeader(username, password));
           return response.data;
   },
+
+
   //Get all polls (For admins)
   async getAllPolls(username : string, password : string) {
     const response = await axios.get(BASE_URL+'polls/', this.addAuthHeader(username, password));
           return response.data;
   },
+
+
   async getAllUsers(username : string, password : string){
     const response = await axios.get(BASE_URL+'agents/', this.addAuthHeader(username, password));
           return response.data;
   },
+
+
   async deletePoll(pollId : Number, username : string, password : string) {
     try {
 
@@ -57,6 +74,8 @@ export default {
       this.handleError(err);
     }
   },
+
+
   async getUserID(username : string) {
     try {
       const userIDResponse = await axios.get(BASE_URL+"agents/getID/"+username);
@@ -66,6 +85,8 @@ export default {
       this.handleError(err);
     }
   },
+
+
   async postPoll(question : string, startTime : string, endTime : string, isPrivate : Boolean, username : string, password : string) {
     try{
       const userID = await this.getUserID(username);
@@ -89,6 +110,8 @@ export default {
       this.handleError(err);
     }
   },
+
+
   async postUser(username : string, email : string, password : string, ) {
     try {
       const response = await axios.post(BASE_URL+"agents/createUser", {
@@ -103,9 +126,12 @@ export default {
       this.handleError(err);
     }
   },
+
+
   makeAdmin(username : string, adminUsername : string, password : string) {
     return;
   },
+
 
   async postVote(bool : boolean, pollId : Number, username="", password="") {
     try{
@@ -121,6 +147,8 @@ export default {
       this.handleError(err);
     }
   },
+
+
   handleError(error:Error) {
     if(axios.isAxiosError(error)) {
       if (error.response) {
