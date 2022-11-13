@@ -51,13 +51,14 @@ export default {
         signup() {
             this.checkAvailableUsername().then(() => {
                 if(!this.userExists && this.email && this.password) {
-                    this.postUser(this.username, this.email, this.password);
-                    if (this.createdUser) {
-                        alert("User created")
-                        this.$router.push({path:"/login"})
-                    } else {
-                        alert("Something went wrong")
-                    }
+                    this.postUser(this.username, this.email, this.password).then(()=> {
+                        if (this.createdUser) {
+                            alert("User created")
+                            this.$router.push({path:"/login"})
+                        } else {
+                            alert("Something went wrong")
+                        }
+                    });  
                 } else {
                     this.error = "Username exists and/or fill in all fields"
                 }

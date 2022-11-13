@@ -49,16 +49,15 @@ export default {
             if (this.startTime && this.endTime) {
                 this.startTime = moment(String(this.startTime)).format('yyyy-MM-DD HH:mm:ss')
                 this.endTime = moment(String(this.endTime)).format('yyyy-MM-DD hh:mm:ss')
-                console.log(this.startTime, this.endTime)
-          }
+        }
         },
         async postPoll() {
             this.retrieveUserCredentialsFromLocalStorage();
             this.convertTimeToString();
-            console.log(this.username, this.password)
             await FeedAppDataService.postPoll(this.question, this.startTime, this.endTime, this.isPrivate, this.username, this.password)
             .then((status) => {
                 if (status == 201) {
+                    console.log(status)
                     this.createdPoll = true;
                 }
             });
@@ -74,13 +73,15 @@ export default {
         createPoll() {
             const formOK = this.checkForm();
             if (formOK) {
-                this.postPoll();
-                if (this.createdPoll) {
-                    alert("Poll created")
-                    this.$router.push({ path: '/voting' })
-                } else {
-                    alert("Something went wrong")
-                }
+                this.postPoll().then(()=> {
+                    if (this.createdPoll) {
+                        alert("Poll created")
+                        this.$router.push({ path: '/mypolls' })
+                    } else {
+                        console.log(this.createdPoll)
+                        alert("Something went wrong")
+                    }
+                });
             } else {
                 this.error = "Form is not OK"
             }

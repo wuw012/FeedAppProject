@@ -14,6 +14,7 @@
         <li class="list-group-item"> Private? {{ poll.private ? 'Yes' : 'No' }}</li>
       </ul>
       <br/>
+      <button class="btn btn-danger" @click="deleteThisPoll(poll.pollID)">Delete this poll</button>
     </ul>
   </div>
 </template>
@@ -31,6 +32,7 @@ export default {
       password: "",
       myPolls: [],
       error: "",
+      deletedPoll: false,
     }
   },
   methods: {
@@ -45,6 +47,24 @@ export default {
     },
     retrieveMyPolls() {
       this.getMyPolls().then()
+    },
+    // DELETE POLLS LOGIC
+    async deletePoll(pollID) {
+      this.retrieveUserCredentialsFromLocalStorage();
+      await FeedAppDataService.deletePoll(pollID, this.username, this.password)
+      .then((status) => {
+        if (status == 200) {
+          this.deletedPoll = true;
+        }
+      }) 
+    },
+    deleteThisPoll(pollID) {
+      this.deletePoll(pollID).then(()=> {
+        if (this.deletedPoll) {
+          alert("Poll deleted. Reloading page now")
+          window.location.reload();
+        }
+      })
     }
   },
   mounted() {
