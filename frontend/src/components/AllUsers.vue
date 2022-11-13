@@ -10,6 +10,7 @@
         <li class="list-group-item"> Role: {{ user.role }}</li>
       </ul>
       <br/>
+      <button class="btn btn-danger" @click="deleteThisUser(user.agentID)">Delete this user</button>
     </ul>
   </div>
 
@@ -31,6 +32,7 @@ export default {
       password: "",
       allUsers: [],
       error: "",
+      deletedUser: false,
     }
   },
   methods: {
@@ -38,6 +40,8 @@ export default {
         this.username = localStorage.getItem("username")
         this.password = localStorage.getItem("password")
     },
+
+    // GET ALL USERS LOGIC
     async getAllUsers() {
       this.retrieveUserCredentialsFromLocalStorage();
       await FeedAppDataService.getAllUsers(this.username, this.password)
@@ -45,6 +49,25 @@ export default {
     },
     retrieveAllUsers() {
       this.getAllUsers().then()
+    },
+    // DELETE USER LOGIC
+    async deleteUser(agentID) {
+      this.retrieveUserCredentialsFromLocalStorage();
+      await FeedAppDataService.deleteUser(agentID, this.username, this.password)
+      .then((status) => {
+        if (status == 200) {
+          this.deletedUser = true;
+        }
+      }) 
+    },
+    deleteThisUser(agentID) {
+      console.log(agentID)
+      this.deleteUser(agentID).then(()=> {
+        if (this.deletedUser) {
+          alert("User deleted. Reloading page now")
+          window.location.reload();
+        }
+      })
     }
   },
   mounted() {

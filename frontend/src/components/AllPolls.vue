@@ -28,7 +28,6 @@
 
 <script lang="ts">
 import FeedAppDataService from "@/services/FeedAppDataService";
-import axios from 'axios';
 
 export default {
   name: 'AllPolls',
@@ -70,7 +69,8 @@ export default {
     deleteThisPoll(pollID) {
       this.deletePoll(pollID).then(()=> {
         if (this.deletedPoll) {
-          alert("Poll deleted")
+          alert("Poll deleted. Reloading page now")
+          window.location.reload();
         }
       })
     }
