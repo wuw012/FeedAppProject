@@ -20,7 +20,7 @@
     <h4>if youre reading this its too late :(</h4>
   </div>
 
-  <div class="poll" v-if="this.poll.private">
+  <div class="poll" v-if="this.poll.private && !this.username">
     <h1>log in to see this poll!!</h1>
   </div>
 </template>
