@@ -13,10 +13,14 @@
         <li class="list-group-item"> Status: {{ poll.status }}</li>
         <li class="list-group-item"> Started: {{ poll.startTime }}</li>
         <li class="list-group-item"> Ended: {{ poll.endTime }}</li>
-        <li class="list-group-item"> Private? {{ poll.private }}</li>
+        <li class="list-group-item">Private? {{ poll.private ? 'Yes' : 'No' }} </li>
       </ul>
       <br/>
     </ul>
+  </div>
+
+  <div v-if="!allPolls.length">
+    <p>haha you tried, sorry buddy </p>
   </div>
 </template>
   

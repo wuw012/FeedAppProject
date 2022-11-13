@@ -86,7 +86,7 @@ export default {
         "pin":0
       }, this.addAuthHeader(username, password)
       );
-      return response.data;
+      return response.status;
     }catch(error){
       const err = error as AxiosError;
       this.handleError(err);
@@ -100,7 +100,7 @@ export default {
         "password":this.hashPwd(password),
         "role":"USER"
       })
-      return response.data;
+      return response.status;
     }catch(error){
       const err = error as AxiosError;
       this.handleError(err);
@@ -118,7 +118,7 @@ export default {
         "answer_yes":bool
       }, this.addAuthHeader(username, password));
       response.status
-            return response.data;
+            return response.status;
     }catch(error){
       const err = error as AxiosError;
       this.handleError(err);

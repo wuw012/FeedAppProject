@@ -3,7 +3,7 @@
       <nav>
         <RouterLink to="/mypolls">My Polls</RouterLink>
         <RouterLink to="/createpolls">Create Poll</RouterLink>
-        <RouterLink to="/voting">Voting</RouterLink>
+        <RouterLink to="/voting/1">Voting on poll 1</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/signup">Signup</RouterLink>
         <RouterLink to="/admin">Admin</RouterLink>
@@ -83,7 +83,7 @@ export default {
 //false, "bobleif", "totallyhashedandencryptedpassword").then((poll) => console.log("Bobleifs new poll:", poll))
  
 
-FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
+//FeedAppDataService.postUser("Donald_Dump", "dump@dahouse.com", "thesecurestofpasswordsinhistory").then((mrDump)=>console.log(mrDump));
 //FeedAppDataService.postVote(true, 1, "Donald_Dump", "thesecurestofpasswordsinhistory").then((vote) => console.log("Bobs vote:", vote))
 //FeedAppDataService.deletePoll(1, "bobleif", "totallyhashedandencryptedpassword")
 </script>

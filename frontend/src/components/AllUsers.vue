@@ -12,6 +12,10 @@
       <br/>
     </ul>
   </div>
+
+   <div v-if="!allUsers.length">
+    <p> nop hehe </p>
+  </div>
 </template>
   
 
