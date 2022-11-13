@@ -1,6 +1,6 @@
 <template>
-    <div class="createpollform">
-        <p>please fill out form beneath to create a new poll</p>
+    <div v-if="this.username" class="createpollform">
+        <p>Hey {{this.username}}! Please fill out form beneath to create a new poll</p>
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
             <label for="question"> Question: </label> 
             <input type="text" id="question" name="question" v-model="question"><br><br>
@@ -18,7 +18,10 @@
 
             <button class="btn btn-primary" type="submit" v-on:click="createPoll()"> Create poll </button>
         </form>
+    </div>
 
+    <div v-if="!this.username">
+        <p> You have to log in to create a poll </p>
     </div>
 </template>
 
@@ -41,23 +44,22 @@ export default {
             }
         },
     methods: {
-        retrieveUserCredentialsFromLocalStorage(){
+        retrieveUserCredentialsFromLocalStorage() {
             this.username = localStorage.getItem("username")
             this.password = localStorage.getItem("password")
+            console.log(this.username, this.password)
         },
         convertTimeToString(){
             if (this.startTime && this.endTime) {
                 this.startTime = moment(String(this.startTime)).format('yyyy-MM-DD HH:mm:ss')
                 this.endTime = moment(String(this.endTime)).format('yyyy-MM-DD hh:mm:ss')
-        }
+            }
         },
         async postPoll() {
-            this.retrieveUserCredentialsFromLocalStorage();
             this.convertTimeToString();
             await FeedAppDataService.postPoll(this.question, this.startTime, this.endTime, this.isPrivate, this.username, this.password)
             .then((status) => {
                 if (status == 201) {
-                    console.log(status)
                     this.createdPoll = true;
                 }
             });
@@ -86,6 +88,9 @@ export default {
                 this.error = "Form is not OK"
             }
         } 
+    },
+    mounted() {
+        this.retrieveUserCredentialsFromLocalStorage()
     }
 }
 

@@ -13,11 +13,15 @@
   </div>
 
   <div class="poll" v-if="this.poll.status == 'FUTURE'">
-    <h1>This poll hasn't been launched yet!! come back soon ;*</h1>
+    <h4>This poll hasn't been launched yet!! come back soon ;*</h4>
   </div>
 
   <div class="poll" v-if="this.poll.status == 'EXPIRED'">
-    <h1>if youre reading this its too late :(</h1>
+    <h4>if youre reading this its too late :(</h4>
+  </div>
+
+  <div class="poll" v-if="this.poll.private">
+    <h1>log in to see this poll!!</h1>
   </div>
 </template>
   

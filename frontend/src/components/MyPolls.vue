@@ -2,6 +2,7 @@
   <div class="mypolls">
     <ul v-for="poll in myPolls">
       <h5> Question: {{ poll.question }} </h5>
+      <p> Send this link ( <a>http://127.0.0.1:5173/voting/{{ poll.pollID }} ) to your friends and get their opinion</p>
       <ul class="list-group">
         <li class="list-group-item"> Yes count: {{ poll.yesCount }}</li>
         <li class="list-group-item"> No count: {{ poll.noCount }}</li>
