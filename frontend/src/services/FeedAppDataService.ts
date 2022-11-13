@@ -11,7 +11,7 @@ export default {
     return password;
   },
 
-  
+
   addAuthHeader(username : string, password : string){
     const hashedPwd = this.hashPwd(password);
     return {auth: {
@@ -74,8 +74,15 @@ export default {
       this.handleError(err);
     }
   },
-
-
+  async deleteUser(userId : Number, username : string, password : string) {
+    try {
+      const response = await axios.delete(BASE_URL+"agents/"+userId, this.addAuthHeader(username, password))
+      return response;
+    }catch(error) {
+      let err = error as AxiosError;
+      this.handleError(err);
+    }
+  },
   async getUserID(username : string) {
     try {
       const userIDResponse = await axios.get(BASE_URL+"agents/getID/"+username);
