@@ -117,6 +117,8 @@ public class PollService {
                 this.sendMessage(BINDING_PATTERN_POLL_CREATION, poll);
             }catch (Exception e){
                 System.out.println("Could not send message about poll "+poll.getPollID()+" with exception "+e.getMessage());
+            } finally {
+                poll.setExpirationSent();
             }
         }
         if (status != Status.FUTURE){//this.isDweetPublishEvent(originalStatus, updatedStatus)){

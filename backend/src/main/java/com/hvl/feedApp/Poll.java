@@ -150,16 +150,10 @@ public class Poll {
         this.question = question;
     }
 
-    public void expirationNotify() {
-        //this.rabbitTemplate = new RabbitTemplate();
-        //ADD THIS TO POLLSERVICE!!!
-
-    }
-
     public boolean getExpirationSent() {
         return this.sentExpirationNotification;
     }
-
+    public void setExpirationSent() { this.sentExpirationNotification = true; }
     public void setStatus() {
         if (this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.ACTIVE;
@@ -167,10 +161,6 @@ public class Poll {
             this.status = Status.FUTURE;
         } else {
             this.status = Status.EXPIRED;
-            if (!sentExpirationNotification) {
-                expirationNotify();
-                sentExpirationNotification = true;
-            }
         }
     }
     public Status getStatus() {
