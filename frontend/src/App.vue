@@ -99,7 +99,7 @@ export default {
 // Attempt do delete user from user account
 //FeedAppDataService.deleteUser(1, "bobleif", "totallyhashedandencryptedpassword").then((response) => console.log(response));
 // Delete user from admin account
-FeedAppDataService.deleteUser(1, "agent_007", "12345678").then((response) => console.log(response));
+//FeedAppDataService.deleteUser(1, "agent_007", "12345678").then((response) => console.log(response));
 </script>
 
 
