@@ -84,11 +84,11 @@ public class PollService {
             for (Poll poll : allPolls){
                 // Dweet requires 1 second of sleep between each post
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
+                    refreshPollStatus(poll);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                refreshPollStatus(poll);
             }
         };
         Thread thread = new Thread(runnable);
