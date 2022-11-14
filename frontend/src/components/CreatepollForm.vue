@@ -47,7 +47,6 @@ export default {
         retrieveUserCredentialsFromLocalStorage() {
             this.username = localStorage.getItem("username")
             this.password = localStorage.getItem("password")
-            console.log(this.username, this.password)
         },
         convertTimeToString(){
             if (this.startTime && this.endTime) {
