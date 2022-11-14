@@ -1,7 +1,6 @@
 <template>
   <div class="allpolls">
     <br/>
-    <br/>
     <ul v-for="poll in allPolls">
       <h5> Question: {{ poll.question }} </h5>
       <ul class="list-group">
@@ -18,10 +17,7 @@
       <br/>
       <button class="btn btn-danger" @click="deleteThisPoll(poll.pollID)">Delete this poll</button>
     </ul>
-  </div>
-
-  <div v-if="!allPolls.length">
-    <p>haha you tried, sorry buddy </p>
+    <br/>
   </div>
 </template>
   

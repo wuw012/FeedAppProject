@@ -1,17 +1,19 @@
 <template>
-    <div class="wrapper">
+    <div class="header">
+
+    <div class="buttongroup">
+      <button v-if="!loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="redirectToLogin()"> Log in </button>
+      <button v-if="loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="logout()"> Log out </button>
+    </div>
+
       <nav>
         <RouterLink to="/mypolls">My Polls</RouterLink>
         <RouterLink to="/createpolls">Create Poll</RouterLink>
-        <RouterLink to="/voting/1">Voting on poll 1</RouterLink>
+        <RouterLink to="/voting">Voting on poll 1</RouterLink>
         <RouterLink to="/login">Login</RouterLink>
         <RouterLink to="/signup">Signup</RouterLink>
         <RouterLink to="/admin">Admin</RouterLink>
       </nav>
-      <div class="buttongroup">
-        <button class="btn btn-light btn-sm mr-2" @click="redirectToLogin()"> Log in </button>
-        <button class="btn btn-light btn-sm" @click="logout()"> Log out </button>
-      </div>
     </div>
   <RouterView />
 </template>
@@ -37,14 +39,29 @@ export default {
     CreatepollsView,
     SignupView
   },
+  data() {
+    return {
+      username: ""
+    }
+  },
   methods: {
     redirectToLogin() {
       this.$router.push({path:"/login"})
     },
     logout() {
       localStorage.clear();
-      alert("Sucessfully logged you out! Welcome back :)")
+      //window.location.reload();
       this.$router.push({path:"/login"})
+      document.location.href = "/login";
+      
+    },
+    loggedin() {
+      this.username = localStorage.getItem("username")
+      if (this.username) {
+        return true;
+      } else {
+        return false;
+      }
     }
   }
 }
@@ -115,5 +132,9 @@ export default {
 
 a {
   margin-left: 10px;
+}
+
+#buttongroup {
+  text-align: right;
 }
 </style>

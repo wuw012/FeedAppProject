@@ -1,22 +1,33 @@
 <template>
   <div class="mypolls">
-    <ul v-for="poll in myPolls">
-      <h5> Question: {{ poll.question }} </h5>
-      <p> Send this link ( http://127.0.0.1:5173/voting/{{ poll.pollID }} ) to your friends and get their opinion</p>
-      <ul class="list-group">
-        <li class="list-group-item"> Yes count: {{ poll.yesCount }}</li>
-        <li class="list-group-item"> No count: {{ poll.noCount }}</li>
-        <li class="list-group-item"> PollID: {{ poll.pollID }} </li>
-        <li class="list-group-item"> Owner: {{ poll.owner.username }}</li>
-        <li class="list-group-item"> Pin: {{ poll.pin }}</li>
-        <li class="list-group-item"> Status: {{ poll.status }}</li>
-        <li class="list-group-item"> Start time: {{ poll.startTime }}</li>
-        <li class="list-group-item"> End time: {{ poll.endTime }}</li>
-        <li class="list-group-item"> Private? {{ poll.private ? 'Yes' : 'No' }}</li>
-      </ul>
-      <br/>
-      <button class="btn btn-danger" @click="deleteThisPoll(poll.pollID)">Delete this poll</button>
-    </ul>
+    <table id="mypolls" class="table table-striped" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Question</th>
+                  <th>Yes count</th>
+                  <th>No count</th>
+                  <th>Private</th>
+                  <th>Status</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Link</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody v-for="poll in myPolls">
+              <tr>
+                  <td>{{ poll.question }}</td>
+                  <td>{{ poll.yesCount }}</td>
+                  <td>{{ poll.noCount }}</td>
+                  <td>{{ poll.private ? 'Yes' : 'No' }}</td>
+                  <td>{{ poll.status }}</td>
+                  <td>{{ poll.startTime }}</td>
+                  <td>{{ poll.endTime }}</td>
+                  <td> <button class="btn btn-link" @click=redirectToPoll(poll.pollID)> http://feedapp.no/voting/{{ poll.pollID }}</button></td>
+                  <td><button class="btn btn-danger btn-sm" @click="deleteThisPoll(poll.pollID)">Delete</button></td>
+              </tr>
+          </tbody>
+    </table>
   </div>
 </template>
   
@@ -34,6 +45,7 @@ export default {
       myPolls: [],
       error: "",
       deletedPoll: false,
+      text: 'This will get copied!'
     }
   },
   methods: {
@@ -66,6 +78,15 @@ export default {
           window.location.reload();
         }
       })
+    },
+    redirectToPoll(pollID){
+      this.$router.push({path: "/voting/"+pollID})
+    },
+    copy() {
+      
+      this.$refs.myinput.focus();
+      document.execCommand('copy');
+      alert("copy")
     }
   },
   mounted() {

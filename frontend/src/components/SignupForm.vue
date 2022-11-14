@@ -1,5 +1,6 @@
 <template>
-    <div class="signupform">
+    <br/>
+    <div class="wrap">
         <form v-on:submit.prevent="onSubmit">
             <label for="username"> Username: </label> 
             <input type="text" id="username" name="username" v-model="username"><br><br>
@@ -7,15 +8,24 @@
             <label for="email"> Email: </label>
             <input type="text" id="email" name="email" v-model="email"><br><br>
             
-            <label for="password"> Password: </label>
-            <input type="password" id="password" name="password" v-model="password"><br><br>
+            <label for="password1"> Password: </label>
+            <input type="password" id="password1" name="password1" v-model="password1"><br><br>
 
+            <label for="password2"> Repeat password: </label>
+            <input type="password" id="password2" name="password2" v-model="password2"><br><br>
             <p> {{ error }} </p>
         </form>
 
         <button v-on:click="signup()" class="btn btn-primary mr-2" type="submit"> Sign up </button> 
         <button v-on:click="redirectToLogin()" class="btn btn-secondary">Log in instead</button>
     </div>
+
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
 </template>
 
 <script>
@@ -28,7 +38,8 @@ export default {
         return {
             username: '',
             email: '',
-            password: '',
+            password1: '',
+            password2: '',
             error: '',
             userExists: false,
             createdUser: false,
@@ -42,7 +53,7 @@ export default {
             await FeedAppDataService.exists(this.username).then((userExists) => this.userExists=userExists);
         },
         async postUser() {
-            await FeedAppDataService.postUser(this.username, this.email, this.password).then((status) => {
+            await FeedAppDataService.postUser(this.username, this.email, this.password1).then((status) => {
                 if (status == 200) {
                     this.createdUser = true;
                 }
@@ -50,8 +61,8 @@ export default {
         },
         signup() {
             this.checkAvailableUsername().then(() => {
-                if(!this.userExists && this.email && this.password) {
-                    this.postUser(this.username, this.email, this.password).then(()=> {
+                if(!this.userExists && this.email && this.password1) {
+                    this.postUser(this.username, this.email, this.password1).then(()=> {
                         if (this.createdUser) {
                             alert("User created")
                             this.$router.push({path:"/login"})
@@ -70,8 +81,68 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.wrap {
+  background-color: #ffffff;
+  padding: 2%;
+  width: 25%;
+  min-width:350px;
+  margin: 0 auto;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  box-shadow: 0 0 5px #ccc;
+  border: 1px solid #fff;
+}
+
 input {
-    margin-left: 10px;
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #efefef;
+  font-size: 15px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #45b3e7;
+  font-size: 15px;
+  background-color: #45b3e7;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit:hover {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #32CD32;
+  font-size: 15px;
+  background-color: #32CD32;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 </style>

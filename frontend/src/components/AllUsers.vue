@@ -1,7 +1,6 @@
 <template>
   <div class="allusers">
     <br/>
-    <br/>
     <ul v-for="user in allUsers">
       <h5> {{ user.username }} </h5>
       <ul class="list-group">
@@ -13,10 +12,9 @@
       <button class="btn btn-danger" @click="deleteThisUser(user.agentID)">Delete this user</button>
     </ul>
   </div>
+  <br/>
+  <br/>
 
-   <div v-if="!allUsers.length">
-    <p> nop hehe </p>
-  </div>
 </template>
   
 

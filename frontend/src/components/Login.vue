@@ -1,5 +1,6 @@
 <template>
-    <div class="loginform">
+    <br/>
+    <div class="wrap">
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
             <label for="username"> Username: </label> 
             <input type="text" id="username" name="username" v-model="username"><br><br>
@@ -46,8 +47,10 @@ export default {
                     localStorage.setItem("password", hashedPwd);
                     if(this.isAdmin) {
                         this.$router.push({ path: '/admin' })
+                        document.location.href = "/admin";
                     }else{
                         this.$router.push({path:"/mypolls"})
+                        document.location.href = "/mypolls";
                     }
                 } else {
                     this.error = "Could not authenticate user"
@@ -58,8 +61,68 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.wrap {
+  background-color: #ffffff;
+  padding: 2%;
+  width: 25%;
+  min-width:350px;
+  margin: 0 auto;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  box-shadow: 0 0 5px #ccc;
+  border: 1px solid #fff;
+}
+
 input {
-    margin-left: 10px;
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #efefef;
+  font-size: 15px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #45b3e7;
+  font-size: 15px;
+  background-color: #45b3e7;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit:hover {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #32CD32;
+  font-size: 15px;
+  background-color: #32CD32;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
 }
 </style>

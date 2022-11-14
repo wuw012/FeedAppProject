@@ -1,6 +1,6 @@
 <template>
-    <div v-if="this.username" class="createpollform">
-        <p>Hey {{this.username}}! Please fill out form beneath to create a new poll</p>
+    <div v-if="this.username" class="wrap">
+        <p><strong>Hey {{this.username}}! Fill out the form to see</strong></p>
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
             <label for="question"> Question: </label> 
             <input type="text" id="question" name="question" v-model="question"><br><br>
@@ -12,7 +12,7 @@
             <input type="datetime-local" id="endTime" name="endTime" v-model="endTime"><br><br>
 
             <label for="isPrivatepoll"> Private? </label>
-            <input type="checkbox" id="isPrivatepoll" name="isPrivatepoll" v-model="isPrivate"> Yes <br><br>
+            <input type="checkbox" id="isPrivatepoll" name="isPrivatepoll" v-model="isPrivate">
 
             <p> {{ error }} </p>
 
@@ -95,4 +95,70 @@ export default {
 
 
 </script>
+
+<style scoped>
+.wrap {
+  background-color: #ffffff;
+  padding: 2%;
+  width: 25%;
+  min-width:350px;
+  margin: 0 auto;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  box-shadow: 0 0 5px #ccc;
+  border: 1px solid #fff;
+}
+
+input {
+  width: 90%;
+  margin-bottom: 10px;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #efefef;
+  font-size: 15px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input:focus {
+  outline: none;
+  border-color: #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #45b3e7;
+  font-size: 15px;
+  background-color: #45b3e7;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+
+input.submit:hover {
+  width: 100%;
+  padding: 5%;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+  border: 1px solid #32CD32;
+  font-size: 15px;
+  background-color: #32CD32;
+  color: #fff;
+  margin-top: 25px;
+  -webkit-transition: all .2s ease-in-out;
+  -moz-transition: all .2s ease-in-out;
+  transition: all .2s ease-in-out;
+}
+</style>
 
