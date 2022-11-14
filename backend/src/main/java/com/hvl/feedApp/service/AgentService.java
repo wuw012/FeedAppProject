@@ -9,14 +9,13 @@ import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.repository.AgentRepository;
 import com.hvl.feedApp.repository.VoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class AgentService {
@@ -41,15 +40,32 @@ public class AgentService {
         return agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("Vote with id: "+ agentID + " does not exist"));
     }
 
+    public Boolean exists(String username) {
+        try {
+            Agent agent = this.getByUsername(username);
+            return true;
+        }catch (ResponseStatusException e){
+            return false;
+        }
+    }
+    public Agent createNewUser(Agent agent) {
+        agent.setRole(Role.USER);
+        return createNewAgent(agent);
+    }
     public Agent createNewAgent(Agent agent) {
-
-
+        String username = agent.getUsername();
+        if (this.exists(username)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User with username "+username+" already exists.");
+        }
         agentRepository.save(agent);
         return this.getById(agent.getAgentID());
     }
 
-    public List<Poll> getOwnedPolls(Long agentID){
-        Agent user =  agentRepository.findById(agentID).orElseThrow(() -> new IllegalStateException("User with id: "+ agentID + " does not exist"));
+    public List<Poll> getOwnedPolls(String username){
+        Agent user =  agentRepository.getByUsername(username);
+        if (user == null) {
+            throw new IllegalStateException("User with username: "+ username + " does not exist");
+        }
         return user.getOwnedPolls();
     }
 
@@ -71,6 +87,13 @@ public class AgentService {
         }
 
         agentRepository.deleteById(agentID);
+    }
+
+    public Agent getByUsername(String username) {
+        Agent agent = agentRepository.getByUsername(username);
+        if (agent == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't find Agent with username "+username);
+        }else return agent;
     }
 
     // TODO: Abstract to field validation function and reuse on create

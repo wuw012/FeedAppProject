@@ -1,17 +1,31 @@
 <template>
-    <div class="allagents">
-        <h1>All agents</h1>
-        <h4>Table here</h4>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm">
+                <h1>All users</h1>
+                <AllUsers />
+            </div>
+            <div class="col-sm">
+                <h1>All polls</h1>
+                <AllPolls />
+            </div>
+        </div>
     </div>
 
-    <div class="allpolls">
-        <h1>All polls</h1>
-        <h1>Table here</h1>
-    </div>
 </template>
-  
 
 <script lang="ts">
+import AllPolls from "@/components/AllPolls.vue";
+import AllUsers from "@/components/AllUsers.vue";
+
+export default {
+    name: "AdminView",
+    components: {
+        AllPolls,
+        AllUsers
+    }
+}
+
 
 </script>
 
