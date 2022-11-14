@@ -45,7 +45,7 @@ public class Agent {
     // Attributes
     private String username;
     private String email;
-    // TODO: implement hashed passwords!
+    @JsonIgnore
     private String password;
 /*
 

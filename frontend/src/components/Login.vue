@@ -34,14 +34,16 @@ export default {
             this.$router.push({ path: '/signup' });
         },
         async updateAuthStatus() {
-            await FeedAppDataService.isAuthenticated(this.username, this.password).then((userAuthenticated) => this.isAuthenticated=userAuthenticated);
+            const hashedPwd = FeedAppDataService.hashPwd(this.password);
+            await FeedAppDataService.isAuthenticated(this.username, hashedPwd).then((userAuthenticated) => this.isAuthenticated=userAuthenticated);
             await FeedAppDataService.isAdmin(this.username).then((adminUser) => this.isAdmin = adminUser);
         },
         login() {
             this.updateAuthStatus().then(() => {
                 if(this.isAuthenticated){
+                    const hashedPwd = FeedAppDataService.hashPwd(this.password);
                     localStorage.setItem("username", this.username);
-                    localStorage.setItem("password", this.password);
+                    localStorage.setItem("password", hashedPwd);
                     if(this.isAdmin) {
                         this.$router.push({ path: '/admin' })
                     }else{

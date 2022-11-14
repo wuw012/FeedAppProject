@@ -29,6 +29,7 @@ public class Authenticator {
         byte[] decodedBAuth = Base64.getDecoder().decode(bAuthSliced); // Decode base64 string
         String authString = new String(decodedBAuth); // Convert decoded base64 to string
 
+
         String[] unamePwdSplit = authString.split(":", 2); // Split out username and password
         String uname = unamePwdSplit[0]; // Extract username
         String pwd = unamePwdSplit[1]; // Extract password

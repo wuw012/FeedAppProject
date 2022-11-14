@@ -75,6 +75,7 @@ public class AgentController {
     public Agent getById(@PathVariable("id") Long agentID, @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if(authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/agents/{id}", "GET")) {
+
                 return agentService.getById(agentID);
             }
         }

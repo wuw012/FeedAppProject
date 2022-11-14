@@ -5,21 +5,20 @@ import jsSHA from "jssha";
 const BASE_URL = "http://localhost:8080/"
 
 export default {
-  // Simple hash function without Salting, only for demo purposes
+  // Simple hash function without Salt, only for demo purposes
   hashPwd(password : string) {
     let hashObj = new jsSHA("SHA-512", "TEXT", {numRounds: 1});
     hashObj.update(password);
     let hash = hashObj.getHash("HEX");
-    console.log(hash);
     return hash;
     },
 
 
   addAuthHeader(username : string, password : string){
-    const hashedPwd = this.hashPwd(password);
+    //const hashedPwd = this.hashPwd(password);
     return {auth: {
       "username":username,
-      "password":hashedPwd
+      "password":password
     }}
   },
 

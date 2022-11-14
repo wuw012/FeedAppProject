@@ -39,7 +39,7 @@ public class TestConfig {
             Agent Bob = new Agent(
                     "bobleif",
                     "bobleif@gmail.com",
-                    "de8f60746ada0483c88cb6578b66f194b406390209a42c51c4ae3c21b030b4daff434bd8e00bda79d3588201263e36ccf73eb32138b37cfacffcff1efe7d163d",//totallyhashedandencryptedpassword",
+                    "de8f60746ada0483c88cb6578b66f194b406390209a42c51c4ae3c21b030b4daff434bd8e00bda79d3588201263e36ccf73eb32138b37cfacffcff1efe7d163d",//",
                     Role.USER);
 
 
