@@ -54,7 +54,7 @@ public class TestConfig {
             Poll testExpiredPoll = new Poll();
             testExpiredPoll.setQuestion("Is this a past question?");
             testExpiredPoll.setOwner(Bob);
-            testExpiredPoll.setStartTime(LocalDateTime.now());
+            testExpiredPoll.setStartTime(LocalDateTime.now().minusDays(2));
             testExpiredPoll.setEndTime(LocalDateTime.now().minusDays(1));
 
             Poll testFuturePoll = new Poll();
