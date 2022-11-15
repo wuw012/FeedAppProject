@@ -101,7 +101,7 @@ public class PollController {
                     poll.setOwner(owner);
                     owner.addOwnedPoll(poll);
 
-                    pollService.sendMessage(BINDING_PATTERN_POLL_CREATION, poll);
+                    pollService.sendMessage(poll);
 
                     /*
                     rabbitTemplate.convertAndSend(

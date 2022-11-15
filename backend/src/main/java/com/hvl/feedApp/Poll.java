@@ -2,18 +2,10 @@ package com.hvl.feedApp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hvl.feedApp.Enums.Status;
-import com.hvl.feedApp.config.MessagingConfig;
-import com.hvl.feedApp.config.RabbitMQConfig;
-import com.hvl.feedApp.controller.MessageSendController;
-import com.hvl.feedApp.service.PollService;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 @Entity
 @Table
@@ -74,7 +66,7 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
-        sentExpirationNotification = false;
+        this.sentExpirationNotification = false;
     }
 
     public void setPollID(long pollID) {

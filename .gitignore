@@ -5,3 +5,4 @@ package-lock.json
 backend/.idea
 .idea
 backend/target
+src/main/resources/application.properties

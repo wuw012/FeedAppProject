@@ -83,7 +83,7 @@ public class PollService {
 
         //send message
         try {
-            this.sendMessage(BINDING_PATTERN_POLL_CREATION, poll);
+            this.sendMessage(poll);
         }catch (Exception e){
             System.out.println("Could not send message about poll "+poll.getPollID()+" with exception "+e.getMessage());
         }
@@ -109,17 +109,15 @@ public class PollService {
     }
 
     private void refreshPollStatus(Poll poll) {
-        //Status originalStatus = poll.getStatus();
-        //poll.setStatus();
         Status status = poll.getStatus();
         if (status == Status.EXPIRED && !poll.getExpirationSent()) {
+            // Handle poll messaging
             try {
-                this.sendMessage(BINDING_PATTERN_POLL_CREATION, poll);
+                this.sendMessage(poll);
             }catch (Exception e){
-                System.out.println("Could not send message about poll "+poll.getPollID()+" with exception "+e.getMessage());
-            } finally {
-                poll.setExpirationSent();
+                System.out.println("Could not post message for Poll "+poll.getPollID()+". Reason: "+e);
             }
+
         }
         if (status != Status.FUTURE){//this.isDweetPublishEvent(originalStatus, updatedStatus)){
             try {
@@ -130,17 +128,43 @@ public class PollService {
         }
     }
 
-    public static void sendMessage(String BINDING_PATTERN, Poll poll) throws IOException, InterruptedException {
-        ObjectMapper mapper = new ObjectMapper();
-        //mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        //mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
-        mapper.registerModule(new JavaTimeModule());
-        String pollJson = mapper.writeValueAsString(poll);
-        rabbitTemplate.convertAndSend(
-                MessagingConfig.TOPIC_EXCHANGE_NAME,
-                BINDING_PATTERN,
-                pollJson
-        );
+    public void sendMessage(Poll poll) throws IOException, InterruptedException {
+        Status pollStatus = poll.getStatus();
+        if (messageNecessary(pollStatus, poll.getExpirationSent())) {
+            ObjectMapper mapper = new ObjectMapper();
+            //mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            //mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+            mapper.registerModule(new JavaTimeModule());
+
+
+            String bindingPattern;
+            if (pollStatus == Status.EXPIRED){
+                bindingPattern = BINDING_PATTERN_POLL_FINISH;
+                poll.setExpirationSent();
+
+            }else{
+                bindingPattern = BINDING_PATTERN_POLL_CREATION;
+
+            }
+
+            String pollJson = mapper.writeValueAsString(poll);
+            pollRepository.save(poll);
+            rabbitTemplate.convertAndSend(
+                    MessagingConfig.TOPIC_EXCHANGE_NAME,
+                    bindingPattern,
+                    pollJson
+            );
+        }
+    }
+
+    private static boolean messageNecessary(Status pollStatus, boolean expiredSent) {
+        if (pollStatus == Status.ACTIVE) {
+            return true;
+        }
+        if((pollStatus == Status.EXPIRED) && (!expiredSent)) {
+            return true;
+        }
+        return false;
     }
 
 
