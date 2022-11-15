@@ -101,11 +101,15 @@ public class PollController {
                     poll.setOwner(owner);
                     owner.addOwnedPoll(poll);
 
+                    pollService.sendMessage(BINDING_PATTERN_POLL_CREATION, poll);
+
+                    /*
                     rabbitTemplate.convertAndSend(
                             MessagingConfig.TOPIC_EXCHANGE_NAME,
                             BINDING_PATTERN_POLL_CREATION,
                             this.toString()
                     );
+                     */
 
                     return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
                 } catch (Exception e) {
