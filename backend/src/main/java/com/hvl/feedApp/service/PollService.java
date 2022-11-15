@@ -60,11 +60,12 @@ public class PollService {
     }
 
     public Poll createNewPoll(Poll poll) {
+        poll.setPin(0);/*
         if (!poll.isPrivate()) {
             poll.setPin(0);
         } else if (poll.isPrivate() && poll.getPin() == 0) {
             throw new IllegalStateException("Private polls must have a pincode");
-        }
+        }*/
         if (poll.getEndTime().isBefore(LocalDateTime.now())) {
             throw new IllegalStateException("Cannot create expired Poll with datetime "+poll.getEndTime());
         }
@@ -97,11 +98,11 @@ public class PollService {
             for (Poll poll : allPolls){
                 // Dweet requires 1 second of sleep between each post
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(3000);
+                    refreshPollStatus(poll);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-                refreshPollStatus(poll);
             }
         };
         Thread thread = new Thread(runnable);

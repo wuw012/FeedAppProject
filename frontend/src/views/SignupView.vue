@@ -7,16 +7,12 @@
 
 <script lang="ts">
 import SignupForm from "@/components/SignupForm.vue";
-export default{
+export default {
     name:"SignupView",
-    component: {
+    components: {
         SignupForm
     }
 }
 </script>
 
-
-<style>
-
-</style>
 

@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.hvl.feedApp.Enums.Role;
 
 @Entity
@@ -40,7 +43,7 @@ public class Agent {
     // Attributes
     private String username;
     private String email;
-    // TODO: implement hashed passwords!
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 /*
 

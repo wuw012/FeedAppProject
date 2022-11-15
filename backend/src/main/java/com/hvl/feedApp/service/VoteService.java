@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import com.hvl.feedApp.controller.PollController;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,10 +80,16 @@ public class VoteService {
 
         //TODO: Error handling, field validation!
         try {
-            Long voterID = voteJson.get("voter_id").getAsLong(); // "voter_id":2,
+            String voterUsername = voteJson.get("voter_username").getAsString(); // "voter_id":2,
             boolean answerYes = voteJson.get("answer_yes").getAsBoolean();
 
-            Agent voter = agentService.getById(voterID);
+            Agent voter;
+            try {
+                voter = agentService.getByUsername(voterUsername);
+            }catch (ResponseStatusException e) {
+                System.out.println("Anonymous user just voted.");
+                voter = null;
+            }
             Poll poll = pollService.getPollById(pollID);
 
             // increment or decrement poll answer count
@@ -92,11 +99,16 @@ public class VoteService {
                 poll.setNoCount(poll.getNoCount() + 1);
             }
 
-            Vote vote = new Vote(answerYes, voter, poll);
-            voteRepository.save(vote);
-            return vote;
+            if (voter != null){
+                Vote vote = new Vote(answerYes, voter, poll);
+                voteRepository.save(vote);
+                return vote;
+            }
+            return new Vote(answerYes, null, poll);
+            //throw new ResponseStatusException(HttpStatus.OK, "Anonymous vote added to poll");
+
         } catch (Exception e){
-            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST);
+            throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, "Failed with exception: "+e);
         }
     }
 

@@ -1,31 +1,26 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "@/views/HomeView.vue";
+//import HomeView from "@/views/HomeView.vue";
 import VotingView from "@/views/VotingView.vue";
-import AboutView from  "@/views/AboutView.vue";
+import AdminView from  "@/views/AdminView.vue";
 import ThankyouView from "@/views/ThankyouView.vue";
 import MypollsView from "@/views/MypollsView.vue";
 import AltLoginView from "@/views/AltLoginView.vue";
 import CreatepollsView from "@/views/CreatepollsView.vue";
 import SignupView from "@/views/SignupView.vue";
-
+import Poll from "@/components/Poll.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-     {
+    {
       path: "/",
       name: "home",
-      component: HomeView,
+      component: AltLoginView,
     },
-/*     {
-      path: "/login",
-      name: "login",
-      component: Login,
-    }, */
     {
-      path: "/about",
-      name: "about",
-      component: AboutView,
+      path: "/admin",
+      name: "admin",
+      component: AdminView,
     },
     {
       path: "/voting",
@@ -56,7 +51,11 @@ const router = createRouter({
       path: "/signup",
       name: "signup",
       component: SignupView,
-    }
+    },
+    { 
+      path: '/voting/:pollID', 
+      component: Poll 
+    },
   ],
 });
 
