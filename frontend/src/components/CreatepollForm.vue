@@ -1,6 +1,6 @@
 <template>
     <div v-if="this.username" class="wrap">
-        <p><strong>Hey {{this.username}}! Fill out the form to see</strong></p>
+        <p><strong>Hey {{this.username}}! Fill out the form to create a poll</strong></p>
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
             <input type="text" id="question" name="question" placeholder="Question" v-model="question"><br><br>
 
