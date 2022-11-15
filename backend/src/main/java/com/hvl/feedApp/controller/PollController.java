@@ -52,7 +52,7 @@ public class PollController {
         this.authorizer = new Authorizer();
         this.rabbitTemplate = rabbitTemplate;
     }
-
+    
     @GetMapping()
     public List<Poll> getPolls(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth){
         if (authenticator.isAuthenticated(bAuth)) {
@@ -69,7 +69,7 @@ public class PollController {
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
         Poll poll = pollService.getPollById(pollID);
