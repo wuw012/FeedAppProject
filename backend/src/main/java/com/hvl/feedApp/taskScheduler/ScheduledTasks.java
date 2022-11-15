@@ -22,7 +22,7 @@ public class ScheduledTasks {
         this.pollService = pollService;
     }
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 15000)
     public void updatePolls() throws InterruptedException {
         pollService.refreshPollStatuses(pollService.getPolls());
         log.info("The time is now {}", dateFormat.format(new Date()));

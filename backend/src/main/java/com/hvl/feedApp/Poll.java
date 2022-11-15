@@ -2,6 +2,7 @@ package com.hvl.feedApp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hvl.feedApp.Enums.Status;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,7 +32,31 @@ public class Poll {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    private static RabbitTemplate rabbitTemplate;
+    //private static MessageProducer producer;
+
+    //private static MessageSendController sendController;
+    private boolean sentExpirationNotification;
+    private boolean sentActiveNotification;
+
+
     public Poll() {}
+
+    @Override
+    public String toString() {
+        return "Poll{" +
+                "pollID=" + pollID +
+                ", owner=" + owner +
+                ", isPrivate=" + isPrivate +
+                ", pin=" + pin +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", yesCount=" + yesCount +
+                ", noCount=" + noCount +
+                ", question='" + question + '\'' +
+                ", status=" + status +
+                '}';
+    }
 
     public Poll(boolean isPrivate, int pin, LocalDateTime startTime, LocalDateTime endTime, int yesCount, int noCount, String question, Status status) {
         this.isPrivate = isPrivate;
@@ -42,6 +67,8 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
+        this.sentActiveNotification = false;
+        this.sentExpirationNotification = false;
     }
 
     public void setPollID(long pollID) {
@@ -115,7 +142,14 @@ public class Poll {
     public void setQuestion(String question) {
         this.question = question;
     }
-
+    public boolean getActiveSent() {
+        return this.sentActiveNotification;
+    }
+    public void setActiveSent() { this.sentActiveNotification = true; }
+    public boolean getExpirationSent() {
+        return this.sentExpirationNotification;
+    }
+    public void setExpirationSent() { this.sentExpirationNotification = true; }
     public void setStatus() {
         if (this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.ACTIVE;

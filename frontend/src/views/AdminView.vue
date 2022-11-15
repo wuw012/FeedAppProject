@@ -2,10 +2,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
+                <br/>
                 <h1>All users</h1>
                 <AllUsers />
             </div>
             <div class="col-sm">
+                <br/>
                 <h1>All polls</h1>
                 <AllPolls />
             </div>

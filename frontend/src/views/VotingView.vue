@@ -1,10 +1,15 @@
 <template>
-  <Poll />
+  <PollSearch />
 </template>
 
 <script lang="ts">
+import PollSearch from "@/components/PollSearch.vue";
+
 export default {
-  name: "VotingView"
+  name: "VotingView",
+  components: {
+    PollSearch
+  }
 }
 </script>
 

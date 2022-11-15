@@ -10,11 +10,13 @@ import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Enums.Role;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
+import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.security.Authenticator;
 import com.hvl.feedApp.security.Authorizer;
 import com.hvl.feedApp.service.AgentService;
 import com.hvl.feedApp.service.PollService;
 import com.hvl.feedApp.service.VoteService;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,16 +35,22 @@ public class PollController {
     private final PollService pollService;
     private final VoteService voteService;
 
+    //RabbitTemplate for Messaging upon creating Poll
+    private final RabbitTemplate rabbitTemplate;
+    //private static MessageSendController sendController;
+    public static final String BINDING_PATTERN_POLL_CREATION = "poll.creation";
+
     private final Authenticator authenticator;
     private final Authorizer authorizer;
 
     @Autowired
-    public PollController(AgentService agentService, PollService pollService, VoteService voteService) {
+    public PollController(AgentService agentService, PollService pollService, VoteService voteService, RabbitTemplate rabbitTemplate) {
         this.agentService = agentService;
         this.pollService = pollService;
         this.voteService = voteService;
         this.authenticator = new Authenticator(agentService);
         this.authorizer = new Authorizer();
+        this.rabbitTemplate = rabbitTemplate;
     }
     
     @GetMapping()
@@ -99,6 +107,7 @@ public class PollController {
                     Agent owner = agentService.getById(ownerID);
                     poll.setOwner(owner);
                     owner.addOwnedPoll(poll);
+
 
                     return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
                 } catch (Exception e) {

@@ -1,5 +1,8 @@
 <template>
   <div class="mypolls">
+    <br/>
+    <p><strong>Hello there, {{this.username}}! </strong></p>
+    <p>Here you can see all your polls. Share the link with your friends to see their opinion!</p>
     <table id="mypolls" class="table table-striped" style="width:100%">
           <thead>
               <tr>
@@ -45,7 +48,6 @@ export default {
       myPolls: [],
       error: "",
       deletedPoll: false,
-      text: 'This will get copied!'
     }
   },
   methods: {
@@ -81,12 +83,6 @@ export default {
     },
     redirectToPoll(pollID){
       this.$router.push({path: "/voting/"+pollID})
-    },
-    copy() {
-      
-      this.$refs.myinput.focus();
-      document.execCommand('copy');
-      alert("copy")
     }
   },
   mounted() {

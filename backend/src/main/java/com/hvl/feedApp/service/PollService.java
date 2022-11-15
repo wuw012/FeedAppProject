@@ -9,8 +9,10 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hvl.feedApp.Enums.Status;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
+import com.hvl.feedApp.config.MessagingConfig;
 import com.hvl.feedApp.repository.PollRepository;
 import com.hvl.feedApp.repository.VoteRepository;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,19 +32,19 @@ public class PollService {
     private final PollRepository pollRepository;
     private final VoteRepository voteRepository;
 
+    public static final String BINDING_PATTERN_POLL_CREATION = ".pollcreation.";
+    public static final String BINDING_PATTERN_POLL_FINISH = ".pollfinish.";
+    private static RabbitTemplate rabbitTemplate;
+
     @Autowired
-    public PollService(PollRepository pollRepository, VoteRepository voteRepository) {
+    public PollService(PollRepository pollRepository, VoteRepository voteRepository, RabbitTemplate rabbitTemplate) {
         this.pollRepository = pollRepository;
         this.voteRepository = voteRepository;
+        this.rabbitTemplate = rabbitTemplate;
     }
 
     public List<Poll> getPolls(){
         List<Poll> polls = pollRepository.findAll();
-        try {
-            refreshPollStatuses(polls);
-        }catch (Exception e) {
-            System.out.println("Error "+e+" occured when trying to republish all polls to dweet.io");
-        }
         return polls;
     }
 
@@ -59,21 +61,13 @@ public class PollService {
         } else if (poll.isPrivate() && poll.getPin() == 0) {
             throw new IllegalStateException("Private polls must have a pincode");
         }*/
+
+
         if (poll.getEndTime().isBefore(LocalDateTime.now())) {
+
             throw new IllegalStateException("Cannot create expired Poll with datetime "+poll.getEndTime());
         }
-
         Poll result = pollRepository.save(poll);
-
-        // Post to dweet if active
-        poll.setStatus();
-        if (poll.getStatus() == Status.ACTIVE) {
-            try {
-                this.publishToDweet(poll);
-            }catch (Exception e){
-                System.out.println("Could not publish Poll "+poll.getPollID()+" with exception "+e.getMessage());
-            }
-        }
 
         return result;
     }
@@ -84,7 +78,7 @@ public class PollService {
             for (Poll poll : allPolls){
                 // Dweet requires 1 second of sleep between each post
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1100);
                     refreshPollStatus(poll);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -96,16 +90,56 @@ public class PollService {
     }
 
     private void refreshPollStatus(Poll poll) {
-        //Status originalStatus = poll.getStatus();
-        //poll.setStatus();
         Status status = poll.getStatus();
-        if (status != Status.FUTURE){//this.isDweetPublishEvent(originalStatus, updatedStatus)){
-            try {
-                this.publishToDweet(poll);
-            }catch (Exception e){
-                System.out.println("Could not publish Poll "+poll.getPollID()+" with exception "+e.getMessage());
-            }
+        try {
+            this.sendMessage(poll);
+        }catch (Exception e) {
+            System.out.println("Update for Poll "+poll.getPollID()+" failed. Reason: "+e);
         }
+    }
+
+    public void sendMessage(Poll poll) throws IOException, InterruptedException {
+        Status pollStatus = poll.getStatus();
+        if (messageNecessary(pollStatus, poll.getExpirationSent(), poll.getActiveSent())) {
+            ObjectMapper mapper = new ObjectMapper();
+            //mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            //mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
+            mapper.registerModule(new JavaTimeModule());
+
+
+            String bindingPattern;
+            if (pollStatus == Status.EXPIRED){
+                bindingPattern = BINDING_PATTERN_POLL_FINISH;
+                poll.setExpirationSent();
+
+            }else{
+                bindingPattern = BINDING_PATTERN_POLL_CREATION;
+                poll.setActiveSent();
+            }
+
+            pollRepository.save(poll);
+
+            // Post to dweet
+            publishToDweet(poll);
+
+            // Publish to messaging
+            String pollJson = mapper.writeValueAsString(poll);
+            rabbitTemplate.convertAndSend(
+                    MessagingConfig.TOPIC_EXCHANGE_NAME,
+                    bindingPattern,
+                    pollJson
+            );
+        }
+    }
+
+    private static boolean messageNecessary(Status pollStatus, boolean expiredSent, boolean activeSent) {
+        if ((pollStatus == Status.ACTIVE) && (!activeSent)) {
+            return true;
+        }
+        if((pollStatus == Status.EXPIRED) && (!expiredSent)) {
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,12 +1,11 @@
 <template>
     <div v-if="this.username" class="wrap">
-        <p><strong>Hey {{this.username}}! Fill out the form to see</strong></p>
+        <p><strong>Hey {{this.username}}! Fill out the form to create a poll</strong></p>
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
-            <label for="question"> Question: </label> 
-            <input type="text" id="question" name="question" v-model="question"><br><br>
+            <input type="text" id="question" name="question" placeholder="Question" v-model="question"><br><br>
 
             <label for="startTime"> Start time: </label>
-            <input type="datetime-local" id="startTime" name="startTime" v-model="startTime"><br><br>
+            <input type="datetime-local" id="startTime" name="startTime" placeholder="Start time" v-model="startTime"><br><br>
 
             <label for="endTime"> End time: </label>
             <input type="datetime-local" id="endTime" name="endTime" v-model="endTime"><br><br>
@@ -14,7 +13,7 @@
             <label for="isPrivatepoll"> Private? </label>
             <input type="checkbox" id="isPrivatepoll" name="isPrivatepoll" v-model="isPrivate">
 
-            <p> {{ error }} </p>
+            <p v-for="error in errors" style="color:red;"> {{ error }} </p>
 
             <button class="btn btn-primary" type="submit" v-on:click="createPoll()"> Create poll </button>
         </form>
@@ -40,7 +39,7 @@ export default {
             createdPoll: false,
             username: "",
             password: "",
-            error: ""
+            errors: [],
             }
         },
     methods: {
@@ -51,11 +50,13 @@ export default {
         convertTimeToString(){
             if (this.startTime && this.endTime) {
                 this.startTime = moment(String(this.startTime)).format('yyyy-MM-DD HH:mm:ss')
-                this.endTime = moment(String(this.endTime)).format('yyyy-MM-DD hh:mm:ss')
+                this.endTime = moment(String(this.endTime)).format('yyyy-MM-DD HH:mm:ss')
             }
         },
         async postPoll() {
             this.convertTimeToString();
+            console.log("HERE")
+            console.log(this.startTime, this.endTime)
             await FeedAppDataService.postPoll(this.question, this.startTime, this.endTime, this.isPrivate, this.username, this.password)
             .then((status) => {
                 if (status == 201) {
@@ -64,11 +65,15 @@ export default {
             });
         },
         checkForm() {
-            // check startTime is in future (today -> )
-
-            // check endTime is after startTime
-
-            // check question is filled in
+            let formOK = true;
+            if (this.startTime === "" && this.endTime === "") {
+                this.errors.push("Start time must be in future and end time must be after start time")
+                formOK = false;
+            }
+            if (this.question === "") {
+                this.errors.push("Question must be filled in")
+                formOK = false;
+            }
             return true;
         },
         createPoll() {
@@ -84,7 +89,7 @@ export default {
                     }
                 });
             } else {
-                this.error = "Form is not OK"
+                console.error("Form is not OK")
             }
         } 
     },
