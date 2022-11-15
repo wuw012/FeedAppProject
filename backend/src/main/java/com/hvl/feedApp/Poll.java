@@ -20,13 +20,14 @@ public class Poll {
     // Attributes
     private boolean isPrivate;
     private int pin;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime startTime;
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
     private int yesCount;
     private int noCount;
     private String question;
+    @Transient
     @Enumerated(EnumType.STRING)
     private Status status;
 
@@ -115,16 +116,17 @@ public class Poll {
         this.question = question;
     }
 
-    public void setStatus(LocalDateTime startTime, LocalDateTime endTime) {
-        if (startTime.isBefore(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
+    public void setStatus() {
+        if (this.startTime.isBefore(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.ACTIVE;
-        } else if (startTime.isAfter(LocalDateTime.now()) && endTime.isAfter(LocalDateTime.now())) {
+        } else if (this.startTime.isAfter(LocalDateTime.now()) && this.endTime.isAfter(LocalDateTime.now())) {
             this.status = Status.FUTURE;
         } else {
             this.status = Status.EXPIRED;
         }
     }
     public Status getStatus() {
+        this.setStatus();
         return status;
     }
 }

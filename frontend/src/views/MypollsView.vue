@@ -1,33 +1,26 @@
 <template>
    <div class="mypolls">
-
-    <div class="header">
-      <h1>My polls </h1>
-    </div>
-
-    <div class="buttongroup">
-      <button>CREATE NEW POLL</button>
-    </div>
-
+    <h1>My Polls</h1>
+    <button class="btn btn-secondary btn-sm" @click="redirectToCreatePolls()"> Create new poll</button>
+    <br/><br/>
+    <MyPolls />
    </div>
 </template>
   
 
 <script lang="ts">
+import { RouterLink, RouterView } from "vue-router";
+import MyPolls from "@/components/MyPolls.vue"
 
-const questionText = "Do you like cats?"
-
-</script>
-
-<style scoped>
-.question{
-  display: block;
+export default {
+  name: 'MyPollsView',
+  components: {
+    MyPolls
+  },
+  methods: {
+    redirectToCreatePolls() {
+      this.$router.push({path: "/createpolls"})
+    }
+  }
 }
-.poll{
-      text-align: center;
-    }
-.button{
-      text-align: center;
-      margin: 2%;
-    }
-</style>
+</script>

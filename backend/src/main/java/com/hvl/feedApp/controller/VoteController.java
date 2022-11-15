@@ -1,8 +1,5 @@
 package com.hvl.feedApp.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.hvl.feedApp.Agent;
 import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.security.Authenticator;
 import com.hvl.feedApp.security.Authorizer;
@@ -17,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins="*", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path = "/vote")
 public class VoteController {
 

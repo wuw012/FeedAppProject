@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hvl.feedApp.Agent;
+import com.hvl.feedApp.Enums.Role;
 import com.hvl.feedApp.Poll;
 import com.hvl.feedApp.Vote;
 import com.hvl.feedApp.security.Authenticator;
@@ -24,6 +25,8 @@ import org.springframework.web.server.ResponseStatusException;
 import java.time.LocalDateTime;
 
 @RestController
+@CrossOrigin(origins="*", allowedHeaders = "*")
+//@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping(path = "/polls")
 public class PollController {
     private final AgentService agentService;
@@ -47,7 +50,12 @@ public class PollController {
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls", "GET")) {
                 List<Poll> allPolls = pollService.getPolls();
-                pollService.refreshPollStatuses(allPolls);
+                // Too time consuming, find another strategy for updating dweets
+/*                try {
+                    pollService.refreshPollStatuses(allPolls);
+                }catch (InterruptedException e){
+                    System.out.println("Thread sleep interrupted, not all statuses refreshed.");
+                }*/
                 return allPolls;
             }
         }
@@ -56,21 +64,25 @@ public class PollController {
     @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(path = "{pollID}")
     public Poll getPollById(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
-        if (authenticator.isAuthenticated(bAuth)) {
-            if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "GET")) {
-                Poll poll = pollService.getPollById(pollID);
-                poll.setStatus(poll.getStartTime(),poll.getEndTime());
-                return poll;
+        Poll poll = pollService.getPollById(pollID);
+        poll.setStatus();
+        if (poll.isPrivate()){
+            if (authenticator.isAuthenticated(bAuth)) {
+                if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "GET")) {
+                    return poll;
+                }
             }
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
         }
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
+
+        return poll;
     }
 
-    @GetMapping(path = "{agentID}/userPolls")
-    public List<Poll> getOwnedPolls(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("agentID") Long agentID){
+    @GetMapping(path = "{username}/userPolls")
+    public List<Poll> getOwnedPolls(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("username") String username){
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{agentID]/userPolls", "GET")) {
-                return agentService.getOwnedPolls(agentID);
+                return agentService.getOwnedPolls(username);
             }
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
@@ -90,23 +102,28 @@ public class PollController {
 
                     return new ResponseEntity<Poll>(pollService.createNewPoll(poll), HttpStatus.CREATED);
                 } catch (Exception e) {
-                    throw new IllegalStateException("Something went wrong");
+                    throw new IllegalStateException(e);
                 }
             }
         }
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
-
     @DeleteMapping(path = "{pollID}")
-    public void deletePoll(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
+    public String deletePoll(@RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth, @PathVariable("pollID") Long pollID){
         if (authenticator.isAuthenticated(bAuth)) {
             if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}", "DELETE")) {
                 try{
+                    Poll poll = pollService.getPollById(pollID);
+                    Boolean userIsAdmin = authenticator.getUser().getRole() == Role.ADMIN;
+                    Boolean userOwnsPoll = poll.getOwner() == authenticator.getUser();
+                    if (!userIsAdmin && !userOwnsPoll) {
+                        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Can't delete another users Poll");
+                    }
                     pollService.deletePoll(pollID);
                     pollService.getPollById(pollID);
                     throw new ResponseStatusException(HttpStatus.CONFLICT, "Poll with ID "+pollID+" was not successfully deleted.");
                 } catch (IllegalStateException e) {
-                    throw new ResponseStatusException(HttpStatus.OK, "Successfully deleted Poll with ID "+pollID);
+                    return "Successfully deleted Poll with ID "+pollID;
                 }
             }
         }
@@ -147,11 +164,21 @@ public class PollController {
             @RequestHeader(HttpHeaders.AUTHORIZATION) String bAuth,
             @PathVariable Long pollID,
             @RequestBody String voteString){
-        if (authenticator.isAuthenticated(bAuth)) {
-            if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}/votes", "POST")) {
-                return voteService.createVote(pollID, voteString);
-            }
+        Poll poll = pollService.getPollById(pollID);
+        if (poll == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Can't find Poll with id "+pollID);
         }
+
+        if (poll.isPrivate()) {
+            if (authenticator.isAuthenticated(bAuth)) {
+                if (authorizer.isAuthorized(authenticator.getUser(), "/polls/{pollID}/votes", "POST")) {
+                    return voteService.createVote(pollID, voteString);
+                }
+            }
+        }else {
+            return voteService.createVote(pollID, voteString);
+        }
+
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
     }
 
@@ -175,5 +202,12 @@ public class PollController {
         throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid user credentials");
 
     }
-
+    public boolean userValidated(String bAuth, String path, String httpMethod) {
+        if (authenticator.isAuthenticated(bAuth)) {
+            if (authorizer.isAuthorized(authenticator.getUser(), path, httpMethod)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

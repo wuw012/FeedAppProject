@@ -13,8 +13,9 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore"
   },
   "dependencies": {
-    "@auth0/auth0-vue": "^1.0.2",
     "bootstrap-vue": "^2.23.1",
+    "jssha": "^3.3.0",
+    "moment": "^2.29.4",
     "pinia": "^2.0.21",
     "vue": "^3.2.38",
     "vue-cookies": "^1.8.2",
