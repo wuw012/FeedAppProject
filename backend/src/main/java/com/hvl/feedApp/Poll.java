@@ -37,6 +37,7 @@ public class Poll {
 
     //private static MessageSendController sendController;
     private boolean sentExpirationNotification;
+    private boolean sentActiveNotification;
 
 
     public Poll() {}
@@ -66,6 +67,7 @@ public class Poll {
         this.noCount = noCount;
         this.question = question;
         this.status = status;
+        this.sentActiveNotification = false;
         this.sentExpirationNotification = false;
     }
 
@@ -140,7 +142,10 @@ public class Poll {
     public void setQuestion(String question) {
         this.question = question;
     }
-
+    public boolean getActiveSent() {
+        return this.sentActiveNotification;
+    }
+    public void setActiveSent() { this.sentActiveNotification = true; }
     public boolean getExpirationSent() {
         return this.sentExpirationNotification;
     }

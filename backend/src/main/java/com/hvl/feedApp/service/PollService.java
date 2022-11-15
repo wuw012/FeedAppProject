@@ -45,11 +45,6 @@ public class PollService {
 
     public List<Poll> getPolls(){
         List<Poll> polls = pollRepository.findAll();
-        try {
-            refreshPollStatuses(polls);
-        }catch (Exception e) {
-            System.out.println("Error "+e+" occured when trying to republish all polls to dweet.io");
-        }
         return polls;
     }
 
@@ -66,28 +61,13 @@ public class PollService {
         } else if (poll.isPrivate() && poll.getPin() == 0) {
             throw new IllegalStateException("Private polls must have a pincode");
         }*/
+
+
         if (poll.getEndTime().isBefore(LocalDateTime.now())) {
+
             throw new IllegalStateException("Cannot create expired Poll with datetime "+poll.getEndTime());
         }
-
         Poll result = pollRepository.save(poll);
-
-        // Post to dweet if active
-        poll.setStatus();
-        if (poll.getStatus() == Status.ACTIVE) {
-            try {
-                this.publishToDweet(poll);
-            }catch (Exception e){
-                System.out.println("Could not publish Poll "+poll.getPollID()+" with exception "+e.getMessage());
-            }
-        }
-
-        //send message
-        try {
-            this.sendMessage(poll);
-        }catch (Exception e){
-            System.out.println("Could not send message about poll "+poll.getPollID()+" with exception "+e.getMessage());
-        }
 
         return result;
     }
@@ -98,7 +78,7 @@ public class PollService {
             for (Poll poll : allPolls){
                 // Dweet requires 1 second of sleep between each post
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1100);
                     refreshPollStatus(poll);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -111,27 +91,16 @@ public class PollService {
 
     private void refreshPollStatus(Poll poll) {
         Status status = poll.getStatus();
-        if (status == Status.EXPIRED && !poll.getExpirationSent()) {
-            // Handle poll messaging
-            try {
-                this.sendMessage(poll);
-            }catch (Exception e){
-                System.out.println("Could not post message for Poll "+poll.getPollID()+". Reason: "+e);
-            }
-
-        }
-        if (status != Status.FUTURE){//this.isDweetPublishEvent(originalStatus, updatedStatus)){
-            try {
-                this.publishToDweet(poll);
-            }catch (Exception e){
-                System.out.println("Could not publish Poll "+poll.getPollID()+" with exception "+e.getMessage());
-            }
+        try {
+            this.sendMessage(poll);
+        }catch (Exception e) {
+            System.out.println("Update for Poll "+poll.getPollID()+" failed. Reason: "+e);
         }
     }
 
     public void sendMessage(Poll poll) throws IOException, InterruptedException {
         Status pollStatus = poll.getStatus();
-        if (messageNecessary(pollStatus, poll.getExpirationSent())) {
+        if (messageNecessary(pollStatus, poll.getExpirationSent(), poll.getActiveSent())) {
             ObjectMapper mapper = new ObjectMapper();
             //mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             //mapper.setDateFormat(new StdDateFormat().withColonInTimeZone(true));
@@ -145,11 +114,16 @@ public class PollService {
 
             }else{
                 bindingPattern = BINDING_PATTERN_POLL_CREATION;
-
+                poll.setActiveSent();
             }
 
-            String pollJson = mapper.writeValueAsString(poll);
             pollRepository.save(poll);
+
+            // Post to dweet
+            publishToDweet(poll);
+
+            // Publish to messaging
+            String pollJson = mapper.writeValueAsString(poll);
             rabbitTemplate.convertAndSend(
                     MessagingConfig.TOPIC_EXCHANGE_NAME,
                     bindingPattern,
@@ -158,8 +132,8 @@ public class PollService {
         }
     }
 
-    private static boolean messageNecessary(Status pollStatus, boolean expiredSent) {
-        if (pollStatus == Status.ACTIVE) {
+    private static boolean messageNecessary(Status pollStatus, boolean expiredSent, boolean activeSent) {
+        if ((pollStatus == Status.ACTIVE) && (!activeSent)) {
             return true;
         }
         if((pollStatus == Status.EXPIRED) && (!expiredSent)) {
