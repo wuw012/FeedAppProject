@@ -45,7 +45,6 @@ export default {
       myPolls: [],
       error: "",
       deletedPoll: false,
-      text: 'This will get copied!'
     }
   },
   methods: {
@@ -81,12 +80,6 @@ export default {
     },
     redirectToPoll(pollID){
       this.$router.push({path: "/voting/"+pollID})
-    },
-    copy() {
-      
-      this.$refs.myinput.focus();
-      document.execCommand('copy');
-      alert("copy")
     }
   },
   mounted() {

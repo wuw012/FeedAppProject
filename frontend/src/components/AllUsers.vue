@@ -1,20 +1,24 @@
 <template>
-  <div class="allusers">
-    <br/>
-    <ul v-for="user in allUsers">
-      <h5> {{ user.username }} </h5>
-      <ul class="list-group">
-        <li class="list-group-item"> AgentID: {{ user.agentID }}</li>
-        <li class="list-group-item"> Email: {{ user.email }}</li>
-        <li class="list-group-item"> Role: {{ user.role }}</li>
-      </ul>
-      <br/>
-      <button class="btn btn-danger" @click="deleteThisUser(user.agentID)">Delete this user</button>
-    </ul>
+<div class="allUsers">
+    <table id="allUsers" class="table table-striped" style="width:100%">
+          <thead>
+              <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th></th>
+              </tr>
+          </thead>
+          <tbody v-for="user in allUsers">
+              <tr>
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.role }}</td>
+                  <td><button class="btn btn-danger btn-sm" @click="deleteThisUser(user.agentID)">Delete</button></td>
+              </tr>
+          </tbody>
+    </table>
   </div>
-  <br/>
-  <br/>
-
 </template>
   
 

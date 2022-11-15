@@ -1,21 +1,29 @@
 <template>
-    <div class="header">
-
-    <div class="buttongroup">
-      <button v-if="!loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="redirectToLogin()"> Log in </button>
-      <button v-if="loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="logout()"> Log out </button>
-    </div>
-
-      <nav>
-        <RouterLink to="/mypolls">My Polls</RouterLink>
-        <RouterLink to="/createpolls">Create Poll</RouterLink>
-        <RouterLink to="/voting">Voting on poll 1</RouterLink>
-        <RouterLink to="/login">Login</RouterLink>
-        <RouterLink to="/signup">Signup</RouterLink>
-        <RouterLink to="/admin">Admin</RouterLink>
-      </nav>
-    </div>
+   
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">
+        <img src="@/assets/voteballot.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        Feed App
+      </a>
+      <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <RouterLink v-if="!isAdmin && userExists" class="nav-link" to="/mypolls">My Polls<span class="sr-only">(current)</span></RouterLink>
+            <RouterLink v-if="isAdmin" class="nav-link" to="/admin">Admin dashboard<span class="sr-only">(current)</span></RouterLink>
+          </li>
+          <li class="nav-item">
+            <RouterLink class="nav-link" to="/voting">Vote</RouterLink>
+          </li>
+        </ul>
+        <div class="buttongroup">
+          <button v-if="!loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="redirectToLogin()"> Log in </button>
+          <button v-if="loggedin()" class="btn btn-light btn-sm mr-2 float-right border border-primary" @click="logout()"> Log out </button>
+        </div>
+      </div>
+    </nav>
   <RouterView />
+
+  <br/>
 </template>
 
 <script lang="ts">
@@ -41,7 +49,9 @@ export default {
   },
   data() {
     return {
-      username: ""
+      username: "",
+      isAdmin: false,
+      userExists: false,
     }
   },
   methods: {
@@ -62,8 +72,18 @@ export default {
       } else {
         return false;
       }
+    },
+    async updateAuthStatus() {
+            await FeedAppDataService.exists(this.username).then((userExists) => this.userExists = userExists);
+            await FeedAppDataService.isAdmin(this.username).then((adminUser) => this.isAdmin = adminUser);
+    },
+    checkCredentials() {
+            this.updateAuthStatus().then()
     }
-  }
+  },
+  mounted() {
+      this.checkCredentials()
+    }
 }
 
 
@@ -127,7 +147,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 
 a {

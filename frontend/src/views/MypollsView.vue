@@ -1,9 +1,9 @@
 <template>
    <div class="mypolls">
+    <br/>
     <h1>My Polls</h1>
-    <button class="btn btn-secondary btn-sm" @click="redirectToCreatePolls()"> Create new poll</button>
-    <br/><br/>
     <MyPolls />
+    <button class="btn btn-success btn-lg" @click="redirectToCreatePolls()"> Create new poll</button>
    </div>
 </template>
   

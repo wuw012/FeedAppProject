@@ -4,9 +4,10 @@
     </div>
 </template>
 
-<style>
+<style scoped>
 h1{
     text-align: center;
-    margin-top: 50px;
+    width: 100%;
+    margin-top: 20%;
 }
 </style>

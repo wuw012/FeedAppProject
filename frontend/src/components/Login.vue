@@ -2,11 +2,9 @@
     <br/>
     <div class="wrap">
         <form v-on:submit.prevent="onSubmit" class="form-horizontal">
-            <label for="username"> Username: </label> 
-            <input type="text" id="username" name="username" v-model="username"><br><br>
+            <input type="text" id="username" name="username" placeholder="Username" v-model="username"><br><br>
 
-            <label for="password"> Password: </label>
-            <input type="password" id="password" name="password" v-model="password"><br><br>
+            <input type="password" id="password" name="password" placeholder="Password" v-model="password"><br><br>
 
             <p> {{ error }} </p>
 

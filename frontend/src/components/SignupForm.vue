@@ -2,17 +2,13 @@
     <br/>
     <div class="wrap">
         <form v-on:submit.prevent="onSubmit">
-            <label for="username"> Username: </label> 
-            <input type="text" id="username" name="username" v-model="username"><br><br>
+            <input type="text" id="username" name="username" placeholder="Username" v-model="username"><br><br>
 
-            <label for="email"> Email: </label>
-            <input type="text" id="email" name="email" v-model="email"><br><br>
+            <input type="text" id="email" name="email" placeholder="Email" v-model="email"><br><br>
             
-            <label for="password1"> Password: </label>
-            <input type="password" id="password1" name="password1" v-model="password1"><br><br>
+            <input type="password" id="password1" name="password1" placeholder="Password" v-model="password1"><br><br>
 
-            <label for="password2"> Repeat password: </label>
-            <input type="password" id="password2" name="password2" v-model="password2"><br><br>
+            <input type="password" id="password2" name="password2" placeholder="Repeat password" v-model="password2"><br><br>
             <p> {{ error }} </p>
         </form>
 

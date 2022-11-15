@@ -1,5 +1,6 @@
 <template>
   <div class="header">
+    <br/>
     <h1>Create poll</h1>
   </div>
 

@@ -13,20 +13,15 @@
   </div>
 
   <div class="poll" v-if="this.poll.status == 'FUTURE'">
-    <h4>This poll hasn't been launched yet. Come back {{this.poll.startTime}}! ;*</h4>
+    <h4>This poll hasn't been launched yet.</h4>
+    <h4 v-if="this.poll.startTime">Come back {{this.poll.startTime}}!</h4>
   </div>
 
   <div class="poll" v-if="this.poll.status == 'EXPIRED'">
-    <h4>If you're reading this it's too late :,( (poll has ended). </h4>
-    <h5> Results:</h5>
-    <table>
-      <tr>
-        <th>YES</th>
-        <th>NO</th>
-      </tr>
-      <td>{{this.poll.yesCount}}</td>
-      <td>{{this.poll.noCount}}</td>
-    </table>
+    <h4>The poll has ended. View results below</h4>
+    <h6> Yes count: {{this.poll.yesCount}} </h6>
+    <h6> No count: {{this.poll.noCount}} </h6>
+    <b-progress value="10" show-value class="mb-3"></b-progress>
   </div>
 
   <div class="poll" v-if="this.poll.private && !this.username">
@@ -121,4 +116,17 @@ export default {
 h3{
   text-align:right;
 }
+
+.poll {
+    margin: 0 auto;
+    width: 100%;
+    margin-top: 10%;
+    text-align: center;
+}
+
+table{
+  margin-right: 47%;
+  text-align: center;
+}
+
 </style>
