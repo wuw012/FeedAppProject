@@ -31,7 +31,7 @@ public class Authorizer {
         POST.put("/agents/{id}", Role.ADMIN);
         DELETE.put("/agents/{id}", Role.ADMIN);
         PUT.put("/agents/{id}", Role.ADMIN);
-        GET.put("/agents/byUsername/{username}", Role.ADMIN);
+        GET.put("/agents/byUsername/{username}", Role.USER);
 
         GET.put("/polls", Role.ADMIN);
         GET.put("/polls/{pollID}", Role.USER);
@@ -39,7 +39,7 @@ public class Authorizer {
         POST.put("/polls", Role.USER);
         DELETE.put("/polls/{pollID}", Role.USER);
         PUT.put("/polls/{pollID}", Role.ADMIN);
-        POST.put("/polls/{pollID}/batchVote", Role.ADMIN);
+        POST.put("/polls/{pollID}/batchVote", Role.USER);
         POST.put("/polls/{pollID}/votes", Role.USER);
         GET.put("/polls/{pollID}/votes", Role.ADMIN);
 

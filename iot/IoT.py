@@ -3,19 +3,20 @@ from tkinter import *
 from tkinter import ttk
 import requests
 import json
-
+import base64
 
 class feedAppService:
-    CREATE_USER_URL = "http://localhost:8080/agents"
+    CREATE_USER_URL = "http://localhost:8080/agents/createUser"
     API_URL = 'http://localhost:8080/polls'
+    payload = {
+        "Username": "iot_001",
+        "Password": "1664"
+    }
     headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Basic YWdlbnRfMDA3OjEyMzQ1Njc4',
+        'Authorization': '',
     }
-    payload = {
-        "Username": "agent_007",
-        "Password": "12345678"
-    }
+
     #create device object json
     deviceObject = {
     "username":"iot_001",
@@ -28,14 +29,34 @@ class feedAppService:
 
     currentPoll = {
         "pollID": 0,
-        "question": "No Poll"
+        "question": "No Poll selected"
     }
 
+    def setHeaders():
+        authString = f"{feedAppService.payload['Username']}:{feedAppService.payload['Password']}"
+        authBytes = authString.encode("utf-8")
+        b64 = base64.b64encode(authBytes)
+        feedAppService.headers["Authorization"]=f"Basic {b64.decode()}"
+        print(feedAppService.headers)
+
     def createDevice():
-        response = requests.post(feedAppService.CREATE_USER_URL, headers=feedAppService.headers, data=json.dumps(feedAppService.deviceObject))
-        feedAppService.deviceJson = response.json()
-        feedAppService.voter_id = (response.json()['agentID'])
-        return feedAppService.voter_id
+        feedAppService.setHeaders()
+        response = {}
+        try:
+            response = requests.post(feedAppService.CREATE_USER_URL, headers=feedAppService.headers, data=json.dumps(feedAppService.deviceObject))
+        except Exception as e:
+            print("Could not create device, exception occured: ",e)
+
+        if not (response.status_code == 409):
+            feedAppService.deviceJson = response.json()
+            print("Account created:",feedAppService.deviceJson)
+            feedAppService.voter_id = (response.json()['agentID'])
+            return feedAppService.voter_id
+        else:
+            feedAppService.deviceJson = requests.get("http://localhost:8080/agents/byUsername/"+feedAppService.deviceObject["username"], headers=feedAppService.headers).json()
+            print("Account retrieved: ", feedAppService.deviceJson)
+            feedAppService.voter_id = feedAppService.deviceJson["agentID"]
+        print("Could not create device account, failed with status code",response.status_code,". Error:",response.reason)
 
     def createBatchVote():
         batchVote = {
@@ -49,7 +70,10 @@ class feedAppService:
         feedAppService.pollID=poll_id
 
         if response.status_code == 500:
-            errorHandler("No poll with that ID")
+            errorHandler("No poll with ID "+poll_id)
+
+        if response.status_code == 401:
+            errorHandler("Wasn't authorized to get poll"+poll_id)
 
         if response.json()['status'] == "ACTIVE":
             feedAppService.currentPoll['pollID'] = response.json()['pollID']
